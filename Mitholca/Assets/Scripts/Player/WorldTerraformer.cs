@@ -2,12 +2,13 @@ using UnityEngine;
 
 namespace Mitholca
 {
-    public class WorldBuilder : MonoBehaviour
+    public class WorldTerraformer : MonoBehaviour
     {
         [SerializeField] private GameObject cubePrefab = default;
-        [SerializeField] private Transform eyes = default;
         [SerializeField] private Raycast placeRaycat = default;
         [SerializeField] private Raycast destroyRaycast = default;
+
+        private Transform eyes;
 
         private void Update()
         {
@@ -20,5 +21,7 @@ namespace Mitholca
                 Destroy(hit.transform.gameObject);
 
         }
+
+        public void Setup(Transform eyes) => this.eyes = eyes;
     }
 }

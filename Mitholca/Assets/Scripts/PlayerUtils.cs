@@ -11,6 +11,8 @@ namespace Mitholca
         {
             Application.targetFrameRate = fps;
             Time.fixedDeltaTime = 1f / ticksPerSecond;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void Update()
