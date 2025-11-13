@@ -16,7 +16,7 @@ namespace Mitholca
 
         private void Update()
         {
-            if (Keyboard.current.qKey.wasPressedThisFrame)
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
                 Application.Quit();
         }
     }
