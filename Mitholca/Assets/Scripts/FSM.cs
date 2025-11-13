@@ -4,12 +4,12 @@ namespace Mitholca
 {
     public class FSM 
     {
-        private readonly List<State> states = new List<State>();
+        private readonly List<IState> states = new List<IState>();
         private readonly List<Transition> transitions = new List<Transition>();
 
-        private State current;
+        private IState current;
 
-        public void AddState(State state)
+        public void AddState(IState state)
         {
             if (!states.Contains(state))
                 states.Add(state);
@@ -21,7 +21,7 @@ namespace Mitholca
                 transitions.Add(transition);
         }
 
-        public void Update()
+        public void OnFrame()
         {
             foreach (Transition transition in transitions)
             {
@@ -29,15 +29,15 @@ namespace Mitholca
                     Enter(transition.to);
             }
             
-            current?.Update();
+            current?.OnFrame();
         }
 
-        public void FixedUpdate()
+        public void OnTick()
         {
-            current?.FixedUpdate();
+            current?.OnTick();
         }
 
-        public void Enter(State state)
+        public void Enter(IState state)
         {
             if (state == null)
                 return;

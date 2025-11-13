@@ -2,7 +2,7 @@
 
 namespace Mitholca
 {
-    public class MouseMovement : MonoBehaviour
+    public class MouseMovement : StateBehaviour
     {
         private const float MAX_CAM_ANGLE = 90f;
         [SerializeField] private Transform eyes = default;
@@ -14,8 +14,9 @@ namespace Mitholca
         /// <summary>
         /// We are using the old here because it just works better.
         /// </summary>
-        private void Update()
+        public override void OnFrame()
         {
+            base.OnFrame();
             mouseInput.y = Input.GetAxisRaw("Mouse X");
             mouseInput.x = -Input.GetAxisRaw("Mouse Y");
 

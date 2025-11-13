@@ -5,11 +5,11 @@ namespace Mitholca
 {
     public class Transition 
     {
-        public State from;
-        public State to;
+        public IState from;
+        public IState to;
         public Func<bool> goNext;
 
-        public Transition(State from, State to, Func<bool> shouldTransition)
+        public Transition(IState from, IState to, Func<bool> shouldTransition)
         {
             this.from = from;
             this.to = to;

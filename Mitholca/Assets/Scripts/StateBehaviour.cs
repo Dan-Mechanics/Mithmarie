@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Mitholca
 {
-    public class State : IState
+    public class StateBehaviour : MonoBehaviour, IState
     {
         public virtual void Enter() { }
         public virtual void Exit() { }
