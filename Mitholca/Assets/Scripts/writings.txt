@@ -1,3 +1,9 @@
+what is absolutely essential to the enduser experience:
+1. blocks loading and saving
+	greedy meshing
+2. UI interface or something
+
+
 ideas:
 
 IO is prioirty.

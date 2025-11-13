@@ -5,12 +5,15 @@ namespace Mitholca
     public class MouseMovement : MonoBehaviour
     {
         private const float MAX_CAM_ANGLE = 90f;
+        [SerializeField] private Transform eyes = default;
         [SerializeField, Min(0f)] private float sensitivity = default;
 
-        private Transform eyes;
         private Vector2 mouseInput;
         private Vector2 rotation;
 
+        /// <summary>
+        /// We are using the old here because it just works better.
+        /// </summary>
         private void Update()
         {
             mouseInput.y = Input.GetAxisRaw("Mouse X");

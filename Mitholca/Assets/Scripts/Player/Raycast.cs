@@ -10,6 +10,6 @@ namespace Mitholca
         public LayerMask mask;
         public QueryTriggerInteraction interaction;
 
-        public bool Get(Transform arrow, out RaycastHit hit) => Physics.Raycast(arrow.position, arrow.forward, out hit, range, mask, interaction);
+        public bool Cast(Transform arrow, out RaycastHit hit) => Physics.Raycast(arrow.position, arrow.forward, out hit, range, mask, interaction);
     }
 }
