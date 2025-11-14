@@ -3,10 +3,11 @@ using UnityEngine.InputSystem;
 
 namespace Mitholca
 {
-    public class EaseUtils : MonoBehaviour
+    public class SceneBoilerplate : MonoBehaviour
     {
         [SerializeField, Min(1)] private int fps = default;
         [SerializeField, Min(1f)] private float physicsTicksPerSecond = default;
+        [SerializeField] private Key closeKey = default;
 
         private void Start()
         {
@@ -16,7 +17,7 @@ namespace Mitholca
 
         private void Update()
         {
-            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            if (Keyboard.current[closeKey].wasPressedThisFrame)
                 Application.Quit();
         }
     }

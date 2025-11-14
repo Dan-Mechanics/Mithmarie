@@ -12,7 +12,8 @@ namespace Mitholca
         private Vector2 rotation;
 
         /// <summary>
-        /// We are using the old here because it just works better.
+        /// We are using the old input system 
+        /// here because it just works better.
         /// </summary>
         public override void OnFrame()
         {
@@ -20,13 +21,11 @@ namespace Mitholca
             mouseInput.y = Input.GetAxisRaw("Mouse X");
             mouseInput.x = -Input.GetAxisRaw("Mouse Y");
 
-            rotation += (Cursor.visible ? 0f : 1f) * sensitivity * mouseInput;
+            rotation += sensitivity * mouseInput;
             rotation.x = Mathf.Clamp(rotation.x, -MAX_CAM_ANGLE, MAX_CAM_ANGLE);
 
             eyes.localRotation = Quaternion.AngleAxis(rotation.x, Vector3.right);
             transform.rotation = Quaternion.AngleAxis(rotation.y, Vector3.up);
         }
-
-        public void Setup(Transform eyes) => this.eyes = eyes;
     }
 }

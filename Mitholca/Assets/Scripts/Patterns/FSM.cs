@@ -21,7 +21,7 @@ namespace Mitholca
                 transitions.Add(transition);
         }
 
-        public void OnFrame()
+        public void Update()
         {
             foreach (Transition transition in transitions)
             {
@@ -32,7 +32,7 @@ namespace Mitholca
             current?.OnFrame();
         }
 
-        public void OnTick()
+        public void FixedUpdate()
         {
             current?.OnTick();
         }

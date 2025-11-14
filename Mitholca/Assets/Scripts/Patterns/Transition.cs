@@ -9,11 +9,11 @@ namespace Mitholca
         public IState to;
         public Func<bool> goNext;
 
-        public Transition(IState from, IState to, Func<bool> shouldTransition)
+        public Transition(IState from, IState to, Func<bool> goNext)
         {
             this.from = from;
             this.to = to;
-            this.goNext = shouldTransition;
+            this.goNext = goNext;
         }
     }
 }

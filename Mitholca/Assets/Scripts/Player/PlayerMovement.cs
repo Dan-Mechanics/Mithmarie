@@ -3,12 +3,12 @@ using UnityEngine.InputSystem;
 
 namespace Mitholca
 {
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : StateBehaviour
     {
         [SerializeField, Min(0f)] private float speed = default;
-        [SerializeField, Min(1f)] private float sprintSpeedMult = default;
+        [SerializeField, Min(0f)] private float sprintSpeedMult = default;
 
-        private void Update()
+        public override void OnFrame()
         {
             Vector3 movement = GetInputDirection();
             movement = transform.TransformDirection(movement);
@@ -16,7 +16,7 @@ namespace Mitholca
 
             movement *= speed;
 
-            if (Keyboard.current[PlayerSettings.SPRINT_KEY].isPressed)
+            if (Keyboard.current[Key.LeftCtrl].isPressed)
                 movement *= sprintSpeedMult;
 
             transform.Translate(movement * Time.deltaTime, Space.World);

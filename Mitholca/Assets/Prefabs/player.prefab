@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7707490481465344754}
+  - component: {fileID: 1947845970665496768}
   - component: {fileID: 3481532798549250696}
   - component: {fileID: 771546152580428926}
   - component: {fileID: 7465420223189449802}
@@ -35,6 +36,21 @@ Transform:
   - {fileID: 3062100453456221858}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1947845970665496768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293393832251157704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4e1db4ccb13d9a46bc001535e774b09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseMovement: {fileID: 771546152580428926}
+  playerMovement: {fileID: 3481532798549250696}
+  worldEditor: {fileID: 7465420223189449802}
 --- !u!114 &3481532798549250696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,12 +93,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
   cubePrefab: {fileID: 2487195525559084934, guid: 9261b816da904c54eada861fc2819fa3, type: 3}
-  placeRaycat:
-    range: 100
+  buildRaycast:
+    range: 0
     mask:
       serializedVersion: 2
-      m_Bits: 17
-    interaction: 1
+      m_Bits: 0
+    interaction: 0
   destroyRaycast:
     range: 100
     mask:

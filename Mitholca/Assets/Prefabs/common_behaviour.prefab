@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5083471530579691695}
   - component: {fileID: 7606391991895728794}
   m_Layer: 0
-  m_Name: ease_utils
+  m_Name: common_behaviour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fps: 300
   physicsTicksPerSecond: 50
+  closeKey: 31

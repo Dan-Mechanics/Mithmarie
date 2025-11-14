@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Mitholca
 {
+    /// <summary>
+    ///  THIS MUST BE MADE UTILS REPO
+    /// </summary>
     public static class Utils
     {
         public static Vector3 ApplyGrid(Vector3 pos)
