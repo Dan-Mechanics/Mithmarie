@@ -10,7 +10,7 @@ namespace Mitholca
         [SerializeField] private TMP_Text text = default;
         [SerializeField] private Image image = default;
         [SerializeField, Range(0.1f, 0.9f)] private float backdropVisibility = default;
-        [SerializeField, Min(0.001f)] private float decayRate = default;
+        [SerializeField, Min(0.001f)] private float duration = default;
 
         private void Awake()
         {
@@ -21,7 +21,7 @@ namespace Mitholca
 
         private void FixedUpdate()
         {
-            group.alpha -= decayRate * Time.fixedDeltaTime;
+            group.alpha -= 1f / duration * Time.fixedDeltaTime;
             group.alpha = Mathf.Clamp01(group.alpha);
         }
 

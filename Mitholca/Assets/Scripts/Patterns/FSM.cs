@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 
 namespace Mitholca
 {
@@ -11,22 +12,35 @@ namespace Mitholca
 
         public void AddState(IState state)
         {
+            if (state == null)
+                throw new NullReferenceException();
+            
             if (!states.Contains(state))
                 states.Add(state);
         }
 
         public void AddTransition(Transition transition)
         {
+            if (transition == null)
+                throw new NullReferenceException();
+
             if (!transitions.Contains(transition))
                 transitions.Add(transition);
         }
 
         public void Update()
         {
-            foreach (Transition transition in transitions)
+            // !DICT
+            foreach (var transition in transitions)
             {
-                if (transition.from == current && transition.goNext())
-                    Enter(transition.to);
+                if (transition.from != current)
+                    continue;
+
+                if (!transition.goNext())
+                    continue;
+
+                Open(transition.to);
+                return;
             }
             
             current?.OnFrame();
@@ -37,7 +51,7 @@ namespace Mitholca
             current?.OnTick();
         }
 
-        public void Enter(IState state)
+        public void Open(IState state)
         {
             if (state == null)
                 return;

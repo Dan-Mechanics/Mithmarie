@@ -9,7 +9,7 @@ namespace Mitholca
 
         private void Start()
         {
-            ServiceLocator<IMessageService>.Locate().Send("Welcome", Color.gray);
+            ServiceLocator<IMessageService>.Locate().Send("Welcome\n[RMB] to place blocks!", Color.gray);
 
             Player playerState = FindAnyObjectByType<Player>();
             Menu menuState = FindAnyObjectByType<Menu>();
@@ -19,16 +19,16 @@ namespace Mitholca
             fsm.AddTransition(new Transition(playerState, menuState, CheckShouldToggle));
             fsm.AddTransition(new Transition(menuState, playerState, CheckShouldToggle));
 
-            fsm.Enter(playerState);
+            menuState.Exit();
+            fsm.Open(playerState);
         }
 
         /// <summary>
         /// This neesd to be given to the states theneskeves eventually.
         /// </summary>
-        /// <returns></returns>
         private bool CheckShouldToggle()
         {
-            return Keyboard.current.escapeKey.wasPressedThisFrame || Keyboard.current.eKey.wasPressedThisFrame;
+            return Keyboard.current.eKey.wasPressedThisFrame;
         }
 
         private void Update() => fsm.Update();

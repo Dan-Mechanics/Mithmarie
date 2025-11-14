@@ -7,23 +7,19 @@ namespace Mitholca
     /// </summary>
     public class Menu : StateBehaviour
     {
-        /*[SerializeField] private MouseMovement mouseMovement = default;
-        [SerializeField] private PlayerMovement playerMovement = default;
-        [SerializeField] private WorldEditor worldEditor = default;
-
-        public override void OnFrame()
-        {
-            base.OnFrame();
-            mouseMovement.OnTick();
-            playerMovement.OnTick();
-            worldEditor.OnTick();
-        }*/
 
         public override void Enter()
         {
             base.Enter();
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+            gameObject.SetActive(true);
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            gameObject.SetActive(false);
         }
     }
 }

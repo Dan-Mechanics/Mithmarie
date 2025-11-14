@@ -11,9 +11,9 @@ namespace Mitholca
         public override void OnFrame()
         {
             base.OnFrame();
-            mouseMovement.OnTick();
-            playerMovement.OnTick();
-            worldEditor.OnTick();
+            mouseMovement.OnFrame();
+            playerMovement.OnFrame();
+            worldEditor.OnFrame();
         }
 
         public override void Enter()
