@@ -29,23 +29,37 @@ namespace Mitholca
         {
             var extensionList = new[] {
               //  new ExtensionFilter("Binary", "bin"),
-                new ExtensionFilter("Text", "txt")
+                new ExtensionFilter("Mitholca", "mth")
             };
 
-            string path = StandaloneFileBrowser.SaveFilePanel("Save File", "", "note", extensionList);
-            if (!string.IsNullOrEmpty(path) && !string.IsNullOrWhiteSpace(path))
-                File.WriteAllText(path, field.text);
+            string path = StandaloneFileBrowser.SaveFilePanel("Save As", "", "level", extensionList);
+            if (string.IsNullOrEmpty(path) || string.IsNullOrWhiteSpace(path))
+                return;
+
+            FileStream stream = File.OpenWrite(path);
+            BinaryWriter writer = new BinaryWriter(stream);
+            Serialize(writer);
+
+            // This automatically closes the stream
+            writer.Flush();
+            writer.Close();
+
+            field.text = string.Empty;
         }
 
         private void Load()
         {
-            // Open file
-            string[] paths = StandaloneFileBrowser.OpenFilePanel("Open File", "", "", false);
+            string[] paths = StandaloneFileBrowser.OpenFilePanel("Open File", "", "mth", false);
             if (paths.Length <= 0)
                 return;
 
             string path = paths[0];
-            field.text = File.ReadAllText(path);
+            FileStream stream = File.OpenRead(path);
+            BinaryReader reader = new BinaryReader(stream);
+            Deserialize(reader);
+
+            reader.Close();
+            stream.Close();
         }
 
         public void Serialize(BinaryWriter writer)
