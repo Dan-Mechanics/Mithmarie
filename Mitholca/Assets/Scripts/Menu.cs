@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿using SFB;
+using System.IO;
+using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace Mitholca
 {
@@ -7,6 +12,64 @@ namespace Mitholca
     /// </summary>
     public class Menu : StateBehaviour
     {
+        [SerializeField] private Button saveButton = default;
+        [SerializeField] private Button loadButton = default;
+        [SerializeField] private Button closeButton = default;
+
+        private World world;
+        private bool wantsToClose;
+
+        private void Start()
+        {
+            world = FindAnyObjectByType<World>();
+        }
+
+        private void Save()
+        {
+            ExtensionFilter[] extensionList = new[] { new ExtensionFilter("Mitholca", "mth") };
+
+            string path = StandaloneFileBrowser.SaveFilePanel("Save As", "", "level", extensionList);
+            if (!Utils.IsStringValid(path))
+                return;
+
+            FileStream stream = File.OpenWrite(path);
+            BinaryWriter writer = new BinaryWriter(stream);
+
+            world.Flush();
+            world.Serialize(writer);
+
+            writer.Flush();
+            stream.Close();
+
+            Close();
+            // GOING OUT OF SCOPE CLOSES THE STREAM AND WRITER.
+        }
+
+        private void Load()
+        {
+            string[] paths = StandaloneFileBrowser.OpenFilePanel("Open File", "", "mth", false);
+            if (paths.Length <= 0)
+                return;
+
+            string path = paths[0];
+            FileStream stream = File.OpenRead(path);
+            BinaryReader reader = new BinaryReader(stream);
+
+            world.Clear();
+            world.Deserialize(reader);
+            world.Flush();
+
+            reader.Close();
+            reader.Close();
+
+            Close();
+            // GOING OUT OF SCOPE CLOSES THE STREAM AND READER.
+        }
+
+        private void Close()
+        {
+            wantsToClose = true;
+        }
 
         public override void Enter()
         {
@@ -14,18 +77,27 @@ namespace Mitholca
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             gameObject.SetActive(true);
+
+            saveButton.onClick.AddListener(Save);
+            loadButton.onClick.AddListener(Load);
+            closeButton.onClick.AddListener(Close);
         }
 
         public override void Exit()
         {
             base.Exit();
             gameObject.SetActive(false);
+
+            wantsToClose = false;
+
+            saveButton.onClick.RemoveListener(Save);
+            loadButton.onClick.RemoveListener(Load);
+            closeButton.onClick.RemoveListener(Close);
         }
 
-        public bool ShouldGoBackToPlayer() 
+        public bool GetShouldReturnToPlayer() 
         {
-            // press E or press some button.
-            throw new System.NotImplementedException();
+            return Keyboard.current[GameManager.TOGGLE_STATE_KEY].wasPressedThisFrame || wantsToClose;
         }
     }
 }

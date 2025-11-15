@@ -21,7 +21,7 @@ namespace Mitholca
         {
             sprintHighlight.key = PlayerMovement.SPRINT_KEY;
             selectHighlight.key = WorldEditor.SELECTION_KEY;
-            menuHighlight.key = GameManager.TOGGLE_KEY;
+            menuHighlight.key = GameManager.TOGGLE_STATE_KEY;
 
             highlights.Add(sprintHighlight);
             highlights.Add(selectHighlight);
@@ -40,6 +40,9 @@ namespace Mitholca
         public void Show() => gameObject.SetActive(true);
         public void Hide() => gameObject.SetActive(false);
 
+        /// <summary>
+        /// Note: you could make a further abstraction of this.
+        /// </summary>
         [Serializable]
         public class Highlight
         {

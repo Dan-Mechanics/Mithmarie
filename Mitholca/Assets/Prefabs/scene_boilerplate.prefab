@@ -46,5 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fps: 300
   physicsTicksPerSecond: 50
-  closeKey: 60
+  quitKeys: 1f000000
   reloadKey: 32

@@ -42,18 +42,17 @@ namespace Mitholca
             
             writer.Write(GameManager.VERSION);
             writer.Write(blocks.Count);
-            foreach (Vector3Int block in blocks)
+            foreach (Vector3Int pos in blocks)
             {
-                writer.Write(block.x);
-                writer.Write(block.y);
-                writer.Write(block.z);
+                print(pos);
+                writer.Write(pos.x);
+                writer.Write(pos.y);
+                writer.Write(pos.z);
             }
         }
 
         public void Deserialize(BinaryReader reader)
         {
-           // Clear();
-
             int version = reader.ReadInt32();
             if(version != GameManager.VERSION)
                 message.Send($"Loading from a different version. This might cause problems. \nNEW: {GameManager.VERSION} | OLD: {version}", Color.yellow);
@@ -63,16 +62,18 @@ namespace Mitholca
             int axisCounter = 0;
             for (int i = 0; i < blockCount; i++)
             {
+                int coord = reader.ReadInt32();
+                print(coord);
                 switch (axisCounter)
                 {
                     case 0: // X. ===
-                        pos.x = reader.ReadInt32();
+                        pos.x = coord;
                         break;
                     case 1: // Y. ===
-                        pos.y = reader.ReadInt32();
+                        pos.y = coord;
                         break;
                     case 2: // Z. ===
-                        pos.z = reader.ReadInt32();
+                        pos.z = coord;
                         Add(pos);
                         axisCounter = -1;
                         break;
@@ -82,8 +83,6 @@ namespace Mitholca
 
                 axisCounter++;
             }
-
-            //Flush();
         }
     }
 }

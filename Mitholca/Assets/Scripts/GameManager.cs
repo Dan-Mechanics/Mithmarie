@@ -5,34 +5,29 @@ namespace Mitholca
 {
     public class GameManager : MonoBehaviour
     {
-        public const int VERSION = 1;
-        public const Key TOGGLE_KEY = Key.E;
+        public const int VERSION = 2;
+        public const Key TOGGLE_STATE_KEY = Key.Escape;
 
         private readonly FSM fsm = new FSM();
 
         private void Start()
         {
-            ServiceLocator<IMessageService>.Locate().Send("Welcome!\nUse [RMB] to place blocks.", Color.cyan);
-            //FindAnyObjectByType<World>().Add(Vector3Int.zero);
+            ServiceLocator<IMessageService>.Locate().Send("Welcome!\nUse [RMB] to place blocks.", Color.black);
 
+            World world = FindAnyObjectByType<World>();
+            world.Add(Vector3Int.zero);
+            world.Flush();
+            
             Player playerState = FindAnyObjectByType<Player>();
             Menu menuState = FindAnyObjectByType<Menu>();
 
             fsm.AddState(playerState);
             fsm.AddState(menuState);
-            fsm.AddTransition(new Transition(playerState, menuState, CheckShouldToggle));
-            fsm.AddTransition(new Transition(menuState, playerState, CheckShouldToggle));
+            fsm.AddTransition(new Transition(playerState, menuState, playerState.GetShouldReturnToMenu));
+            fsm.AddTransition(new Transition(menuState, playerState, menuState.GetShouldReturnToPlayer));
 
             menuState.Exit();
             fsm.Open(playerState);
-        }
-
-        /// <summary>
-        /// This neesd to be given to the states theneskeves eventually.
-        /// </summary>
-        private bool CheckShouldToggle()
-        {
-            return Keyboard.current[TOGGLE_KEY].wasPressedThisFrame;
         }
 
         private void Update() => fsm.Update();

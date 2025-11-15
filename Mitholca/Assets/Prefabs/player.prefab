@@ -65,7 +65,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  sprintSpeedMult: 3
+  sprintSpeedMult: 2.5
 --- !u!114 &771546152580428926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,7 +170,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 500
+  far clip plane: 250
   field of view: 103
   orthographic: 0
   orthographic size: 5

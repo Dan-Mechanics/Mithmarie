@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Mitholca
 {
@@ -43,7 +44,12 @@ namespace Mitholca
                 return;
 
             message.Send("You are inside terrain!", Color.black);
-            cooldown = 2f;
+            cooldown = 1.75f;
+        }
+        
+        public bool GetShouldReturnToMenu()
+        {
+            return Keyboard.current[GameManager.TOGGLE_STATE_KEY].wasPressedThisFrame;
         }
 
         public override void Exit()
