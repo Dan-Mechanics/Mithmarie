@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Globalization;
+using System.Threading;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -13,6 +15,7 @@ namespace Mitholca
 
         private void Start()
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Application.targetFrameRate = 300;
             Time.fixedDeltaTime = 1f / 50f;
         }

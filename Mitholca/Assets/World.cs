@@ -53,14 +53,5 @@ namespace Mitholca
         }
 
         public bool Has(Vector3Int pos) => blocks.Contains(pos);
-
-        public static Vector3Int ToBlock(ref Vector3 pos)
-        {
-            return new Vector3Int(
-                Mathf.RoundToInt(pos.x),
-                Mathf.RoundToInt(pos.y),
-                Mathf.RoundToInt(pos.z)
-            );
-        }
     }
 }

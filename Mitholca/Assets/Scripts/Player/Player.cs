@@ -12,6 +12,8 @@ namespace Mitholca
         private World world;
         private IMessageService message;
 
+        private float cooldown;
+
         private void Start()
         {
             world = FindAnyObjectByType<World>();
@@ -30,9 +32,16 @@ namespace Mitholca
         {
             base.OnTick();
 
+            cooldown -= Time.fixedDeltaTime;
+            if (cooldown > 0f)
+                return;
+
             Vector3Int eyesBlockPos = Utils.ApplyGrid(eyes.position);
-            if (world.Has(eyesBlockPos))
-                message.Send("You are inside terrain!", Color.black);
+            if (!world.Has(eyesBlockPos))
+                return;
+
+            message.Send("You are inside terrain!", Color.black);
+            cooldown = 1f;
         }
 
         public override void Enter()

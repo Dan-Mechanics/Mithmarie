@@ -21,5 +21,11 @@ namespace Mitholca
             base.Exit();
             gameObject.SetActive(false);
         }
+
+        public bool ShouldGoBackToPlayer() 
+        {
+            // press E or press some button.
+            throw new System.NotImplementedException();
+        }
     }
 }

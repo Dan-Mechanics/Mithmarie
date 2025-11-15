@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 497418667}
   - component: {fileID: 497418666}
   m_Layer: 0
-  m_Name: world_visualizer
+  m_Name: prefabs_visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

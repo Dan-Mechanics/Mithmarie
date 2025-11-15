@@ -13,6 +13,8 @@ namespace Mitholca
         [SerializeField] private Button saveButton = default;
         [SerializeField] private Button loadButton = default;
 
+        [SerializeField] private MeshFilter debugCube = default;
+
         private void Start()
         {
             saveButton.onClick.AddListener(Save);
@@ -26,6 +28,28 @@ namespace Mitholca
         }
 
         private void Save() 
+        {
+            var extensionList = new[] {
+              //  new ExtensionFilter("Binary", "bin"),
+                new ExtensionFilter("Wavefront", "obj")
+            };
+
+            string path = StandaloneFileBrowser.SaveFilePanel("Save As", "", "level", extensionList);
+            if (string.IsNullOrEmpty(path) || string.IsNullOrWhiteSpace(path))
+                return;
+
+            FileStream stream = File.OpenWrite(path);
+            BinaryWriter writer = new BinaryWriter(stream);
+            Serialize(writer);
+
+            // This automatically closes the stream
+            writer.Flush();
+            writer.Close();
+
+            field.text = string.Empty;
+        }
+
+        private void SaveOld()
         {
             var extensionList = new[] {
               //  new ExtensionFilter("Binary", "bin"),
@@ -64,7 +88,9 @@ namespace Mitholca
 
         public void Serialize(BinaryWriter writer)
         {
-            writer.Write(field.text);
+            //writer.Write(field.text);
+            Utils.ExportToOBJ(debugCube.sharedMesh, ref writer);
+          //  writer.Write();
         }
 
         public void Deserialize(BinaryReader reader)
