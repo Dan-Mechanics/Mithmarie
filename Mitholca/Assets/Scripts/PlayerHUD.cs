@@ -45,12 +45,14 @@ namespace Mitholca
         {
             public Image image;
             public TMP_Text text;
+            public Image icon;
             [HideInInspector] public Key key;
 
             public void Draw(Color colorA, Color colorB)
             {
                 image.color = Keyboard.current[key].isPressed ? colorB : colorA;
                 text.color = Keyboard.current[key].isPressed ? colorA : colorB;
+                icon.color = text.color;
             }
         }
     }

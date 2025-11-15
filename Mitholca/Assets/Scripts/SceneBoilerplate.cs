@@ -13,7 +13,7 @@ namespace Mitholca
         [SerializeField] private Key closeKey = default;
         [SerializeField] private Key reloadKey = default;
 
-        private void Start()
+        private void Awake()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Application.targetFrameRate = fps;

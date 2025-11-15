@@ -24,8 +24,8 @@ namespace Mitholca
         public override void OnFrame()
         {
             base.OnFrame();
-            mouseMovement.OnFrame();
             playerMovement.OnFrame();
+            mouseMovement.OnFrame();
             worldEditor.OnFrame();
         }
 
