@@ -38,13 +38,10 @@ namespace Mitholca
 
         public void Serialize(BinaryWriter writer)
         {
-            // Flush();
-            
             writer.Write(GameManager.VERSION);
-            writer.Write(blocks.Count);
+            writer.Write(blocks.Count * 3);
             foreach (Vector3Int pos in blocks)
             {
-                print(pos);
                 writer.Write(pos.x);
                 writer.Write(pos.y);
                 writer.Write(pos.z);
@@ -54,16 +51,15 @@ namespace Mitholca
         public void Deserialize(BinaryReader reader)
         {
             int version = reader.ReadInt32();
-            if(version != GameManager.VERSION)
+            if (version != GameManager.VERSION)
                 message.Send($"Loading from a different version. This might cause problems. \nNEW: {GameManager.VERSION} | OLD: {version}", Color.yellow);
 
-            int blockCount = reader.ReadInt32();
+            int count = reader.ReadInt32();
             Vector3Int pos = Vector3Int.zero;
             int axisCounter = 0;
-            for (int i = 0; i < blockCount; i++)
+            for (int i = 0; i < count; i++)
             {
                 int coord = reader.ReadInt32();
-                print(coord);
                 switch (axisCounter)
                 {
                     case 0: // X. ===

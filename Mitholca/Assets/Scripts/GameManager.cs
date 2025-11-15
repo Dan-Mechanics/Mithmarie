@@ -5,7 +5,7 @@ namespace Mitholca
 {
     public class GameManager : MonoBehaviour
     {
-        public const int VERSION = 2;
+        public const int VERSION = 1;
         public const Key TOGGLE_STATE_KEY = Key.Escape;
 
         private readonly FSM fsm = new FSM();

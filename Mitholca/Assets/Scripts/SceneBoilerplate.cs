@@ -20,7 +20,7 @@ namespace Mitholca
             Time.fixedDeltaTime = 1f / physicsTicksPerSecond;
         }
 
-        private void Update()
+        /*private void Update()
         {
             for (int i = 0; i < quitKeys.Length; i++)
             {
@@ -30,6 +30,6 @@ namespace Mitholca
 
             if (Keyboard.current[reloadKey].wasPressedThisFrame)
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
+        }*/
     }
 }
