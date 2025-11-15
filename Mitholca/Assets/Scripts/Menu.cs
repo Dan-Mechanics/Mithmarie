@@ -14,6 +14,7 @@ namespace Mitholca
     {
         [SerializeField] private Button saveButton = default;
         [SerializeField] private Button loadButton = default;
+        [SerializeField] private Button newButton = default;
         [SerializeField] private Button closeButton = default;
 
         private World world;
@@ -38,11 +39,18 @@ namespace Mitholca
             world.Flush();
             world.Serialize(writer);
 
-            writer.Flush();
-            stream.Close();
+            //writer.Flush();
+            //stream.Close();
 
-            Close();
             // GOING OUT OF SCOPE CLOSES THE STREAM AND WRITER.
+            Close();
+        }
+
+        private void New()
+        {
+            world.Clear();
+            world.Flush();
+            Close();
         }
 
         private void Load()
@@ -59,17 +67,14 @@ namespace Mitholca
             world.Deserialize(reader);
             world.Flush();
 
-            reader.Close();
-            reader.Close();
+            // reader.Close();
+            // reader.Close();
 
-            Close();
             // GOING OUT OF SCOPE CLOSES THE STREAM AND READER.
+            Close();
         }
 
-        private void Close()
-        {
-            wantsToClose = true;
-        }
+        private void Close() => wantsToClose = true;
 
         public override void Enter()
         {
@@ -80,6 +85,8 @@ namespace Mitholca
 
             saveButton.onClick.AddListener(Save);
             loadButton.onClick.AddListener(Load);
+            newButton.onClick.AddListener(New);
+
             closeButton.onClick.AddListener(Close);
         }
 
@@ -92,6 +99,8 @@ namespace Mitholca
 
             saveButton.onClick.RemoveListener(Save);
             loadButton.onClick.RemoveListener(Load);
+            newButton.onClick.RemoveListener(New);
+
             closeButton.onClick.RemoveListener(Close);
         }
 

@@ -32,6 +32,5 @@ namespace Mitholca
 
         private void Update() => fsm.Update();
         private void FixedUpdate() => fsm.FixedUpdate();
-
     }
 }
