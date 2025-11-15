@@ -7,14 +7,11 @@ namespace Mitholca
     /// </summary>
     public static class Utils
     {
-        public static Vector3 ApplyGrid(Vector3 pos)
+        public static Vector3Int ApplyGrid(Vector3 pos)
         {
             return new Vector3Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), Mathf.RoundToInt(pos.z));
         }
 
-        public static void ApplyGrid(ref Vector3 pos)
-        {
-            pos = ApplyGrid(pos);
-        }
+        public static void ApplyGrid(ref Vector3 pos) => pos = ApplyGrid(pos);
     }
 }

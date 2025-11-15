@@ -10,6 +10,7 @@ namespace Mitholca
         private void Start()
         {
             ServiceLocator<IMessageService>.Locate().Send("Welcome\n[RMB] to place blocks!", Color.gray);
+            FindAnyObjectByType<World>().Add(Vector3Int.zero);
 
             Player playerState = FindAnyObjectByType<Player>();
             Menu menuState = FindAnyObjectByType<Menu>();

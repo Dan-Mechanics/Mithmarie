@@ -94,11 +94,11 @@ MonoBehaviour:
   eyes: {fileID: 3062100453456221858}
   cubePrefab: {fileID: 2487195525559084934, guid: 9261b816da904c54eada861fc2819fa3, type: 3}
   buildRaycast:
-    range: 0
+    range: 100
     mask:
       serializedVersion: 2
-      m_Bits: 0
-    interaction: 0
+      m_Bits: 17
+    interaction: 1
   destroyRaycast:
     range: 100
     mask:
