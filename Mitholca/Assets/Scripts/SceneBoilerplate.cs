@@ -10,8 +10,8 @@ namespace Mitholca
     {
         [SerializeField, Min(1)] private int fps = default;
         [SerializeField, Min(1f)] private float physicsTicksPerSecond = default;
-        [SerializeField] private Key[] quitKeys = default;
-        [SerializeField] private Key reloadKey = default;
+        /*[SerializeField] private Key[] quitKeys = default;
+        [SerializeField] private Key reloadKey = default;*/
 
         private void Awake()
         {
