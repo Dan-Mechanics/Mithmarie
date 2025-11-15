@@ -16,13 +16,16 @@ namespace Mitholca
         [SerializeField] private Button loadButton = default;
         [SerializeField] private Button newButton = default;
         [SerializeField] private Button closeButton = default;
+        [SerializeField] private Button quitButton = default;
 
         private World world;
+        private IMessageService message;
         private bool wantsToClose;
 
         private void Start()
         {
             world = FindAnyObjectByType<World>();
+            message = ServiceLocator<IMessageService>.Locate();
         }
 
         private void Save()
@@ -86,8 +89,11 @@ namespace Mitholca
             saveButton.onClick.AddListener(Save);
             loadButton.onClick.AddListener(Load);
             newButton.onClick.AddListener(New);
+            quitButton.onClick.AddListener(Application.Quit);
 
             closeButton.onClick.AddListener(Close);
+
+            message.Send(string.Empty, Color.clear);
         }
 
         public override void Exit()
@@ -100,6 +106,7 @@ namespace Mitholca
             saveButton.onClick.RemoveListener(Save);
             loadButton.onClick.RemoveListener(Load);
             newButton.onClick.RemoveListener(New);
+            quitButton.onClick.RemoveListener(Application.Quit);
 
             closeButton.onClick.RemoveListener(Close);
         }

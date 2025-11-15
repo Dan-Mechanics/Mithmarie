@@ -25,17 +25,23 @@ namespace Mitholca
             group.alpha = Mathf.Clamp01(group.alpha);
         }
 
-        public void Send(string text, Color color)
+        public void Send(string str, Color color)
         {
+            if (!Utils.IsStringValid(str))
+            {
+                group.alpha = 0f;
+                text.text = string.Empty;
+                return;
+            }
+            
+            print(str);
             group.alpha = 1f;
-            this.text.text = text;
+            text.text = str;
 
             Color clear = color;
             color.a = 1f;
             clear.a = 0f;
             image.color = Color.Lerp(color, clear, backdropVisibility);
-
-            print(text);
         }
     }
 }

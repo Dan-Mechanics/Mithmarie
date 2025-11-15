@@ -30,6 +30,8 @@ namespace Mitholca
 
         public void Update()
         {
+            current?.OnFrame();
+
             // !DICT
             foreach (var transition in transitions)
             {
@@ -42,8 +44,6 @@ namespace Mitholca
                 Open(transition.to);
                 return;
             }
-            
-            current?.OnFrame();
         }
 
         public void FixedUpdate()
