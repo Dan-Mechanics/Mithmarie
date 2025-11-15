@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Mitholca
 {
-    public interface IWorldVisual
+    public interface IMeshGeneratable
     {
-        void Draw(HashSet<Vector3Int> hash);
+        void GenerateMesh(HashSet<Vector3Int> hash);
     }
 }

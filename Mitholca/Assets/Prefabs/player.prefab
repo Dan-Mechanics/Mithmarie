@@ -51,6 +51,7 @@ MonoBehaviour:
   mouseMovement: {fileID: 771546152580428926}
   playerMovement: {fileID: 3481532798549250696}
   worldEditor: {fileID: 7465420223189449802}
+  eyes: {fileID: 3062100453456221858}
 --- !u!114 &3481532798549250696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,14 +93,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
-  cubePrefab: {fileID: 2487195525559084934, guid: 9261b816da904c54eada861fc2819fa3, type: 3}
-  buildRaycast:
+  addRaycast:
     range: 100
     mask:
       serializedVersion: 2
       m_Bits: 17
     interaction: 1
-  destroyRaycast:
+  removeRaycast:
     range: 100
     mask:
       serializedVersion: 2
@@ -170,7 +170,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 1000
+  far clip plane: 500
   field of view: 103
   orthographic: 0
   orthographic size: 5

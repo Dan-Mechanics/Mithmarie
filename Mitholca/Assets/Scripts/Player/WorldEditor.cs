@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,19 +6,55 @@ namespace Mitholca
 {
     public class WorldEditor : StateBehaviour
     {
+        public const Key SELECTION_KEY = Key.LeftAlt;
+        
+        public Raycast AddRaycast => addRaycast;
+        public Raycast RemoveRaycast => removeRaycast;
+
+        public event Action OnAnyAction;
+        public event Action OnAdd;
+        public event Action OnRemove;
+        // TODO: FILL ADD AND REMOVE.
+
         [SerializeField] private Transform eyes = default;
-        [SerializeField] private GameObject cubePrefab = default;
-        [SerializeField] private Raycast buildRaycast = default;
-        [SerializeField] private Raycast destroyRaycast = default;
+        [SerializeField] private Raycast addRaycast = default;
+        [SerializeField] private Raycast removeRaycast = default;
+
+        private World world;
+
+        private void Start()
+        {
+            world = FindAnyObjectByType<World>();
+        }
 
         public override void OnFrame()
         {
             base.OnFrame();
-            if (Mouse.current.rightButton.wasPressedThisFrame && buildRaycast.Cast(eyes, out RaycastHit hit))
-                Instantiate(cubePrefab, Utils.ApplyGrid(hit.point + (hit.normal * 0.5f)), Quaternion.identity);
+            // ADD. ===
+            if (Mouse.current.rightButton.wasPressedThisFrame)
+            {
+                OnAdd?.Invoke();
+                OnAnyAction?.Invoke();
 
-            if (Mouse.current.leftButton.wasPressedThisFrame && destroyRaycast.Cast(eyes, out hit))
-                Destroy(hit.transform.gameObject);
+                if(addRaycast.Cast(eyes, out RaycastHit hit))
+                {
+                    world.Add(Utils.ApplyGrid(hit.point + (hit.normal * 0.4f)));
+                    world.Flush();
+                }
+            }
+
+            // REMOVE. ===
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                OnRemove?.Invoke();
+                OnAnyAction?.Invoke();
+
+                if (removeRaycast.Cast(eyes, out RaycastHit hit))
+                {
+                    world.Remove(Utils.ApplyGrid(hit.point + (hit.normal * -0.4f)));
+                    world.Flush();
+                }
+            }
         }
     }
 }

@@ -8,16 +8,16 @@ namespace Mitholca
 {
     public class SceneBoilerplate : MonoBehaviour
     {
-        [SerializeField, Min(1)] private int fps = 300;
-        [SerializeField, Min(1f)] private float physicsTicksPerSecond = 50f;
-        [SerializeField] private Key closeKey = Key.Q;
-        [SerializeField] private Key reloadKey = Key.R;
+        [SerializeField, Min(1)] private int fps = default;
+        [SerializeField, Min(1f)] private float physicsTicksPerSecond = default;
+        [SerializeField] private Key closeKey = default;
+        [SerializeField] private Key reloadKey = default;
 
         private void Start()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            Application.targetFrameRate = 300;
-            Time.fixedDeltaTime = 1f / 50f;
+            Application.targetFrameRate = fps;
+            Time.fixedDeltaTime = 1f / physicsTicksPerSecond;
         }
 
         private void Update()

@@ -5,6 +5,8 @@ namespace Mitholca
 {
     public class PlayerMovement : StateBehaviour
     {
+        public const Key SPRINT_KEY = Key.LeftCtrl;
+        
         [SerializeField, Min(0f)] private float speed = default;
         [SerializeField, Min(0f)] private float sprintSpeedMult = default;
 
@@ -16,7 +18,7 @@ namespace Mitholca
 
             movement *= speed;
 
-            if (Keyboard.current[Key.LeftCtrl].isPressed)
+            if (Keyboard.current[SPRINT_KEY].isPressed)
                 movement *= sprintSpeedMult;
 
             transform.Translate(movement * Time.deltaTime, Space.World);

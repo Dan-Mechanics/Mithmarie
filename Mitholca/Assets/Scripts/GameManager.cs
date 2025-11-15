@@ -5,12 +5,15 @@ namespace Mitholca
 {
     public class GameManager : MonoBehaviour
     {
+        public const int VERSION = 1;
+        public const Key TOGGLE_KEY = Key.E;
+
         private readonly FSM fsm = new FSM();
 
         private void Start()
         {
-            ServiceLocator<IMessageService>.Locate().Send("Welcome\n[RMB] to place blocks!", Color.gray);
-            FindAnyObjectByType<World>().Add(Vector3Int.zero);
+            ServiceLocator<IMessageService>.Locate().Send("Welcome!\nUse [RMB] to place blocks.", Color.cyan);
+            //FindAnyObjectByType<World>().Add(Vector3Int.zero);
 
             Player playerState = FindAnyObjectByType<Player>();
             Menu menuState = FindAnyObjectByType<Menu>();
@@ -29,7 +32,7 @@ namespace Mitholca
         /// </summary>
         private bool CheckShouldToggle()
         {
-            return Keyboard.current.eKey.wasPressedThisFrame;
+            return Keyboard.current[TOGGLE_KEY].wasPressedThisFrame;
         }
 
         private void Update() => fsm.Update();

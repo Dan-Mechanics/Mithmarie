@@ -11,13 +11,14 @@ namespace Mitholca
 
         private World world;
         private IMessageService message;
-
+        private PlayerHUD playerHUD;
         private float cooldown;
 
         private void Start()
         {
             world = FindAnyObjectByType<World>();
             message = ServiceLocator<IMessageService>.Locate();
+            playerHUD = FindAnyObjectByType<PlayerHUD>();
         }
 
         public override void OnFrame()
@@ -32,6 +33,7 @@ namespace Mitholca
         {
             base.OnTick();
 
+            // !TIMER
             cooldown -= Time.fixedDeltaTime;
             if (cooldown > 0f)
                 return;
@@ -41,7 +43,13 @@ namespace Mitholca
                 return;
 
             message.Send("You are inside terrain!", Color.black);
-            cooldown = 1f;
+            cooldown = 2f;
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            playerHUD.Hide();
         }
 
         public override void Enter()
@@ -49,6 +57,7 @@ namespace Mitholca
             base.Enter();
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            playerHUD.Show();
         }
     }
 }

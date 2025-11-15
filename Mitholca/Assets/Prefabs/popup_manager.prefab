@@ -68,7 +68,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -106,7 +106,7 @@ MonoBehaviour:
   text: {fileID: 5635792512585490206}
   image: {fileID: 7280316413256541385}
   backdropVisibility: 0.5
-  decayRate: 0.5
+  duration: 2
 --- !u!1 &2613724658560425578
 GameObject:
   m_ObjectHideFlags: 0
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MITHOLCA
+  m_text: test
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1d6798cf2942af448999f8a86ccb0f4e, type: 2}
   m_sharedMaterial: {fileID: -1156642742739601956, guid: 1d6798cf2942af448999f8a86ccb0f4e, type: 2}
