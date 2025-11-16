@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System;
 
-namespace Mitholca
+namespace Mithmarie
 {
     public class FSM 
     {

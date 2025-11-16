@@ -5,7 +5,7 @@ using System;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
-namespace Mitholca
+namespace Mithmarie
 {
     public class PlayerHUD : MonoBehaviour
     {

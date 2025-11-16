@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Mitholca
+namespace Mithmarie
 {
     public class WorldEditor : StateBehaviour
     {

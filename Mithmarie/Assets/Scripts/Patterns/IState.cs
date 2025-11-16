@@ -1,4 +1,4 @@
-namespace Mitholca
+namespace Mithmarie
 {
     public interface IState 
     {

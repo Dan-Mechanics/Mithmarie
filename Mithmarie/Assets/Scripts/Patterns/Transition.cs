@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Mitholca
+namespace Mithmarie
 {
     public class Transition 
     {

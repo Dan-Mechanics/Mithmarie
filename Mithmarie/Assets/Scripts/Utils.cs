@@ -2,7 +2,7 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 
-namespace Mitholca
+namespace Mithmarie
 {
     /// <summary>
     ///  THIS MUST BE MADE UTILS REPO

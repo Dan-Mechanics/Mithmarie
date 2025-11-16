@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Mitholca
+namespace Mithmarie
 {
     public class MouseMovement : StateBehaviour
     {

@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Mitholca
+namespace Mithmarie
 {
     public class PopupManager : MonoBehaviour, IMessageService
     {

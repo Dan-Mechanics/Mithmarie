@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Mitholca
+namespace Mithmarie
 {
     public interface IBinarySerializable 
     {

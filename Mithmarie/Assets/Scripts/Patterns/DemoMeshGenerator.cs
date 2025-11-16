@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Mitholca
+namespace Mithmarie
 {
     public class DemoMeshGenerator : MonoBehaviour, IMeshGeneratable
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace Mitholca
+namespace Mithmarie
 {
     public class World : MonoBehaviour, IBinarySerializable
     {

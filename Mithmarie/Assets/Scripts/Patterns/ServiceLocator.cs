@@ -1,6 +1,6 @@
 using System;
 
-namespace Mitholca
+namespace Mithmarie
 {
     public static class ServiceLocator<T>
     {

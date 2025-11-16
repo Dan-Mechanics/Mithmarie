@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace Mitholca
+namespace Mithmarie
 {
     /// <summary>
     /// Handles: saving, loading, closing, settings, fill, circle, wall commands

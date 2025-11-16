@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Mitholca
+namespace Mithmarie
 {
     public class Notes : MonoBehaviour, IBinarySerializable
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-namespace Mitholca
+namespace Mithmarie
 {
     public class SceneBoilerplate : MonoBehaviour
     {
