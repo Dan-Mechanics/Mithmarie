@@ -2,7 +2,7 @@
 
 namespace Mithmarie
 {
-    public class MouseMovement : StateBehaviour
+    public class MouseMovement : StateBehaviour, ISettingsRequired
     {
         private const float MAX_CAM_ANGLE = 90f;
         [SerializeField] private Transform eyes = default;
@@ -10,6 +10,9 @@ namespace Mithmarie
 
         private Vector2 mouseInput;
         private Vector2 rotation;
+        private PlayerSettings settings;
+
+        public void AssignSettings(PlayerSettings settings) => this.settings = settings;
 
         /// <summary>
         /// We are using the old input system 

@@ -15,11 +15,20 @@ namespace Mithmarie
         private PlayerHUD playerHUD;
         private float cooldown;
 
+        /// <summary>
+        /// Should this be handled by game manager???
+        /// </summary>
+        private PlayerSettings settings;
+        private readonly string path =  "/player_settings.txt";
+
         private void Start()
         {
             world = FindAnyObjectByType<World>();
             message = ServiceLocator<IMessageService>.Locate();
             playerHUD = FindAnyObjectByType<PlayerHUD>();
+
+            settings.Load(Application.persistentDataPath + path, message);
+            mouseMovement.GiveSettings(settings);
         }
 
         public override void OnFrame()
@@ -65,5 +74,7 @@ namespace Mithmarie
             Cursor.lockState = CursorLockMode.Locked;
             playerHUD.Show();
         }
+
+        private void OnApplicationQuit() => settings.Save(Application.persistentDataPath + path);
     }
 }

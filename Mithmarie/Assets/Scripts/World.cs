@@ -41,7 +41,7 @@ namespace Mithmarie
         {
             try
             {
-                writer.Write(GameManager.VERSION);
+                writer.Write(Application.version);
                 writer.Write(blocks.Count * 3);
                 foreach (Vector3Int pos in blocks)
                 {
@@ -60,9 +60,9 @@ namespace Mithmarie
         {
             try
             {
-                int version = reader.ReadInt32();
-                if (version != GameManager.VERSION)
-                    message.Send($"Loading from a different version. This might cause problems. \nNEW: {GameManager.VERSION} | OLD: {version}", Color.yellow);
+                string fileVersion = reader.ReadString();
+                if (fileVersion != Application.version)
+                    message.Send($"Loading from a different version. This might cause problems. \nNEW: {Application.version} | OLD: {fileVersion}", Color.yellow);
 
                 int count = reader.ReadInt32();
                 Vector3Int pos = Vector3Int.zero;

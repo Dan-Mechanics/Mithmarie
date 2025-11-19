@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace Mithmarie
 {
-    public class WorldEditor : StateBehaviour
+    public class WorldEditor : StateBehaviour, ISettingsRequired
     {
         public const Key SELECTION_KEY = Key.LeftAlt;
         
@@ -21,6 +21,7 @@ namespace Mithmarie
         [SerializeField] private Raycast removeRaycast = default;
 
         private World world;
+        private PlayerSettings settings;
 
         private void Start()
         {
@@ -56,5 +57,7 @@ namespace Mithmarie
                 }
             }
         }
+
+        public void AssignSettings(PlayerSettings settings) => this.settings = settings;
     }
 }

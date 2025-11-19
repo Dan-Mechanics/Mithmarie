@@ -1,14 +1,21 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Mithmarie
 {
     public class GameManager : MonoBehaviour
     {
-        public const int VERSION = 1;
         public const Key TOGGLE_STATE_KEY = Key.Escape;
 
         private readonly FSM fsm = new FSM();
+
+        private void Awake()
+        {
+            List<MonoBehaviour> monos = FindObjectsByType<MonoBehaviour>().AsList();
+            monos.OfType<ISettingsRequired>().ToList().ForEach(x => x.AssignSettings(settings));
+        }
 
         private void Start()
         {
