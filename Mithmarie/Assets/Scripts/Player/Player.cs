@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Mithmarie
@@ -14,12 +16,23 @@ namespace Mithmarie
         private IMessageService message;
         private PlayerHUD playerHUD;
         private float cooldown;
+        private PlayerSettings settings;
 
         private void Start()
         {
             world = FindAnyObjectByType<World>();
             message = ServiceLocator<IMessageService>.Locate();
             playerHUD = FindAnyObjectByType<PlayerHUD>();
+
+            string settingsPath = Application.persistentDataPath + "/player_settings.txt";
+
+            print(settingsPath);
+            settings = new PlayerSettings();
+           // if (File.Exists(settingsPath))
+           //     settings = JsonUtility.FromJson<PlayerSettings>(File.ReadAllText(settingsPath));
+
+            ISettingsRequired[] components = GetComponents<ISettingsRequired>();
+            components.ToList().ForEach(x => x.AssignSettings(settings));
         }
 
         public override void OnFrame()
@@ -43,8 +56,8 @@ namespace Mithmarie
             if (!world.Has(eyesBlockPos))
                 return;
 
-            message.Send("You are inside terrain!", Color.black);
-            cooldown = 1.75f;
+            message.Send("You are inside a block.", Color.gray);
+            cooldown = 5f;
         }
         
         public bool GetShouldReturnToMenu()
@@ -55,7 +68,7 @@ namespace Mithmarie
         public override void Exit()
         {
             base.Exit();
-            playerHUD.Hide();
+            playerHUD?.Hide();
         }
 
         public override void Enter()
@@ -66,5 +79,11 @@ namespace Mithmarie
             playerHUD.Show();
         }
 
+        /*private void OnApplicationQuit()
+        {
+            string settingsPath = Application.persistentDataPath + "/player_settings.txt";
+            settings.version = Application.version;
+            File.WriteAllText(settingsPath, JsonUtility.ToJson(settings));
+        }*/
     }
 }

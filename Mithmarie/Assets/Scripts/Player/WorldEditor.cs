@@ -23,6 +23,9 @@ namespace Mithmarie
         private World world;
         private PlayerSettings settings;
 
+        private bool Place => settings.leftClickIsDestroy ? Mouse.current.rightButton.wasPressedThisFrame : Mouse.current.leftButton.wasPressedThisFrame;
+        private bool Remove => settings.leftClickIsDestroy ? Mouse.current.leftButton.wasPressedThisFrame : Mouse.current.rightButton.wasPressedThisFrame;
+
         private void Start()
         {
             world = FindAnyObjectByType<World>();
@@ -32,7 +35,7 @@ namespace Mithmarie
         {
             base.OnFrame();
             // ADD. ===
-            if (Mouse.current.rightButton.wasPressedThisFrame)
+            if (Place)
             {
                 OnAdd?.Invoke();
                 OnAnyAction?.Invoke();
@@ -45,7 +48,7 @@ namespace Mithmarie
             }
 
             // REMOVE. ===
-            if (Mouse.current.leftButton.wasPressedThisFrame)
+            if (Remove)
             {
                 OnRemove?.Invoke();
                 OnAnyAction?.Invoke();

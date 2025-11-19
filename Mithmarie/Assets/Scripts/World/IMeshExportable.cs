@@ -4,6 +4,6 @@ namespace Mithmarie
 {
     public interface IMeshExportable
     {
-        void Export(string path, Mesh mesh);
+        void Export(string path, Mesh mesh, IMessageService message);
     }
 }

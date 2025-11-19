@@ -7,9 +7,6 @@ namespace Mithmarie
 {
     public class World : MonoBehaviour, IBinarySerializable
     {
-        /// <summary>
-        /// TODO: CHUNKS !!
-        /// </summary>
         private readonly HashSet<Vector3Int> blocks = new HashSet<Vector3Int>();
         private IMeshGeneratable generatable;
         private IMessageService message;

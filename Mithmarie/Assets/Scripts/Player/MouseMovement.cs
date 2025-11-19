@@ -6,7 +6,6 @@ namespace Mithmarie
     {
         private const float MAX_CAM_ANGLE = 90f;
         [SerializeField] private Transform eyes = default;
-        [SerializeField, Min(0f)] private float sensitivity = default;
 
         private Vector2 mouseInput;
         private Vector2 rotation;
@@ -24,7 +23,7 @@ namespace Mithmarie
             mouseInput.y = Input.GetAxisRaw("Mouse X");
             mouseInput.x = -Input.GetAxisRaw("Mouse Y");
 
-            rotation += sensitivity * mouseInput;
+            rotation += settings.sensitivity * mouseInput;
             rotation.x = Mathf.Clamp(rotation.x, -MAX_CAM_ANGLE, MAX_CAM_ANGLE);
 
             eyes.localRotation = Quaternion.AngleAxis(rotation.x, Vector3.right);
