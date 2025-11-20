@@ -6,9 +6,9 @@ namespace Mithmarie
     {
         private const float MAX_CAM_ANGLE = 90f;
         [SerializeField] private Transform eyes = default;
+        [SerializeField] public Vector2 rotation = default;
 
         private Vector2 mouseInput;
-        private Vector2 rotation;
         private PlayerSettings settings;
 
         public void AssignSettings(PlayerSettings settings) => this.settings = settings;

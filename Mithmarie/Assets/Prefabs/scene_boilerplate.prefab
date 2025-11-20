@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 732b2ede81d0b4446a128bb8c23ce339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fps: 150
+  fps: 300
   physicsTicksPerSecond: 50

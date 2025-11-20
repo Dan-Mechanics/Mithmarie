@@ -64,7 +64,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb68333a46c41e45ae1b66cb2fb09aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
   sprintSpeedMult: 2.5
 --- !u!114 &771546152580428926
 MonoBehaviour:
@@ -79,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
-  sensitivity: 0.33
+  rotation: {x: 45, y: 45}
 --- !u!114 &7465420223189449802
 MonoBehaviour:
   m_ObjectHideFlags: 0
