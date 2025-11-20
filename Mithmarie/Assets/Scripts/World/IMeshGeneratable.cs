@@ -5,6 +5,6 @@ namespace Mithmarie
 {
     public interface IMeshGeneratable
     {
-        void GenerateMesh(HashSet<Vector3Int> hash);
+        void GenerateMesh(HashSet<Vector3Int> blocks);
     }
 }

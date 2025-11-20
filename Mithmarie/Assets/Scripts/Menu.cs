@@ -1,6 +1,5 @@
 ﻿using SFB;
 using System.IO;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -12,14 +11,18 @@ namespace Mithmarie
     /// </summary>
     public class Menu : StateBehaviour
     {
+        public bool WantsToClose => wantsToClose;
+
+        [SerializeField] private Button newButton = default;
         [SerializeField] private Button saveButton = default;
         [SerializeField] private Button loadButton = default;
-        [SerializeField] private Button newButton = default;
+        [SerializeField] private Button exportButton = default;
         [SerializeField] private Button closeButton = default;
         [SerializeField] private Button quitButton = default;
 
         private World world;
         private IMessageService message;
+        private readonly IMeshExportStrategy exportStrategy = new Wavefront();
         private bool wantsToClose;
 
         private void Start()
@@ -30,7 +33,7 @@ namespace Mithmarie
 
         private void Save()
         {
-            ExtensionFilter[] extensionList = new[] { new ExtensionFilter("Mitholca", "mth") };
+            ExtensionFilter[] extensionList = new[] { new ExtensionFilter("Mithmarie", "mth") };
 
             string path = StandaloneFileBrowser.SaveFilePanel("Save As", "", "level", extensionList);
             if (!Utils.IsStringValid(path))
@@ -47,6 +50,13 @@ namespace Mithmarie
 
             // GOING OUT OF SCOPE CLOSES THE STREAM AND WRITER.
             Close();
+        }
+
+        public override void OnFrame()
+        {
+            base.OnFrame();
+            if (Keyboard.current[GameManager.TOGGLE_STATE_KEY].wasPressedThisFrame)
+                Close();
         }
 
         private void New()
@@ -77,6 +87,22 @@ namespace Mithmarie
             Close();
         }
 
+        private void Export() 
+        {
+            ExtensionFilter[] extensionList = new[] { new ExtensionFilter("Wavefront", "obj") };
+
+            string path = StandaloneFileBrowser.SaveFilePanel("Save As", "", "level", extensionList);
+            if (!Utils.IsStringValid(path))
+                return;
+
+            world.Flush();
+
+            // !FIX
+            exportStrategy.Export(path, FindAnyObjectByType<CulledMeshGenerator>().GetComponent<MeshFilter>().sharedMesh, message);
+
+            Close();
+        }
+
         private void Close() => wantsToClose = true;
 
         public override void Enter()
@@ -88,6 +114,7 @@ namespace Mithmarie
 
             saveButton.onClick.AddListener(Save);
             loadButton.onClick.AddListener(Load);
+            exportButton.onClick.AddListener(Export);
             newButton.onClick.AddListener(New);
             quitButton.onClick.AddListener(Application.Quit);
 
@@ -106,14 +133,12 @@ namespace Mithmarie
             saveButton.onClick.RemoveListener(Save);
             loadButton.onClick.RemoveListener(Load);
             newButton.onClick.RemoveListener(New);
+            exportButton.onClick.RemoveListener(Export);
             quitButton.onClick.RemoveListener(Application.Quit);
 
             closeButton.onClick.RemoveListener(Close);
         }
 
-        public bool GetShouldReturnToPlayer() 
-        {
-            return Keyboard.current[GameManager.TOGGLE_STATE_KEY].wasPressedThisFrame || wantsToClose;
-        }
+        public bool GetWantsToClose() => wantsToClose;
     }
 }

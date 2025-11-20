@@ -588,9 +588,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36c528cfbe4ae0f47b26e7fc117468de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  newButton: {fileID: 1872801775}
   saveButton: {fileID: 733667898}
   loadButton: {fileID: 89458923}
-  newButton: {fileID: 1872801775}
+  exportButton: {fileID: 2025967497}
   closeButton: {fileID: 1084102325}
   quitButton: {fileID: 1244550824}
 --- !u!1001 &543610858
@@ -2247,6 +2248,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2017852314}
   m_CullTransparentMesh: 1
+--- !u!114 &2025967497 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4254861447925853697, guid: f57ebd6712a0ca040a05e6d9f4d96050, type: 3}
+  m_PrefabInstance: {fileID: 719119190}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2137088579
 GameObject:
   m_ObjectHideFlags: 0

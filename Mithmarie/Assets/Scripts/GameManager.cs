@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Mithmarie
@@ -24,8 +22,8 @@ namespace Mithmarie
 
             fsm.AddState(playerState);
             fsm.AddState(menuState);
-            fsm.AddTransition(new Transition(playerState, menuState, playerState.GetShouldReturnToMenu));
-            fsm.AddTransition(new Transition(menuState, playerState, menuState.GetShouldReturnToPlayer));
+            fsm.AddTransition(new Transition(playerState, menuState, playerState.GetWantsToClose));
+            fsm.AddTransition(new Transition(menuState, playerState, menuState.GetWantsToClose));
 
             menuState.Exit();
             fsm.Open(playerState);

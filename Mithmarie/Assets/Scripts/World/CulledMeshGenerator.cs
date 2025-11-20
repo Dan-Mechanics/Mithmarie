@@ -36,7 +36,7 @@ namespace Mithmarie
             coll.cookingOptions = cookingOptions;
         }
 
-        public void GenerateMesh(HashSet<Vector3Int> hash)
+        public void GenerateMesh(HashSet<Vector3Int> blocks)
         {
             verts.Clear();
             tris.Clear();
@@ -44,12 +44,12 @@ namespace Mithmarie
             
             mesh.Clear();
             
-            foreach (Vector3Int blockPos in hash)
+            foreach (Vector3Int blockPos in blocks)
             {
                 int faceCount = 0;
                 int offset = verts.Count;
 
-                if (!hash.Contains(blockPos + Vector3Int.up))
+                if (!blocks.Contains(blockPos + Vector3Int.up))
                 {
                     verts.Add(blockPos + Vector3Int.up);
                     verts.Add(blockPos + upForward);
@@ -58,7 +58,7 @@ namespace Mithmarie
                     faceCount++;
                 }
 
-                if (!hash.Contains(blockPos + Vector3Int.down))
+                if (!blocks.Contains(blockPos + Vector3Int.down))
                 {
                     verts.Add(blockPos + Vector3Int.zero);
                     verts.Add(blockPos + Vector3Int.right);
@@ -67,7 +67,7 @@ namespace Mithmarie
                     faceCount++;
                 }
 
-                if (!hash.Contains(blockPos + Vector3Int.forward))
+                if (!blocks.Contains(blockPos + Vector3Int.forward))
                 {
                     verts.Add(blockPos + forwardRight);
                     verts.Add(blockPos + Vector3Int.one);
@@ -76,7 +76,7 @@ namespace Mithmarie
                     faceCount++;
                 }
 
-                if (!hash.Contains(blockPos + Vector3Int.right))
+                if (!blocks.Contains(blockPos + Vector3Int.right))
                 {
                     verts.Add(blockPos + Vector3Int.right);
                     verts.Add(blockPos + upRight);
@@ -85,7 +85,7 @@ namespace Mithmarie
                     faceCount++;
                 }
 
-                if (!hash.Contains(blockPos + Vector3Int.back))
+                if (!blocks.Contains(blockPos + Vector3Int.back))
                 {
                     verts.Add(blockPos + Vector3Int.zero);
                     verts.Add(blockPos + Vector3Int.up);
@@ -94,7 +94,7 @@ namespace Mithmarie
                     faceCount++;
                 }
 
-                if (!hash.Contains(blockPos + Vector3Int.left))
+                if (!blocks.Contains(blockPos + Vector3Int.left))
                 {
                     verts.Add(blockPos + Vector3Int.forward);
                     verts.Add(blockPos + upForward);

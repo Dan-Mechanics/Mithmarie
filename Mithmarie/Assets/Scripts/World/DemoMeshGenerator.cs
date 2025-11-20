@@ -9,17 +9,16 @@ namespace Mithmarie
         private readonly List<GameObject> spawned = new List<GameObject>();
         
         /// <summary>
-        /// Should only be used for debug
-        /// purpoues because this code is very inefficient.
+        /// Should only be used when debugging.
         /// </summary>
-        public void GenerateMesh(HashSet<Vector3Int> hash)
+        public void GenerateMesh(HashSet<Vector3Int> blocks)
         {
             spawned.ForEach(x => Destroy(x));
             spawned.Clear();
 
-            foreach (Vector3Int pos in hash)
+            foreach (Vector3Int blockPos in blocks)
             {
-                spawned.Add(Instantiate(cubePrefab, pos, Quaternion.identity));
+                spawned.Add(Instantiate(cubePrefab, blockPos, Quaternion.identity));
             }
         }
     }

@@ -14,6 +14,7 @@ namespace Mithmarie
 
         private PlayerHUD playerHUD;
         private PlayerSettings settings;
+        private bool wantsToClose;
 
         private void Start()
         {
@@ -33,19 +34,22 @@ namespace Mithmarie
         public override void OnFrame()
         {
             base.OnFrame();
+
             playerMovement.OnFrame();
             mouseMovement.OnFrame();
             worldEditor.OnFrame();
+
+            if (Keyboard.current[GameManager.TOGGLE_STATE_KEY].wasPressedThisFrame)
+                Close();
         }
-        
-        public bool GetShouldReturnToMenu()
-        {
-            return Keyboard.current[GameManager.TOGGLE_STATE_KEY].wasPressedThisFrame;
-        }
+
+        public bool GetWantsToClose() => wantsToClose;
+        private void Close() => wantsToClose = true;
 
         public override void Exit()
         {
             base.Exit();
+            wantsToClose = false;
 
             if (playerHUD != null)
                 playerHUD.Hide();
