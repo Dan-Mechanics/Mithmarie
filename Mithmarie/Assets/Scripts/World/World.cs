@@ -8,12 +8,12 @@ namespace Mithmarie
     public class World : MonoBehaviour, IBinarySerializable
     {
         private readonly HashSet<Vector3Int> blocks = new HashSet<Vector3Int>();
-        private IMeshGeneratable generatable;
+        private IMeshGeneratable culled;
         private IMessageService message;
 
         private void Awake()
         {
-            generatable = FindAnyObjectByType<DemoMeshGenerator>();
+            culled = FindAnyObjectByType<CulledMeshGenerator>();
         }
 
         private void Start()
@@ -32,7 +32,11 @@ namespace Mithmarie
         public void Remove(Vector3Int pos) => blocks.Remove(pos);
         public void Clear() => blocks.Clear();
         public bool Has(Vector3Int pos) => blocks.Contains(pos);
-        public void Flush() => generatable.GenerateMesh(blocks);
+
+        public void Flush()
+        {
+            culled.GenerateMesh(blocks);
+        }
 
         public void Serialize(BinaryWriter writer)
         {

@@ -12,16 +12,11 @@ namespace Mithmarie
         [SerializeField] private WorldEditor worldEditor = default;
         [SerializeField] private Transform eyes = default;
 
-        private World world;
-        private IMessageService message;
         private PlayerHUD playerHUD;
-        private float cooldown;
         private PlayerSettings settings;
 
         private void Start()
         {
-            world = FindAnyObjectByType<World>();
-            message = ServiceLocator<IMessageService>.Locate();
             playerHUD = FindAnyObjectByType<PlayerHUD>();
 
             string settingsPath = Application.persistentDataPath + "/player_settings.txt";
@@ -42,23 +37,6 @@ namespace Mithmarie
             mouseMovement.OnFrame();
             worldEditor.OnFrame();
         }
-
-        public override void OnTick()
-        {
-            base.OnTick();
-
-            // !TIMER
-            cooldown -= Time.fixedDeltaTime;
-            if (cooldown > 0f)
-                return;
-
-            Vector3Int eyesBlockPos = Utils.ApplyGrid(eyes.position);
-            if (!world.Has(eyesBlockPos))
-                return;
-
-            message.Send("You are inside a block.", Color.gray);
-            cooldown = 5f;
-        }
         
         public bool GetShouldReturnToMenu()
         {
@@ -68,7 +46,9 @@ namespace Mithmarie
         public override void Exit()
         {
             base.Exit();
-            playerHUD?.Hide();
+
+            if (playerHUD != null)
+                playerHUD.Hide();
         }
 
         public override void Enter()

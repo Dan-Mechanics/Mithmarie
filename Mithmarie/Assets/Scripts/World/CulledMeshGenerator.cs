@@ -4,88 +4,36 @@ using UnityEngine;
 namespace Mithmarie
 {
     /// <summary>
-    /// This class is responsible for generating the mesh, i could make another script that actually generates the perinl
-    /// and such. Cool idea: classes talk tuah eachother via interfaces.
+    /// Source: https://github.com/samhogan/Minecraft-Unity3D/blob/master/Assets/Scripts/TerrainChunk.cs
     /// </summary>
     public class CulledMeshGenerator : MonoBehaviour, IMeshGeneratable
     {
         [SerializeField] private MeshFilter filter = default;
         [SerializeField] private MeshCollider coll = default;
+        [SerializeField] private MeshColliderCookingOptions cookingOptions = default;
 
-        private readonly MeshColliderCookingOptions cookingOptions = MeshColliderCookingOptions.UseFastMidphase;
         private Mesh mesh;
-        private int[] triangles;
-
+        private readonly Vector3 upForward = new Vector3(0, 1, 1);
+        private readonly Vector3 upRight = new Vector3(1, 1, 0);
+        private readonly Vector3 forwardRight = new Vector3(1, 0, 1);
         private readonly List<Vector3> verts = new List<Vector3>();
         private readonly List<int> tris = new List<int>();
         private readonly List<Vector2> uvs = new List<Vector2>();
+        private readonly int[] newTris = new int[6];
+        private readonly Vector2[] faceUvs = new Vector2[]
+        { 
+            new Vector2(0, 0), 
+            new Vector2(0, 1), 
+            new Vector2(1, 1),
+            new Vector2(1, 0)
+        };
 
-
-        /// <summary>
-        /// https://github.com/samhogan/Minecraft-Unity3D/blob/master/Assets/Scripts/TerrainChunk.cs
-        /// </summary>
         private void Start()
         {
-            // INIT THE MESH.
             mesh = new Mesh();
-            filter.mesh = mesh;
-            coll.sharedMesh = mesh;
-
-            coll.cookingOptions = cookingOptions;
             mesh.MarkDynamic();
-        }
-
-        private void GenerateMesh()
-        {
-            List<Vector3> verts = new List<Vector3>();
-            List<int> tris = new List<int>();
-            List<Vector2> uvs = new List<Vector2>();
-
-            for (int z = 0; z <= terrainable.GetSize(); z++)
-            {
-                for (int x = 0; x <= terrainable.GetSize(); x++)
-                {
-                    terrainable.SetHeightStartup(x, ref height, z);
-                    verticies[i] = new Vector3(x, height, z);
-
-                    height = 0f;
-                    i++;
-                }
-            }
-
-            triangles = new int[terrainable.GetSize() * terrainable.GetSize() * 6];
-
-            int vert = 0;
-            int tris = 0;
-
-            for (int z = 0; z < terrainable.GetSize(); z++)
-            {
-                for (int x = 0; x < terrainable.GetSize(); x++)
-                {
-                    triangles[tris + 0] = vert + 0;
-                    triangles[tris + 1] = vert + terrainable.GetSize() + 1;
-                    triangles[tris + 2] = vert + 1;
-
-                    triangles[tris + 3] = vert + 1;
-                    triangles[tris + 4] = vert + terrainable.GetSize() + 1;
-                    triangles[tris + 5] = vert + terrainable.GetSize() + 2;
-
-                    vert++;
-                    tris += 6;
-                }
-
-                vert++;
-            }
-
-            mesh.Clear();
-
-            mesh.vertices = verts.ToArray();
-            mesh.triangles = tris.ToArray();
-            mesh.uv = uvs.ToArray();
-
-            mesh.RecalculateNormals();
-            Physics.BakeMesh(mesh.GetInstanceID(), false, cookingOptions);
-           // coll.sharedMesh = mesh;
+            filter.mesh = mesh;
+            coll.cookingOptions = cookingOptions;
         }
 
         public void GenerateMesh(HashSet<Vector3Int> hash)
@@ -93,44 +41,82 @@ namespace Mithmarie
             verts.Clear();
             tris.Clear();
             uvs.Clear();
-
-            for (int z = 0; z <= terrainable.GetSize(); z++)
-            {
-                for (int x = 0; x <= terrainable.GetSize(); x++)
-                {
-                    terrainable.SetHeightStartup(x, ref height, z);
-                    verticies[i] = new Vector3(x, height, z);
-
-                    height = 0f;
-                    i++;
-                }
-            }
-
-            triangles = new int[terrainable.GetSize() * terrainable.GetSize() * 6];
-
-            int vert = 0;
-            int tris = 0;
-
-            for (int z = 0; z < terrainable.GetSize(); z++)
-            {
-                for (int x = 0; x < terrainable.GetSize(); x++)
-                {
-                    triangles[tris + 0] = vert + 0;
-                    triangles[tris + 1] = vert + terrainable.GetSize() + 1;
-                    triangles[tris + 2] = vert + 1;
-
-                    triangles[tris + 3] = vert + 1;
-                    triangles[tris + 4] = vert + terrainable.GetSize() + 1;
-                    triangles[tris + 5] = vert + terrainable.GetSize() + 2;
-
-                    vert++;
-                    tris += 6;
-                }
-
-                vert++;
-            }
-
+            
             mesh.Clear();
+            
+            foreach (Vector3Int blockPos in hash)
+            {
+                int faceCount = 0;
+                int offset = verts.Count;
+
+                if (!hash.Contains(blockPos + Vector3Int.up))
+                {
+                    verts.Add(blockPos + Vector3Int.up);
+                    verts.Add(blockPos + upForward);
+                    verts.Add(blockPos + Vector3Int.one);
+                    verts.Add(blockPos + upRight);
+                    faceCount++;
+                }
+
+                if (!hash.Contains(blockPos + Vector3Int.down))
+                {
+                    verts.Add(blockPos + Vector3Int.zero);
+                    verts.Add(blockPos + Vector3Int.right);
+                    verts.Add(blockPos + forwardRight);
+                    verts.Add(blockPos + Vector3Int.forward);
+                    faceCount++;
+                }
+
+                if (!hash.Contains(blockPos + Vector3Int.forward))
+                {
+                    verts.Add(blockPos + forwardRight);
+                    verts.Add(blockPos + Vector3Int.one);
+                    verts.Add(blockPos + upForward);
+                    verts.Add(blockPos + Vector3Int.forward);
+                    faceCount++;
+                }
+
+                if (!hash.Contains(blockPos + Vector3Int.right))
+                {
+                    verts.Add(blockPos + Vector3Int.right);
+                    verts.Add(blockPos + upRight);
+                    verts.Add(blockPos + Vector3Int.one);
+                    verts.Add(blockPos + forwardRight);
+                    faceCount++;
+                }
+
+                if (!hash.Contains(blockPos + Vector3Int.back))
+                {
+                    verts.Add(blockPos + Vector3Int.zero);
+                    verts.Add(blockPos + Vector3Int.up);
+                    verts.Add(blockPos + upRight);
+                    verts.Add(blockPos + Vector3Int.right);
+                    faceCount++;
+                }
+
+                if (!hash.Contains(blockPos + Vector3Int.left))
+                {
+                    verts.Add(blockPos + Vector3Int.forward);
+                    verts.Add(blockPos + upForward);
+                    verts.Add(blockPos + Vector3Int.up);
+                    verts.Add(blockPos + Vector3Int.zero);
+                    faceCount++;
+                }
+                
+                for (int i = 0; i < faceCount; i++)
+                {
+                    newTris[0] = offset + i * 4;
+                    newTris[1] = offset + i * 4 + 1;
+                    newTris[2] = offset + i * 4 + 2;
+
+                    newTris[3] = offset + i * 4;
+                    newTris[4] = offset + i * 4 + 2;
+                    newTris[5] = offset + i * 4 + 3;
+
+                    tris.AddRange(newTris);
+                    uvs.AddRange(faceUvs);
+                }
+            }
 
             mesh.vertices = verts.ToArray();
             mesh.triangles = tris.ToArray();
@@ -138,7 +124,7 @@ namespace Mithmarie
 
             mesh.RecalculateNormals();
             Physics.BakeMesh(mesh.GetInstanceID(), false, cookingOptions);
-            // coll.sharedMesh = mesh;
+            coll.sharedMesh = mesh;
         }
     }
 }

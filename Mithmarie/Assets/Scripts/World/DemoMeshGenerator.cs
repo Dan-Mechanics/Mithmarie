@@ -9,7 +9,8 @@ namespace Mithmarie
         private readonly List<GameObject> spawned = new List<GameObject>();
         
         /// <summary>
-        /// Note: very inefficient.
+        /// Should only be used for debug
+        /// purpoues because this code is very inefficient.
         /// </summary>
         public void GenerateMesh(HashSet<Vector3Int> hash)
         {
