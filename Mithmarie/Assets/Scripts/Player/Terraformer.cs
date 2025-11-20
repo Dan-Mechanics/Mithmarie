@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace Mithmarie
 {
-    public class WorldEditor : StateBehaviour, ISettingsRequired
+    public class Terraformer : StateBehaviour, ISettingsRequired
     {
         public const Key SELECTION_KEY = Key.LeftAlt;
         
@@ -34,6 +34,10 @@ namespace Mithmarie
         public override void OnFrame()
         {
             base.OnFrame();
+
+            if (Keyboard.current[Key.G].wasPressedThisFrame)
+                world.DebugDobule();
+
             // ADD. ===
             if (Place)
             {

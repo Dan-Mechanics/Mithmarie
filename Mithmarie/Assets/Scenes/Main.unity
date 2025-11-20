@@ -1553,7 +1553,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -1875,7 +1875,7 @@ GameObject:
   - component: {fileID: 1657479047}
   - component: {fileID: 1657479049}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: fps_telem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1920,7 +1920,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: dwddddddddddddddwdwd
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1d6798cf2942af448999f8a86ccb0f4e, type: 2}
   m_sharedMaterial: {fileID: -1156642742739601956, guid: 1d6798cf2942af448999f8a86ccb0f4e, type: 2}
@@ -2722,14 +2722,6 @@ PrefabInstance:
     - target: {fileID: 293393832251157704, guid: 9393d9580c1a3224cbe38fcf4d284a62, type: 3}
       propertyPath: m_Name
       value: player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7465420223189449802, guid: 9393d9580c1a3224cbe38fcf4d284a62, type: 3}
-      propertyPath: addRaycast.range
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7465420223189449802, guid: 9393d9580c1a3224cbe38fcf4d284a62, type: 3}
-      propertyPath: removeRaycast.range
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7707490481465344754, guid: 9393d9580c1a3224cbe38fcf4d284a62, type: 3}
       propertyPath: m_LocalPosition.x

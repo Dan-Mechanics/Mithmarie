@@ -20,7 +20,7 @@ namespace Mithmarie
         private void Start()
         {
             sprintHighlight.key = PlayerMovement.SPRINT_KEY;
-            selectHighlight.key = WorldEditor.SELECTION_KEY;
+            selectHighlight.key = Terraformer.SELECTION_KEY;
             menuHighlight.key = GameManager.TOGGLE_STATE_KEY;
 
             highlights.Add(sprintHighlight);

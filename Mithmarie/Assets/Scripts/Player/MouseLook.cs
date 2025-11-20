@@ -2,7 +2,7 @@
 
 namespace Mithmarie
 {
-    public class MouseMovement : StateBehaviour, ISettingsRequired
+    public class MouseLook : StateBehaviour, ISettingsRequired
     {
         private const float MAX_CAM_ANGLE = 90f;
         [SerializeField] private Transform eyes = default;

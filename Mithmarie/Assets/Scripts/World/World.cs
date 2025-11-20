@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace Mithmarie
@@ -19,6 +20,17 @@ namespace Mithmarie
         private void Start()
         {
             message = ServiceLocator<IMessageService>.Locate();
+        }
+
+        public void DebugDobule()
+        {
+            Vector3Int[] temp = blocks.ToArray();
+            for (int i = 0; i < temp.Length; i++)
+            {
+                Add(temp[i] + (Vector3Int.forward * 10));
+            }
+
+            Flush();
         }
 
         public void Add(Vector3Int pos) => blocks.Add(pos);

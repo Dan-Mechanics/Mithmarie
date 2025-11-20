@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,9 +6,9 @@ namespace Mithmarie
 {
     public class Player : StateBehaviour
     {
-        [SerializeField] private MouseMovement mouseMovement = default;
+        [SerializeField] private MouseLook mouseLook = default;
         [SerializeField] private PlayerMovement playerMovement = default;
-        [SerializeField] private WorldEditor worldEditor = default;
+        [SerializeField] private Terraformer terraformer = default;
         [SerializeField] private Transform eyes = default;
 
         private PlayerHUD playerHUD;
@@ -36,8 +35,8 @@ namespace Mithmarie
             base.OnFrame();
 
             playerMovement.OnFrame();
-            mouseMovement.OnFrame();
-            worldEditor.OnFrame();
+            mouseLook.OnFrame();
+            terraformer.OnFrame();
 
             if (Keyboard.current[GameManager.TOGGLE_STATE_KEY].wasPressedThisFrame)
                 Close();
