@@ -38,9 +38,9 @@ namespace Mithmarie
 
         public void GenerateMesh(HashSet<Vector3Int> blocks)
         {
-            verts.Clear();
+            /*verts.Clear();
             tris.Clear();
-            uvs.Clear();
+            uvs.Clear();*/
             
             mesh.Clear();
             
