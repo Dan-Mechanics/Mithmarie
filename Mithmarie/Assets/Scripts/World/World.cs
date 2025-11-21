@@ -7,12 +7,18 @@ namespace Mithmarie
 {
     public class World : MonoBehaviour, IBinarySerializable
     {
+        private const int CHUNK_SIZE = 16;
+        
         private readonly HashSet<Vector3Int> blocks = new HashSet<Vector3Int>();
+
+        private readonly Dictionary<Vector3Int, HashSet<Vector3Int>> chunks = new Dictionary<Vector3Int, HashSet<Vector3Int>>();
         private IMeshGeneratable generatable;
         private IMessageService message;
 
         private delegate void EditBlock(Vector3Int blockPos);
         private EditBlock editBlock;
+
+        private Queue<Vector3Int> changedChunks;
 
         private void Awake()
         {
@@ -36,10 +42,29 @@ namespace Mithmarie
             EditSelection(a, b);
         }
 
+        public void _Add(Vector3Int blockPos)
+        {
+            Vector3Int chunkPos = blockPos / CHUNK_SIZE;
+
+            if (!chunks.ContainsKey(chunkPos))
+                chunks.Add(chunkPos, new HashSet<Vector3Int>());
+
+            if (chunks[chunkPos].Contains(blockPos))
+                return;
+
+            chunks[chunkPos].Add(blockPos);
+
+            changedChunks.Enqueue(chunkPos);
+            changedChunks.Enqueue(chunkPos + Vector3Int.up);
+            changedChunks.Enqueue(chunkPos + Vector3Int.forward);
+            changedChunks.Enqueue(chunkPos + Vector3Int.back);
+            changedChunks.Enqueue(chunkPos + Vector3Int.left);
+            changedChunks.Enqueue(chunkPos + Vector3Int.right);
+        }
+
         public void Add(Vector3Int pos) => blocks.Add(pos);
         public void Remove(Vector3Int pos) => blocks.Remove(pos);
         public void Clear() => blocks.Clear();
-        public bool Has(Vector3Int pos) => blocks.Contains(pos);
         public void Draw() => generatable.GenerateMesh(blocks);
 
         private void EditSelection(Vector3Int a, Vector3Int b)
@@ -75,17 +100,33 @@ namespace Mithmarie
             }
         }
 
+        private Vector3Int[] GetAllBlocks()
+        {
+            List<Vector3Int> blocks = new List<Vector3Int>();
+            foreach (HashSet<Vector3Int> chunk in chunks.Values)
+            {
+                foreach (Vector3Int block in chunk)
+                {
+                    blocks.Add(block);
+                }
+            }
+
+            return blocks.ToArray();
+        }
+        
         public void Serialize(BinaryWriter writer)
         {
+            Vector3Int[] blocks = GetAllBlocks();
+
             try
             {
                 writer.Write(Application.version);
-                writer.Write(blocks.Count * 3);
-                foreach (Vector3Int pos in blocks)
+                writer.Write(blocks.Length * 3);
+                for (int i = 0; i < blocks.Length; i++)
                 {
-                    writer.Write(pos.x);
-                    writer.Write(pos.y);
-                    writer.Write(pos.z);
+                    writer.Write(blocks[i].x);
+                    writer.Write(blocks[i].y);
+                    writer.Write(blocks[i].z);
                 }
             }
             catch (Exception exception)

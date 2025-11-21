@@ -15,9 +15,9 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0.5372549, g: 0.5372549, b: 0.5372549, a: 1}
+  m_FogColor: {r: 0.6157885, g: 0.6487184, b: 0.6981132, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.075
+  m_FogDensity: 0.04
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -1763,6 +1763,7 @@ Transform:
   m_Children:
   - {fileID: 705507995}
   - {fileID: 74679995}
+  - {fileID: 1838021624}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1504513354 stripped
@@ -1868,7 +1869,7 @@ GameObject:
   - component: {fileID: 1657479047}
   - component: {fileID: 1657479049}
   m_Layer: 5
-  m_Name: fps_telem
+  m_Name: telemetry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2196,6 +2197,68 @@ MonoBehaviour:
     key: 0
   colorA: {r: 0.77254903, g: 0.90588236, b: 0.98039216, a: 1}
   colorB: {r: 0.63529414, g: 0.73333335, b: 0.85882354, a: 1}
+--- !u!1001 &1838021623
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1378360919}
+    m_Modifications:
+    - target: {fileID: 711197107212623808, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+      propertyPath: m_Name
+      value: outline_cube
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738039105777233502, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738039105777233502, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738039105777233502, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738039105777233502, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738039105777233502, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738039105777233502, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738039105777233502, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738039105777233502, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738039105777233502, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4738039105777233502, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+--- !u!4 &1838021624 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4738039105777233502, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+  m_PrefabInstance: {fileID: 1838021623}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1872801773
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2870,10 +2933,6 @@ PrefabInstance:
     - target: {fileID: 293393832251157704, guid: 9393d9580c1a3224cbe38fcf4d284a62, type: 3}
       propertyPath: m_Name
       value: player
-      objectReference: {fileID: 0}
-    - target: {fileID: 3481532798549250696, guid: 9393d9580c1a3224cbe38fcf4d284a62, type: 3}
-      propertyPath: sprintSpeedMult
-      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7707490481465344754, guid: 9393d9580c1a3224cbe38fcf4d284a62, type: 3}
       propertyPath: m_LocalPosition.x

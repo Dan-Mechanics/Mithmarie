@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb68333a46c41e45ae1b66cb2fb09aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprintSpeedMult: 2.5
+  sprintSpeedMult: 5
   speed: 10
 --- !u!114 &771546152580428926
 MonoBehaviour:
@@ -185,7 +185,6 @@ GameObject:
   - component: {fileID: 3062100453456221858}
   - component: {fileID: 7032356765651341419}
   - component: {fileID: 8823984721961712048}
-  - component: {fileID: 1491899682913643028}
   m_Layer: 3
   m_Name: eyes
   m_TagString: Untagged
@@ -218,7 +217,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.6901961, g: 0.6901961, b: 0.6901961, a: 1}
+  m_BackGroundColor: {r: 0.6156863, g: 0.64705884, b: 0.69803923, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -267,17 +266,3 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3889645060876896680}
   m_Enabled: 1
---- !u!114 &1491899682913643028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3889645060876896680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2dc9093afcafc248a46a477887e62a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 7032356765651341419}
-  insideBlockColor: {r: 0.59927905, g: 0.61271006, b: 0.6320754, a: 1}
