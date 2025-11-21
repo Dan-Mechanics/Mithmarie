@@ -42,7 +42,7 @@ namespace Mithmarie
             FileStream stream = File.OpenWrite(path);
             BinaryWriter writer = new BinaryWriter(stream);
 
-            world.Flush();
+            world.Draw();
             world.Serialize(writer);
 
             //writer.Flush();
@@ -62,7 +62,7 @@ namespace Mithmarie
         private void New()
         {
             world.Clear();
-            world.Flush();
+            world.Draw();
             Close();
         }
 
@@ -78,7 +78,7 @@ namespace Mithmarie
 
             world.Clear();
             world.Deserialize(reader);
-            world.Flush();
+            world.Draw();
 
             // reader.Close();
             // reader.Close();
@@ -95,7 +95,7 @@ namespace Mithmarie
             if (!Utils.IsStringValid(path))
                 return;
 
-            world.Flush();
+            world.Draw();
 
             // !FIX
             exportStrategy.Export(path, FindAnyObjectByType<CulledMeshGenerator>().GetComponent<MeshFilter>().sharedMesh, message);

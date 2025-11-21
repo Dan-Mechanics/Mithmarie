@@ -13,6 +13,10 @@ GameObject:
   - component: {fileID: 3481532798549250696}
   - component: {fileID: 771546152580428926}
   - component: {fileID: 4304039197132537368}
+  - component: {fileID: 6277602641836883055}
+  - component: {fileID: 4141907983917415685}
+  - component: {fileID: 1271512375170221928}
+  - component: {fileID: 2515062756933341086}
   m_Layer: 3
   m_Name: player
   m_TagString: Player
@@ -48,10 +52,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4e1db4ccb13d9a46bc001535e774b09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseLook: {fileID: 771546152580428926}
-  playerMovement: {fileID: 3481532798549250696}
-  terraformer: {fileID: 4304039197132537368}
-  eyes: {fileID: 3062100453456221858}
+  addTerraform: {fileID: 4304039197132537368}
+  removeTerraform: {fileID: 6277602641836883055}
+  addSelectionPreview: {fileID: 1271512375170221928}
+  removeSelectionPreview: {fileID: 2515062756933341086}
+  blockHighlight: {fileID: 4141907983917415685}
 --- !u!114 &3481532798549250696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,6 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprintSpeedMult: 2.5
+  speed: 10
 --- !u!114 &771546152580428926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,6 +84,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
+  sensitivity: 0.33
   rotation: {x: 45, y: 45}
 --- !u!114 &4304039197132537368
 MonoBehaviour:
@@ -93,12 +100,80 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
   raycast:
-    range: 7.5
+    range: 100
     mask:
       serializedVersion: 2
       m_Bits: 17
     interaction: 1
-  preview: {fileID: 0}
+  normalDirection: 0.4
+  leftMouseButton: 0
+  color: {r: 0.40392157, g: 0.62352943, b: 0.4627451, a: 0.43137255}
+  previewPrefab: {fileID: 9125353668538272078, guid: 6b04c716f67080d4aa453e28a5f69272, type: 3}
+--- !u!114 &6277602641836883055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293393832251157704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e973ae11206a7164997a47330f3eeaee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eyes: {fileID: 3062100453456221858}
+  raycast:
+    range: 100
+    mask:
+      serializedVersion: 2
+      m_Bits: 1
+    interaction: 1
+  normalDirection: -0.4
+  leftMouseButton: 1
+  color: {r: 0.85882354, g: 0.3529412, b: 0.36078432, a: 0.43137255}
+  previewPrefab: {fileID: 9125353668538272078, guid: 7637c7c107267804c8eeb011364a4eee, type: 3}
+--- !u!114 &4141907983917415685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293393832251157704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ed400ad6ac005341a23cc4692e76911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eyes: {fileID: 3062100453456221858}
+  hoverCubePrefab: {fileID: 711197107212623808, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+--- !u!114 &1271512375170221928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293393832251157704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1259bef17b8ddd44be9250ad9907e8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  previewPrefab: {fileID: 9125353668538272078, guid: 6b04c716f67080d4aa453e28a5f69272, type: 3}
+  previewMaterial: {fileID: 2100000, guid: 7798d8dcdc0f0c345b80ed6f4789f961, type: 2}
+--- !u!114 &2515062756933341086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293393832251157704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1259bef17b8ddd44be9250ad9907e8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  previewPrefab: {fileID: 9125353668538272078, guid: 7637c7c107267804c8eeb011364a4eee, type: 3}
+  previewMaterial: {fileID: 2100000, guid: 8815a87ac73deee40aea76131f07dccc, type: 2}
 --- !u!1 &3889645060876896680
 GameObject:
   m_ObjectHideFlags: 0

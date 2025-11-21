@@ -9,6 +9,9 @@ namespace Mithmarie
 {
     public class PlayerHUD : MonoBehaviour
     {
+        [SerializeField] private TMP_Text centerText = default;
+        
+        
         [SerializeField] private Highlight sprintHighlight = default;
      //   [SerializeField] private Highlight selectHighlight = default;
         [SerializeField] private Highlight menuHighlight = default;
@@ -19,6 +22,8 @@ namespace Mithmarie
 
         private void Start()
         {
+            
+            
             sprintHighlight.key = PlayerMovement.SPRINT_KEY;
           //  selectHighlight.key = Terraformer.SELECTION_KEY;
             menuHighlight.key = GameManager.TOGGLE_STATE_KEY;
@@ -36,6 +41,8 @@ namespace Mithmarie
         {
             highlights.ForEach(x => x.Draw(colorA, colorB));
         }
+
+        public void SetCenterText(string str) => centerText.text = str;
 
         public void Show() => gameObject.SetActive(true);
         public void Hide() => gameObject.SetActive(false);

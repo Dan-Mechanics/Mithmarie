@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 
 namespace Mithmarie
@@ -11,6 +10,9 @@ namespace Mithmarie
         private readonly HashSet<Vector3Int> blocks = new HashSet<Vector3Int>();
         private IMeshGeneratable generatable;
         private IMessageService message;
+
+        private delegate void EditBlock(Vector3Int blockPos);
+        private EditBlock editBlock;
 
         private void Awake()
         {
@@ -22,17 +24,29 @@ namespace Mithmarie
             message = ServiceLocator<IMessageService>.Locate();
         }
 
+        public void AddSelection(Vector3Int a, Vector3Int b)
+        {
+            editBlock = Add;
+            EditSelection(a, b);
+        }
+
+        public void RemoveSelection(Vector3Int a, Vector3Int b)
+        {
+            editBlock = Remove;
+            EditSelection(a, b);
+        }
+
         public void Add(Vector3Int pos) => blocks.Add(pos);
         public void Remove(Vector3Int pos) => blocks.Remove(pos);
         public void Clear() => blocks.Clear();
         public bool Has(Vector3Int pos) => blocks.Contains(pos);
-        public void Flush() => generatable.GenerateMesh(blocks);
+        public void Draw() => generatable.GenerateMesh(blocks);
 
-        public void AddSelection(Vector3Int a, Vector3Int b)
+        private void EditSelection(Vector3Int a, Vector3Int b)
         {
             if (a == b)
             {
-                Add(a);
+                editBlock(a);
                 return;
             }
 
@@ -55,40 +69,7 @@ namespace Mithmarie
                         temp.x = x * xDirection;
                         temp.y = y * yDirection;
                         temp.z = z * zDirection;
-                        Add(a + temp);
-                    }
-                }
-            }
-        }
-
-        public void RemoveSelecton(Vector3Int a, Vector3Int b)
-        {
-            if (a == b)
-            {
-                Remove(a);
-                return;
-            }
-
-            Vector3Int temp = Vector3Int.zero;
-
-            int width = Mathf.Abs(b.x - a.x) + 1;
-            int height = Mathf.Abs(b.y - a.y) + 1;
-            int depth = Mathf.Abs(b.z - a.z) + 1;
-
-            int xDirection = a.x <= b.x ? 1 : -1;
-            int yDirection = a.y <= b.y ? 1 : -1;
-            int zDirection = a.z <= b.z ? 1 : -1;
-
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < height; y++)
-                {
-                    for (int z = 0; z < depth; z++)
-                    {
-                        temp.x = x * xDirection;
-                        temp.y = y * yDirection;
-                        temp.z = z * zDirection;
-                        Remove(a + temp);
+                        editBlock(a + temp);
                     }
                 }
             }

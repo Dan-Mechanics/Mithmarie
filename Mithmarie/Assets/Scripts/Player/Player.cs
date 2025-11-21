@@ -6,20 +6,63 @@ using UnityEngine.InputSystem;
 namespace Mithmarie
 {
     public class Player : StateBehaviour
-    {
-        [SerializeField] private Transform eyes = default;
-        private StateBehaviour[] playerBehaviour;
+    {   
+        [SerializeField] private Terraformer addTerraform = default;
+        [SerializeField] private Terraformer removeTerraform = default;
+        [SerializeField] private SelectionPreview addSelectionPreview = default;
+        [SerializeField] private SelectionPreview removeSelectionPreview = default;
+        [SerializeField] private AimedBlockHighlight blockHighlight = default;
 
+        private StateBehaviour[] playerBehaviour;
         private PlayerHUD playerHUD;
         private bool wantsToClose;
+        private World world;
 
-        private void Start()
+        private void Awake()
         {
+            world = FindAnyObjectByType<World>();
             playerHUD = FindAnyObjectByType<PlayerHUD>();
 
             List<StateBehaviour> list = GetComponents<StateBehaviour>().ToList();
             list.RemoveAt(list.FindIndex(x => x is Player));
             playerBehaviour = list.ToArray();
+
+            blockHighlight.Configure(addTerraform.Raycast, addTerraform.NormalDirection);
+        }
+
+        public override void Enter()
+        {
+            base.Enter();
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            playerHUD.Show();
+            addTerraform.OnInput += () => { blockHighlight.Configure(addTerraform.Raycast, addTerraform.NormalDirection); };
+            removeTerraform.OnInput += () => { blockHighlight.Configure(removeTerraform.Raycast, removeTerraform.NormalDirection); };
+
+            addTerraform.OnShowPreview += addSelectionPreview.UpdatePreview;
+            removeTerraform.OnShowPreview += removeSelectionPreview.UpdatePreview;
+
+            blockHighlight.OnOutputText += playerHUD.SetCenterText;
+
+            addTerraform.OnEditSelection += world.AddSelection;
+            removeTerraform.OnEditSelection += world.RemoveSelection;
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            wantsToClose = false;
+
+            if (playerHUD != null)
+                playerHUD.Hide();
+
+            addTerraform.OnInput -= () => { blockHighlight.Configure(addTerraform.Raycast, addTerraform.NormalDirection); };
+            removeTerraform.OnInput -= () => { blockHighlight.Configure(removeTerraform.Raycast, removeTerraform.NormalDirection); };
+            addTerraform.OnShowPreview -= addSelectionPreview.UpdatePreview;
+            removeTerraform.OnShowPreview -= removeSelectionPreview.UpdatePreview;
+            blockHighlight.OnOutputText -= playerHUD.SetCenterText;
+            addTerraform.OnEditSelection -= world.AddSelection;
+            removeTerraform.OnEditSelection -= world.RemoveSelection;
         }
 
         public override void OnFrame()
@@ -46,22 +89,5 @@ namespace Mithmarie
 
         public bool GetWantsToClose() => wantsToClose;
         private void Close() => wantsToClose = true;
-
-        public override void Exit()
-        {
-            base.Exit();
-            wantsToClose = false;
-
-            if (playerHUD != null)
-                playerHUD.Hide();
-        }
-
-        public override void Enter()
-        {
-            base.Enter();
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            playerHUD.Show();
-        }
     }
 }
