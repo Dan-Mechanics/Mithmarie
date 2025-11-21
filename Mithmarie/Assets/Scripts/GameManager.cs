@@ -11,7 +11,7 @@ namespace Mithmarie
 
         private void Start()
         {
-            ServiceLocator<IMessageService>.Locate().Send("Welcome!\n[WASD] for movement and [MOUSE] for looking.\nUse [RMB] to place blocks.", Color.black);
+            ServiceLocator<IMessageService>.Locate().Send("[WASD] for movement and [MOUSE] for looking.\nUse [RMB] to place blocks, [LMB] to destroy.", Color.black);
 
             World world = FindAnyObjectByType<World>();
             world.Add(Vector3Int.zero);

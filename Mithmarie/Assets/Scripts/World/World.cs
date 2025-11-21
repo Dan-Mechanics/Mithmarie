@@ -22,22 +22,77 @@ namespace Mithmarie
             message = ServiceLocator<IMessageService>.Locate();
         }
 
-        public void DebugDobule()
-        {
-            Vector3Int[] temp = blocks.ToArray();
-            for (int i = 0; i < temp.Length; i++)
-            {
-                Add(temp[i] + (Vector3Int.forward * 10));
-            }
-
-            Flush();
-        }
-
         public void Add(Vector3Int pos) => blocks.Add(pos);
         public void Remove(Vector3Int pos) => blocks.Remove(pos);
         public void Clear() => blocks.Clear();
         public bool Has(Vector3Int pos) => blocks.Contains(pos);
         public void Flush() => generatable.GenerateMesh(blocks);
+
+        public void AddSelection(Vector3Int a, Vector3Int b)
+        {
+            if (a == b)
+            {
+                Add(a);
+                return;
+            }
+
+            Vector3Int temp = Vector3Int.zero;
+
+            int width = Mathf.Abs(b.x - a.x) + 1;
+            int height = Mathf.Abs(b.y - a.y) + 1;
+            int depth = Mathf.Abs(b.z - a.z) + 1;
+
+            int xDirection = a.x <= b.x ? 1 : -1;
+            int yDirection = a.y <= b.y ? 1 : -1;
+            int zDirection = a.z <= b.z ? 1 : -1;
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    for (int z = 0; z < depth; z++)
+                    {
+                        temp.x = x * xDirection;
+                        temp.y = y * yDirection;
+                        temp.z = z * zDirection;
+                        Add(a + temp);
+                    }
+                }
+            }
+        }
+
+        public void RemoveSelecton(Vector3Int a, Vector3Int b)
+        {
+            if (a == b)
+            {
+                Remove(a);
+                return;
+            }
+
+            Vector3Int temp = Vector3Int.zero;
+
+            int width = Mathf.Abs(b.x - a.x) + 1;
+            int height = Mathf.Abs(b.y - a.y) + 1;
+            int depth = Mathf.Abs(b.z - a.z) + 1;
+
+            int xDirection = a.x <= b.x ? 1 : -1;
+            int yDirection = a.y <= b.y ? 1 : -1;
+            int zDirection = a.z <= b.z ? 1 : -1;
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    for (int z = 0; z < depth; z++)
+                    {
+                        temp.x = x * xDirection;
+                        temp.y = y * yDirection;
+                        temp.z = z * zDirection;
+                        Remove(a + temp);
+                    }
+                }
+            }
+        }
 
         public void Serialize(BinaryWriter writer)
         {

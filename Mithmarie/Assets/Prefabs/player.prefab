@@ -92,18 +92,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
-  addRaycast:
+  raycast:
     range: 7.5
     mask:
       serializedVersion: 2
       m_Bits: 17
     interaction: 1
-  removeRaycast:
-    range: 7.5
-    mask:
-      serializedVersion: 2
-      m_Bits: 1
-    interaction: 1
+  preview: {fileID: 0}
 --- !u!1 &3889645060876896680
 GameObject:
   m_ObjectHideFlags: 0

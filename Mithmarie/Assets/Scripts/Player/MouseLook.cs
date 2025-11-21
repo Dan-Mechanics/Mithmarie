@@ -2,16 +2,17 @@
 
 namespace Mithmarie
 {
-    public class MouseLook : StateBehaviour, ISettingsRequired
+    public class MouseLook : StateBehaviour//, ISettingsRequired
     {
         private const float MAX_CAM_ANGLE = 90f;
         [SerializeField] private Transform eyes = default;
+        [SerializeField] private float sensitivity = default;
         [SerializeField] public Vector2 rotation = default;
 
         private Vector2 mouseInput;
-        private PlayerSettings settings;
+     //   private PlayerSettings settings;
 
-        public void AssignSettings(PlayerSettings settings) => this.settings = settings;
+     //   public void AssignSettings(PlayerSettings settings) => this.settings = settings;
 
         /// <summary>
         /// We are using the old input system 
@@ -23,7 +24,7 @@ namespace Mithmarie
             mouseInput.y = Input.GetAxisRaw("Mouse X");
             mouseInput.x = -Input.GetAxisRaw("Mouse Y");
 
-            rotation += settings.sensitivity * mouseInput;
+            rotation += sensitivity * mouseInput;
             rotation.x = Mathf.Clamp(rotation.x, -MAX_CAM_ANGLE, MAX_CAM_ANGLE);
 
             eyes.localRotation = Quaternion.AngleAxis(rotation.x, Vector3.right);

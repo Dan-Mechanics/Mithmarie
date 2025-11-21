@@ -10,7 +10,7 @@ namespace Mithmarie
     public class PlayerHUD : MonoBehaviour
     {
         [SerializeField] private Highlight sprintHighlight = default;
-        [SerializeField] private Highlight selectHighlight = default;
+     //   [SerializeField] private Highlight selectHighlight = default;
         [SerializeField] private Highlight menuHighlight = default;
         [SerializeField] private Color colorA = Color.white;
         [SerializeField] private Color colorB = Color.white;
@@ -20,11 +20,11 @@ namespace Mithmarie
         private void Start()
         {
             sprintHighlight.key = PlayerMovement.SPRINT_KEY;
-            selectHighlight.key = Terraformer.SELECTION_KEY;
+          //  selectHighlight.key = Terraformer.SELECTION_KEY;
             menuHighlight.key = GameManager.TOGGLE_STATE_KEY;
 
             highlights.Add(sprintHighlight);
-            highlights.Add(selectHighlight);
+         //   highlights.Add(selectHighlight);
             highlights.Add(menuHighlight);
 
             Draw();
