@@ -14,7 +14,7 @@ namespace Mithmarie
 
             World world = FindAnyObjectByType<World>();
             world.Add(Vector3Int.zero);
-            world.Draw();
+            world.Flush();
             
             Player playerState = FindAnyObjectByType<Player>();
             Menu menuState = FindAnyObjectByType<Menu>();

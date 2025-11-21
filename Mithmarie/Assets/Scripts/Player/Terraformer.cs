@@ -60,7 +60,7 @@ namespace Mithmarie
                 {
                     secondPos = Utils.ApplyGrid(hit.point + (hit.normal * normalDirection));
                     OnEditSelection?.Invoke((Vector3Int)firstPos, (Vector3Int)secondPos);
-                    world.Draw();
+                    world.Flush();
                 }
 
                 ResetToDefault();

@@ -7,18 +7,19 @@ namespace Mithmarie
 {
     public class World : MonoBehaviour, IBinarySerializable
     {
-        private const int CHUNK_SIZE = 16;
+        public const int CHUNK_SIZE = 16;
         
-        private readonly HashSet<Vector3Int> blocks = new HashSet<Vector3Int>();
+        //private readonly HashSet<Vector3Int> blocks = new HashSet<Vector3Int>();
 
         private readonly Dictionary<Vector3Int, HashSet<Vector3Int>> chunks = new Dictionary<Vector3Int, HashSet<Vector3Int>>();
+        private readonly HashSet<Vector3Int> changedChunks;
+
         private IMeshGeneratable generatable;
+        public ChunkManager chunkManager;
         private IMessageService message;
 
         private delegate void EditBlock(Vector3Int blockPos);
         private EditBlock editBlock;
-
-        private Queue<Vector3Int> changedChunks;
 
         private void Awake()
         {
@@ -42,10 +43,9 @@ namespace Mithmarie
             EditSelection(a, b);
         }
 
-        public void _Add(Vector3Int blockPos)
+        public void Add(Vector3Int blockPos)
         {
             Vector3Int chunkPos = blockPos / CHUNK_SIZE;
-
             if (!chunks.ContainsKey(chunkPos))
                 chunks.Add(chunkPos, new HashSet<Vector3Int>());
 
@@ -53,19 +53,46 @@ namespace Mithmarie
                 return;
 
             chunks[chunkPos].Add(blockPos);
-
-            changedChunks.Enqueue(chunkPos);
-            changedChunks.Enqueue(chunkPos + Vector3Int.up);
-            changedChunks.Enqueue(chunkPos + Vector3Int.forward);
-            changedChunks.Enqueue(chunkPos + Vector3Int.back);
-            changedChunks.Enqueue(chunkPos + Vector3Int.left);
-            changedChunks.Enqueue(chunkPos + Vector3Int.right);
+            NotifyChunkHasChanged(chunkPos);
         }
 
-        public void Add(Vector3Int pos) => blocks.Add(pos);
-        public void Remove(Vector3Int pos) => blocks.Remove(pos);
-        public void Clear() => blocks.Clear();
-        public void Draw() => generatable.GenerateMesh(blocks);
+        public void Remove(Vector3Int blockPos)
+        {
+            Vector3Int chunkPos = blockPos / CHUNK_SIZE;
+            if (!chunks.ContainsKey(chunkPos))
+                return;
+
+            if (!chunks[chunkPos].Contains(blockPos))
+                return;
+
+            chunks[chunkPos].Remove(blockPos);
+            NotifyChunkHasChanged(chunkPos);
+        }
+
+        public void Clear()
+        {
+            foreach (Vector3Int chunkPos in chunks.Keys)
+            {
+                changedChunks.Add(chunkPos);
+            }
+
+            chunks.Clear();
+        }
+
+        public void Flush()
+        {
+            foreach (Vector3Int chunkPos in changedChunks)
+            {
+                if(!chunks.ContainsKey(chunkPos) || chunks[chunkPos].Count <= 0)
+                {
+                    chunks.Remove(chunkPos);
+                    chunkManager.DrawChunk(chunkPos, null);
+                    continue;
+                }
+
+                chunkManager.DrawChunk(chunkPos, chunks[chunkPos]);
+            }
+        }
 
         private void EditSelection(Vector3Int a, Vector3Int b)
         {
@@ -98,6 +125,16 @@ namespace Mithmarie
                     }
                 }
             }
+        }
+
+        private void NotifyChunkHasChanged(Vector3Int chunkPos) 
+        {
+            changedChunks.Add(chunkPos);
+            changedChunks.Add(chunkPos + Vector3Int.up);
+            changedChunks.Add(chunkPos + Vector3Int.forward);
+            changedChunks.Add(chunkPos + Vector3Int.back);
+            changedChunks.Add(chunkPos + Vector3Int.left);
+            changedChunks.Add(chunkPos + Vector3Int.right);
         }
 
         private Vector3Int[] GetAllBlocks()
