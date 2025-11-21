@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 31229
+  controlID: 31712
   draggingID: 0
 --- !u!114 &2
 MonoBehaviour:
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 31182
+  controlID: 31713
   draggingID: 0
 --- !u!114 &4
 MonoBehaviour:
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 50}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 31156
+  controlID: 31714
   draggingID: 0
 --- !u!114 &5
 MonoBehaviour:
@@ -245,8 +245,8 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
+      m_SelectedIDs: 3cc90000
+      m_LastClickedID: 51516
       m_ExpandedIDs: 4cfefeff64fefeff7200ffffcafaffff26fbffffda620000ea6200000e630000c0c80000d6c8000020c90000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
@@ -956,8 +956,8 @@ MonoBehaviour:
     y: 0
     width: 680
     height: 516
-  m_MinSize: {x: 202, y: 226}
-  m_MaxSize: {x: 4002, y: 4026}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 2}
   m_Panes:
   - {fileID: 2}
@@ -982,8 +982,8 @@ MonoBehaviour:
     y: 516
     width: 1465
     height: 425
-  m_MinSize: {x: 230, y: 250}
-  m_MaxSize: {x: 10000, y: 10000}
+  m_MinSize: {x: 231, y: 276}
+  m_MaxSize: {x: 10001, y: 10026}
   m_ActualView: {fileID: 11}
   m_Panes:
   - {fileID: 11}
@@ -1056,7 +1056,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: ae640000
     m_LastClickedID: 25774
-    m_ExpandedIDs: 0000000012640000b264000000ca9a3b
+    m_ExpandedIDs: 000000001264000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1111,8 +1111,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: a4970000
-    m_LastClickedInstanceID: 38820
+    m_SelectedInstanceIDs: 3cc90000
+    m_LastClickedInstanceID: 51516
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c62300007e670000ee660000d8360000da360000
     m_RenameOverlay:
@@ -1248,8 +1248,8 @@ MonoBehaviour:
     m_CachedPref: -151
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
-  m_LastInspectedObjectInstanceID: 38820
-  m_LastVerticalScrollValue: 404
+  m_LastInspectedObjectInstanceID: -1
+  m_LastVerticalScrollValue: 417
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:

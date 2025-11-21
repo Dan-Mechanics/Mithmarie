@@ -29,7 +29,7 @@ namespace Mithmarie
 
             blockHighlight.Configure(addTerraform.Raycast, addTerraform.NormalDirection);
         }
-
+         
         public override void Enter()
         {
             base.Enter();
