@@ -8,17 +8,17 @@ namespace Mithmarie
         public event Action<string> OnOutputText;
 
         [SerializeField] private Transform eyes = default;
-        [SerializeField] private GameObject hoverCubePrefab = default;
+        [SerializeField] private GameObject outlineCubePrefab = default;
 
-        private Transform hover;
+        private Transform outline;
         private Raycast raycast;
         private float normalDirection;
         private RaycastHit hit;
 
         private void Awake()
         {
-            hover = Instantiate(hoverCubePrefab, Vector3.zero, Quaternion.identity).transform;
-            hover.gameObject.SetActive(false);
+            outline = Instantiate(outlineCubePrefab, Vector3.zero, Quaternion.identity).transform;
+            outline.gameObject.SetActive(false);
         }
 
         public void Configure(Raycast raycast, float normalDirection)
@@ -40,13 +40,13 @@ namespace Mithmarie
         {
             if(blockPos == null)
             {
-                hover.gameObject.SetActive(false);
+                outline.gameObject.SetActive(false);
                 OnOutputText?.Invoke(string.Empty);
                 return;
             }
 
-            hover.gameObject.SetActive(true);
-            hover.position = (Vector3Int)blockPos;
+            outline.gameObject.SetActive(true);
+            outline.position = (Vector3Int)blockPos;
             OnOutputText?.Invoke(blockPos.ToString());
         }
 

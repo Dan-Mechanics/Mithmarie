@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
-  hoverCubePrefab: {fileID: 711197107212623808, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+  outlineCubePrefab: {fileID: 711197107212623808, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
 --- !u!114 &1271512375170221928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,6 +185,7 @@ GameObject:
   - component: {fileID: 3062100453456221858}
   - component: {fileID: 7032356765651341419}
   - component: {fileID: 8823984721961712048}
+  - component: {fileID: 1491899682913643028}
   m_Layer: 3
   m_Name: eyes
   m_TagString: Untagged
@@ -266,3 +267,17 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3889645060876896680}
   m_Enabled: 1
+--- !u!114 &1491899682913643028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3889645060876896680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2dc9093afcafc248a46a477887e62a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 7032356765651341419}
+  insideBlockColor: {r: 0.59927905, g: 0.61271006, b: 0.6320754, a: 1}

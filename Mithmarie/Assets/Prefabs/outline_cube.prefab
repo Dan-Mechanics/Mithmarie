@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6598048370314387749}
   - component: {fileID: 3261312478881130883}
   m_Layer: 0
-  m_Name: hover_cube
+  m_Name: outline_cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
