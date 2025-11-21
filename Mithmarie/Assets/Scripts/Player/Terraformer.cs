@@ -6,16 +6,16 @@ namespace Mithmarie
 {
     public class Terraformer : StateBehaviour
     {
-        public float NormalDirection => normalDirection;
+        public float HitPointExtrusion => hitPointExtrusion;
         public Raycast Raycast => raycast;
 
-        public event Action OnInput;
+        public event Action OnBeginEditing;
         public event Action<Vector3Int?, Vector3Int?, Color> OnShowPreview;
         public event Action<Vector3Int, Vector3Int> OnEditSelection;
         
         [SerializeField] private Transform eyes = default;
         [SerializeField] private Raycast raycast = default;
-        [SerializeField] private float normalDirection = default;
+        [SerializeField] private float hitPointExtrusion = default;
         [SerializeField] private bool leftMouseButton = default;
         [SerializeField] private Color color = default;
         [SerializeField] private GameObject previewPrefab = default;
@@ -25,8 +25,8 @@ namespace Mithmarie
         private Vector3Int? secondPos;
         private World world;
 
-        private bool WasPressed => leftMouseButton ? Mouse.current.leftButton.wasPressedThisFrame : Mouse.current.rightButton.wasPressedThisFrame;
-        private bool WasReleased => leftMouseButton ? Mouse.current.leftButton.wasReleasedThisFrame : Mouse.current.rightButton.wasReleasedThisFrame;
+        private bool ButtonPressed => leftMouseButton ? Mouse.current.leftButton.wasPressedThisFrame : Mouse.current.rightButton.wasPressedThisFrame;
+        private bool ButtonReleased => leftMouseButton ? Mouse.current.leftButton.wasReleasedThisFrame : Mouse.current.rightButton.wasReleasedThisFrame;
 
         private void Start()
         {
@@ -38,7 +38,7 @@ namespace Mithmarie
         {
             base.OnTick();
             if(firstPos != null && raycast.Cast(eyes, out hit))
-                secondPos = Utils.ApplyGrid(hit.point + (hit.normal * normalDirection));
+                secondPos = Utils.ApplyGrid(hit.point + (hit.normal * hitPointExtrusion));
 
             OnShowPreview?.Invoke(firstPos, secondPos, color);
         }
@@ -46,19 +46,19 @@ namespace Mithmarie
         public override void OnFrame()
         {
             base.OnFrame();
-            if (WasPressed)
+            if (ButtonPressed)
             {
-                OnInput?.Invoke();
+                OnBeginEditing?.Invoke();
                 ResetToDefault();
                 if(raycast.Cast(eyes, out hit))
-                    firstPos = Utils.ApplyGrid(hit.point + (hit.normal * normalDirection));
+                    firstPos = Utils.ApplyGrid(hit.point + (hit.normal * hitPointExtrusion));
             }
 
-            if (firstPos != null && WasReleased)
+            if (firstPos != null && ButtonReleased)
             {
                 if (raycast.Cast(eyes, out hit))
                 {
-                    secondPos = Utils.ApplyGrid(hit.point + (hit.normal * normalDirection));
+                    secondPos = Utils.ApplyGrid(hit.point + (hit.normal * hitPointExtrusion));
                     OnEditSelection?.Invoke((Vector3Int)firstPos, (Vector3Int)secondPos);
                     world.Flush();
                 }

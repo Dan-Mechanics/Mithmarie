@@ -5,17 +5,17 @@ using UnityEngine;
 
 namespace Mithmarie
 {
+    /// <summary>
+    /// This class does too much, something has to go.
+    /// </summary>
     public class World : MonoBehaviour, IBinarySerializable
     {
         public const int CHUNK_SIZE = 16;
         
-        //private readonly HashSet<Vector3Int> blocks = new HashSet<Vector3Int>();
-
         private readonly Dictionary<Vector3Int, HashSet<Vector3Int>> chunks = new Dictionary<Vector3Int, HashSet<Vector3Int>>();
-        private readonly HashSet<Vector3Int> changedChunks;
-
-        private IMeshGeneratable generatable;
-        public ChunkManager chunkManager;
+        private readonly HashSet<Vector3Int> changedChunkPositions;
+        
+        private ChunksVisualizer chunksVisualizer;
         private IMessageService message;
 
         private delegate void EditBlock(Vector3Int blockPos);
@@ -23,7 +23,7 @@ namespace Mithmarie
 
         private void Awake()
         {
-            generatable = FindAnyObjectByType<CulledMeshGenerator>();
+            chunksVisualizer = FindAnyObjectByType<ChunksVisualizer>();
         }
 
         private void Start()
@@ -53,7 +53,7 @@ namespace Mithmarie
                 return;
 
             chunks[chunkPos].Add(blockPos);
-            NotifyChunkHasChanged(chunkPos);
+            changedChunkPositions.Add(chunkPos);
         }
 
         public void Remove(Vector3Int blockPos)
@@ -66,14 +66,14 @@ namespace Mithmarie
                 return;
 
             chunks[chunkPos].Remove(blockPos);
-            NotifyChunkHasChanged(chunkPos);
+            changedChunkPositions.Add(chunkPos);
         }
 
         public void Clear()
         {
             foreach (Vector3Int chunkPos in chunks.Keys)
             {
-                changedChunks.Add(chunkPos);
+                changedChunkPositions.Add(chunkPos);
             }
 
             chunks.Clear();
@@ -81,16 +81,16 @@ namespace Mithmarie
 
         public void Flush()
         {
-            foreach (Vector3Int chunkPos in changedChunks)
+            foreach (Vector3Int chunkPos in changedChunkPositions)
             {
-                if(!chunks.ContainsKey(chunkPos) || chunks[chunkPos].Count <= 0)
+                if(!chunks.ContainsKey(chunkPos) || chunks[chunkPos] == null || chunks[chunkPos].Count <= 0)
                 {
                     chunks.Remove(chunkPos);
-                    chunkManager.DrawChunk(chunkPos, null);
+                    chunksVisualizer.DrawChunk(chunkPos, null);
                     continue;
                 }
 
-                chunkManager.DrawChunk(chunkPos, chunks[chunkPos]);
+                chunksVisualizer.DrawChunk(chunkPos, chunks[chunkPos]);
             }
         }
 
@@ -125,16 +125,6 @@ namespace Mithmarie
                     }
                 }
             }
-        }
-
-        private void NotifyChunkHasChanged(Vector3Int chunkPos) 
-        {
-            changedChunks.Add(chunkPos);
-            changedChunks.Add(chunkPos + Vector3Int.up);
-            changedChunks.Add(chunkPos + Vector3Int.forward);
-            changedChunks.Add(chunkPos + Vector3Int.back);
-            changedChunks.Add(chunkPos + Vector3Int.left);
-            changedChunks.Add(chunkPos + Vector3Int.right);
         }
 
         private Vector3Int[] GetAllBlocks()

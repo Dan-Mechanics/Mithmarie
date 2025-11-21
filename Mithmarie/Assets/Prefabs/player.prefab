@@ -69,8 +69,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb68333a46c41e45ae1b66cb2fb09aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprintSpeedMult: 5
-  speed: 10
+  sprintSpeedMult: 4
+  speed: 12
 --- !u!114 &771546152580428926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,12 +100,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
   raycast:
-    range: 100
+    range: 12
     mask:
       serializedVersion: 2
       m_Bits: 17
     interaction: 1
-  normalDirection: 0.4
+  hitPointExtrusion: 0.4
   leftMouseButton: 0
   color: {r: 0.40392157, g: 0.62352943, b: 0.4627451, a: 0.43137255}
   previewPrefab: {fileID: 9125353668538272078, guid: 6b04c716f67080d4aa453e28a5f69272, type: 3}
@@ -123,12 +123,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
   raycast:
-    range: 100
+    range: 12
     mask:
       serializedVersion: 2
       m_Bits: 1
     interaction: 1
-  normalDirection: -0.4
+  hitPointExtrusion: -0.4
   leftMouseButton: 1
   color: {r: 0.85882354, g: 0.3529412, b: 0.36078432, a: 0.43137255}
   previewPrefab: {fileID: 9125353668538272078, guid: 7637c7c107267804c8eeb011364a4eee, type: 3}

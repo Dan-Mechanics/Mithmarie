@@ -28,7 +28,7 @@ namespace Mithmarie
             new Vector2(1, 0)
         };
 
-        private void Start()
+        public void Create()
         {
             mesh = new Mesh();
             mesh.MarkDynamic();
@@ -122,9 +122,24 @@ namespace Mithmarie
             mesh.triangles = tris.ToArray();
             mesh.uv = uvs.ToArray();
 
+            verts.Clear();
+            tris.Clear();
+            uvs.Clear();
+
             mesh.RecalculateNormals();
             Physics.BakeMesh(mesh.GetInstanceID(), false, cookingOptions);
             coll.sharedMesh = mesh;
+        }
+
+        public void Destroy()
+        {
+            verts.Clear();
+            tris.Clear();
+            uvs.Clear();
+            mesh.Clear();
+
+            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 }

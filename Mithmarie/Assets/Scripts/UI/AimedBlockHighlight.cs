@@ -12,7 +12,7 @@ namespace Mithmarie
 
         private Transform outline;
         private Raycast raycast;
-        private float normalDirection;
+        private float hitPointExtrusion;
         private RaycastHit hit;
 
         private void Awake()
@@ -21,10 +21,10 @@ namespace Mithmarie
             outline.gameObject.SetActive(false);
         }
 
-        public void Configure(Raycast raycast, float normalDirection)
+        public void Configure(Raycast raycast, float hitPointExtrusion)
         {
             this.raycast = raycast;
-            this.normalDirection = normalDirection;
+            this.hitPointExtrusion = hitPointExtrusion;
         }
 
         public override void OnTick()
@@ -32,7 +32,7 @@ namespace Mithmarie
             base.OnFrame();
             Highlight(null);
             if (raycast.Cast(eyes, out hit))
-                Highlight(Utils.ApplyGrid(hit.point + (hit.normal * normalDirection)));
+                Highlight(Utils.ApplyGrid(hit.point + (hit.normal * hitPointExtrusion)));
 
         }
 

@@ -27,7 +27,7 @@ namespace Mithmarie
             list.RemoveAt(list.FindIndex(x => x is Player));
             playerBehaviour = list.ToArray();
 
-            blockHighlight.Configure(addTerraform.Raycast, addTerraform.NormalDirection);
+            blockHighlight.Configure(addTerraform.Raycast, addTerraform.HitPointExtrusion);
         }
          
         public override void Enter()
@@ -37,8 +37,8 @@ namespace Mithmarie
             Cursor.lockState = CursorLockMode.Locked;
 
             playerHUD.Show();
-            addTerraform.OnInput += () => { blockHighlight.Configure(addTerraform.Raycast, addTerraform.NormalDirection); };
-            removeTerraform.OnInput += () => { blockHighlight.Configure(removeTerraform.Raycast, removeTerraform.NormalDirection); };
+            addTerraform.OnBeginEditing += () => { blockHighlight.Configure(addTerraform.Raycast, addTerraform.HitPointExtrusion); };
+            removeTerraform.OnBeginEditing += () => { blockHighlight.Configure(removeTerraform.Raycast, removeTerraform.HitPointExtrusion); };
 
             addTerraform.OnShowPreview += addSelectionPreview.UpdatePreview;
             removeTerraform.OnShowPreview += removeSelectionPreview.UpdatePreview;
@@ -59,8 +59,8 @@ namespace Mithmarie
             if (playerHUD != null)
                 playerHUD.Hide();
 
-            addTerraform.OnInput -= () => { blockHighlight.Configure(addTerraform.Raycast, addTerraform.NormalDirection); };
-            removeTerraform.OnInput -= () => { blockHighlight.Configure(removeTerraform.Raycast, removeTerraform.NormalDirection); };
+            addTerraform.OnBeginEditing -= () => { blockHighlight.Configure(addTerraform.Raycast, addTerraform.HitPointExtrusion); };
+            removeTerraform.OnBeginEditing -= () => { blockHighlight.Configure(removeTerraform.Raycast, removeTerraform.HitPointExtrusion); };
 
             addTerraform.OnShowPreview -= addSelectionPreview.UpdatePreview;
             removeTerraform.OnShowPreview -= removeSelectionPreview.UpdatePreview;
