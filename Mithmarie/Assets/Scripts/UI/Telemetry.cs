@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Mithmarie
 {
-    public class framesGUID : MonoBehaviour
+    public class Telemetry : MonoBehaviour
     {
         private TMP_Text text;
         private void Awake()

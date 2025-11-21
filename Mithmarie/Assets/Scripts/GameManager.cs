@@ -6,7 +6,6 @@ namespace Mithmarie
     public class GameManager : MonoBehaviour
     {
         public const Key TOGGLE_STATE_KEY = Key.Escape;
-
         private readonly FSM fsm = new FSM();
 
         private void Start()

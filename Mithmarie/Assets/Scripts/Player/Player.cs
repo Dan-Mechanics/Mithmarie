@@ -35,6 +35,7 @@ namespace Mithmarie
             base.Enter();
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+
             playerHUD.Show();
             addTerraform.OnInput += () => { blockHighlight.Configure(addTerraform.Raycast, addTerraform.NormalDirection); };
             removeTerraform.OnInput += () => { blockHighlight.Configure(removeTerraform.Raycast, removeTerraform.NormalDirection); };
@@ -53,14 +54,19 @@ namespace Mithmarie
             base.Exit();
             wantsToClose = false;
 
+            // APPLICATION.QUIT --> DESTROY --> EXIT --> PLAYERHUD DOESNT EXIST ANYMORE,
+            // THIS FIXES IT.
             if (playerHUD != null)
                 playerHUD.Hide();
 
             addTerraform.OnInput -= () => { blockHighlight.Configure(addTerraform.Raycast, addTerraform.NormalDirection); };
             removeTerraform.OnInput -= () => { blockHighlight.Configure(removeTerraform.Raycast, removeTerraform.NormalDirection); };
+
             addTerraform.OnShowPreview -= addSelectionPreview.UpdatePreview;
             removeTerraform.OnShowPreview -= removeSelectionPreview.UpdatePreview;
+
             blockHighlight.OnOutputText -= playerHUD.SetCenterText;
+
             addTerraform.OnEditSelection -= world.AddSelection;
             removeTerraform.OnEditSelection -= world.RemoveSelection;
         }
