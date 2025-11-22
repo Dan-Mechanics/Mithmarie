@@ -11,7 +11,11 @@ namespace Mithmarie
         public int maxY;
         public int minZ;
         public int maxZ;
-    
+
+        public int _maxX;
+        public int _maxY;
+        public int _maxZ;
+
         public ExpandingCubeMesh(Vector3Int center)
         {
             minX = maxX = center.x;
@@ -193,8 +197,120 @@ namespace Mithmarie
             ExpandBack(blocksLeft);
         }
 
+        public bool CanDrawUpFace(HashSet<Vector3Int> blocks)
+        {
+            return true;
+            Vector3Int current = new Vector3Int(0, _maxY + 1, 0);
+            for (int x = minX; x <= _maxY; x++)
+            {
+                for (int z = minZ; z <= _maxY; z++)
+                {
+                    current.x = x;
+                    current.z = z;
+                    if (!blocks.Contains(current))
+                        return true;
+                }
+            }
+
+            // HERE, WE WILL NOT DRAW BECAUSE THERE IS NO
+            // AIR BLOCK TO SEE IT THROUGH.
+            return false;
+        }
+
+        public bool CanDrawBottomFace(HashSet<Vector3Int> blocks)
+        {
+            return true;
+            Vector3Int current = new Vector3Int(0, minY - 1, 0);
+            for (int x = minX; x <= _maxX; x++)
+            {
+                for (int z = minZ; z <= _maxZ; z++)
+                {
+                    current.x = x;
+                    current.z = z;
+                    if (!blocks.Contains(current))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool CanDrawLeftFace(HashSet<Vector3Int> blocks)
+        {
+            return true;
+            Vector3Int current = new Vector3Int(minX - 1, 0, 0);
+            for (int y = minY; y <= _maxY; y++)
+            {
+                for (int z = minZ; z <= _maxZ; z++)
+                {
+                    current.y = y;
+                    current.z = z;
+                    if (!blocks.Contains(current))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool CanDrawRightFace(HashSet<Vector3Int> blocks)
+        {
+            return true;
+            Vector3Int current = new Vector3Int(_maxX + 1, 0, 0);
+            for (int y = minY; y <= _maxY; y++)
+            {
+                for (int z = minZ; z <= _maxZ; z++)
+                {
+                    current.y = y;
+                    current.z = z;
+                    if (!blocks.Contains(current))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool CanDrawFrontFace(HashSet<Vector3Int> blocks)
+        {
+            return true;
+            Vector3Int current = new Vector3Int(0, 0, _maxZ + 1);
+            for (int x = minX; x <= _maxX; x++)
+            {
+                for (int y = minY; y <= _maxY; y++)
+                {
+                    current.x = x;
+                    current.y = y;
+                    if (!blocks.Contains(current))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool CanDrawBackFace(HashSet<Vector3Int> blocks)
+        {
+            return true;
+            Vector3Int current = new Vector3Int(0, 0, minZ - 1);
+            for (int x = minX; x <= _maxX; x++)
+            {
+                for (int y = minY; y <= _maxX; y++)
+                {
+                    current.x = x;
+                    current.y = y;
+                    if (!blocks.Contains(current))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
         public void AddSelfToMesh(List<Vector3> verts, List<int> tris, List<Vector2> uvs, HashSet<Vector3Int> blocks)
         {
+            SaveMax();
+            
             maxX++;
             maxY++;
             maxZ++;
@@ -204,86 +320,117 @@ namespace Mithmarie
             int height = Mathf.Abs(maxY - minY);
 
             int[] tempTris = new int[6];
-            int faceCount = 6;
+            int faceCount = 0;
             int offset = verts.Count;
 
-            verts.Add(new Vector3(minX, maxY, minZ));
-            verts.Add(new Vector3(minX, maxY, maxZ));
-            verts.Add(new Vector3(maxX, maxY, maxZ));
-            verts.Add(new Vector3(maxX, maxY, minZ));
-
-            uvs.AddRange(new Vector2[]
+            // if all the blcoks in the upwards direction are not blocks.
+            if (CanDrawUpFace(blocks))
             {
-                new Vector2(0, 0),
-                new Vector2(0, depth),
-                new Vector2(width, depth),
-                new Vector2(width, 0)
-            });
+                verts.Add(new Vector3(minX, maxY, minZ));
+                verts.Add(new Vector3(minX, maxY, maxZ));
+                verts.Add(new Vector3(maxX, maxY, maxZ));
+                verts.Add(new Vector3(maxX, maxY, minZ));
 
-            verts.Add(new Vector3(minX, minY, minZ));
-            verts.Add(new Vector3(maxX, minY, minZ));
-            verts.Add(new Vector3(maxX, minY, maxZ));
-            verts.Add(new Vector3(minX, minY, maxZ));
+                uvs.AddRange(new Vector2[]
+                {
+                    new Vector2(0, 0),
+                    new Vector2(0, depth),
+                    new Vector2(width, depth),
+                    new Vector2(width, 0)
+                });
 
-            uvs.AddRange(new Vector2[]
+                faceCount++;
+            }
+
+            if (CanDrawBottomFace(blocks))
             {
-                new Vector2(0, 0),
-                new Vector2(0, width),
-                new Vector2(depth, width),
-                new Vector2(depth, 0)
-            });
+                verts.Add(new Vector3(minX, minY, minZ));
+                verts.Add(new Vector3(maxX, minY, minZ));
+                verts.Add(new Vector3(maxX, minY, maxZ));
+                verts.Add(new Vector3(minX, minY, maxZ));
 
-            verts.Add(new Vector3(minX, minY, minZ));
-            verts.Add(new Vector3(minX, maxY, minZ));
-            verts.Add(new Vector3(maxX, maxY, minZ));
-            verts.Add(new Vector3(maxX, minY, minZ));
+                uvs.AddRange(new Vector2[]
+                {
+                    new Vector2(0, 0),
+                    new Vector2(0, width),
+                    new Vector2(depth, width),
+                    new Vector2(depth, 0)
+                });
 
-            uvs.AddRange(new Vector2[]
+                faceCount++;
+            }
+
+            if (CanDrawBackFace(blocks))
             {
-                new Vector2(0, 0),
-                new Vector2(0, height),
-                new Vector2(width, height),
-                new Vector2(width, 0)
-            });
+                verts.Add(new Vector3(minX, minY, minZ));
+                verts.Add(new Vector3(minX, maxY, minZ));
+                verts.Add(new Vector3(maxX, maxY, minZ));
+                verts.Add(new Vector3(maxX, minY, minZ));
 
-            verts.Add(new Vector3(maxX, minY, minZ));
-            verts.Add(new Vector3(maxX, maxY, minZ));
-            verts.Add(new Vector3(maxX, maxY, maxZ));
-            verts.Add(new Vector3(maxX, minY, maxZ));
+                uvs.AddRange(new Vector2[]
+                {
+                    new Vector2(0, 0),
+                    new Vector2(0, height),
+                    new Vector2(width, height),
+                    new Vector2(width, 0)
+                });
 
-            uvs.AddRange(new Vector2[]
+                faceCount++;
+            }
+
+            if (CanDrawRightFace(blocks))
             {
-                new Vector2(0, 0),
-                new Vector2(0, height),
-                new Vector2(depth, height),
-                new Vector2(depth, 0)
-            });
+                verts.Add(new Vector3(maxX, minY, minZ));
+                verts.Add(new Vector3(maxX, maxY, minZ));
+                verts.Add(new Vector3(maxX, maxY, maxZ));
+                verts.Add(new Vector3(maxX, minY, maxZ));
 
-            verts.Add(new Vector3(maxX, minY, maxZ));
-            verts.Add(new Vector3(maxX, maxY, maxZ));
-            verts.Add(new Vector3(minX, maxY, maxZ));
-            verts.Add(new Vector3(minX, minY, maxZ));
-
-            uvs.AddRange(new Vector2[]
-            {
-                new Vector2(0, 0),
-                new Vector2(0, height),
-                new Vector2(width, height),
-                new Vector2(width, 0)
-            });
-
-            verts.Add(new Vector3(minX, minY, maxZ));
-            verts.Add(new Vector3(minX, maxY, maxZ));
-            verts.Add(new Vector3(minX, maxY, minZ));
-            verts.Add(new Vector3(minX, minY, minZ));
-
-            uvs.AddRange(new Vector2[]
-            {
+                uvs.AddRange(new Vector2[]
+                {
                 new Vector2(0, 0),
                 new Vector2(0, height),
                 new Vector2(depth, height),
                 new Vector2(depth, 0)
-            });
+                });
+
+                faceCount++;
+            }
+
+            if (CanDrawFrontFace(blocks))
+            {
+                verts.Add(new Vector3(maxX, minY, maxZ));
+                verts.Add(new Vector3(maxX, maxY, maxZ));
+                verts.Add(new Vector3(minX, maxY, maxZ));
+                verts.Add(new Vector3(minX, minY, maxZ));
+
+                uvs.AddRange(new Vector2[]
+                {
+                    new Vector2(0, 0),
+                    new Vector2(0, height),
+                    new Vector2(width, height),
+                    new Vector2(width, 0)
+                });
+
+                faceCount++;
+            }
+
+            if (CanDrawLeftFace(blocks))
+            {
+                verts.Add(new Vector3(minX, minY, maxZ));
+                verts.Add(new Vector3(minX, maxY, maxZ));
+                verts.Add(new Vector3(minX, maxY, minZ));
+                verts.Add(new Vector3(minX, minY, minZ));
+
+                faceCount++;
+                uvs.AddRange(new Vector2[]
+                {
+                    new Vector2(0, 0),
+                    new Vector2(0, height),
+                    new Vector2(depth, height),
+                    new Vector2(depth, 0)
+                });
+
+            }
 
             for (int i = 0; i < faceCount; i++)
             {
@@ -304,6 +451,13 @@ namespace Mithmarie
                     new Vector2(Mathf.Abs(maxX-minX), 0)
                 });*/
             }
+        }
+
+        private void SaveMax()
+        {
+            _maxX = maxX;
+            _maxY = maxY;
+            _maxZ = maxZ;
         }
     }
 }

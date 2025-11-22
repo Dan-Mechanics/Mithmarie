@@ -21,7 +21,7 @@ namespace Mithmarie
 
             for (int i = 0; i < cubes.Count; i++)
             {
-                cubes[i].AddSelfToMesh(verts, tris, uvs, HashSet<Vector3Int> blocks);
+                cubes[i].AddSelfToMesh(verts, tris, uvs, blocks);
             }
 
             Mesh mesh = new Mesh
@@ -48,11 +48,11 @@ namespace Mithmarie
                 cube.ExandRight(blocksLeft);
                 cube.ExpandLeft(blocksLeft);
 
-                cube.ExandUp(blocksLeft);
-                cube.ExpandDown(blocksLeft);
-
                 cube.ExpandForward(blocksLeft);
                 cube.ExpandBack(blocksLeft);
+
+                cube.ExandUp(blocksLeft);
+                cube.ExpandDown(blocksLeft);
 
                 result.Add(cube);
             }
