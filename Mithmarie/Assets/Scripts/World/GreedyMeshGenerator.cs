@@ -41,16 +41,14 @@ namespace Mithmarie
         {
             List<ExpandingCubeMesh> result = new List<ExpandingCubeMesh>();
 
-            Vector3Int[] blocks = blocksLeft.ToArray();
+            //Vector3Int[] blocks = blocksLeft.ToArray();
             Queue<Vector3Int> blocksToRemove = new Queue<Vector3Int>();
 
-            for (int i = 0; i < blocks.Length; i++)
+            while(blocksLeft.Count > 0)
             {
-                // THIS BLOCK DOESN'T EXIST ANYMORE ...
-                if (!blocksLeft.Contains(blocks[i]))
-                    continue;
+                ExpandingCubeMesh cube = new ExpandingCubeMesh(blocksLeft.ToArray()[0]);
 
-                ExpandingCubeMesh cube = new ExpandingCubeMesh(blocks[i]);
+                blocksToRemove.Clear();
                 while (cube.CanGoRight(blocksLeft, blocksToRemove))
                 {
                     while (blocksToRemove.Count > 0)
@@ -95,6 +93,60 @@ namespace Mithmarie
                 cube.SpawnDemoCube(cubePrefab);
                 result.Add(cube);
             }
+
+            /*for (int i = 0; i < blocks.Length; i++)
+            {
+                // THIS BLOCK DOESN'T EXIST ANYMORE ...
+                if (!blocksLeft.Contains(blocks[i]))
+                    continue;
+
+                ExpandingCubeMesh cube = new ExpandingCubeMesh(blocks[i]);
+
+                blocksToRemove.Clear();
+                while (cube.CanGoRight(blocksLeft, blocksToRemove))
+                {
+                    while (blocksToRemove.Count > 0)
+                        blocksLeft.Remove(blocksToRemove.Dequeue());
+                }
+
+                blocksToRemove.Clear();
+                while (cube.CanGoLeft(blocksLeft, blocksToRemove))
+                {
+                    while (blocksToRemove.Count > 0)
+                        blocksLeft.Remove(blocksToRemove.Dequeue());
+                }
+
+                blocksToRemove.Clear();
+                while (cube.CanGoForward(blocksLeft, blocksToRemove))
+                {
+                    while (blocksToRemove.Count > 0)
+                        blocksLeft.Remove(blocksToRemove.Dequeue());
+                }
+
+                blocksToRemove.Clear();
+                while (cube.CanGoBack(blocksLeft, blocksToRemove))
+                {
+                    while (blocksToRemove.Count > 0)
+                        blocksLeft.Remove(blocksToRemove.Dequeue());
+                }
+
+                blocksToRemove.Clear();
+                while (cube.CanGoUp(blocksLeft, blocksToRemove))
+                {
+                    while (blocksToRemove.Count > 0)
+                        blocksLeft.Remove(blocksToRemove.Dequeue());
+                }
+
+                blocksToRemove.Clear();
+                while (cube.CanGoDown(blocksLeft, blocksToRemove))
+                {
+                    while (blocksToRemove.Count > 0)
+                        blocksLeft.Remove(blocksToRemove.Dequeue());
+                }
+
+                cube.SpawnDemoCube(cubePrefab);
+                result.Add(cube);
+            }*/
 
             return result;
         }

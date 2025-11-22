@@ -18,7 +18,6 @@ namespace Mithmarie
         [SerializeField] private float hitPointExtrusion = default;
         [SerializeField] private bool leftMouseButton = default;
         [SerializeField] private Color color = default;
-        [SerializeField] private GameObject previewPrefab = default;
 
         private RaycastHit hit;
         private Vector3Int? firstPos;

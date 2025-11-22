@@ -32,9 +32,10 @@ namespace Mithmarie
                     blocksToRemove.Enqueue(current);
                     if (!blocksLeft.Contains(current))
                         return false;
+
                 }
             }
-    
+
             maxY = current.y;
             return true;
         }
@@ -53,7 +54,7 @@ namespace Mithmarie
                         return false;
                 }
             }
-    
+
             minY = current.y;
             return true;
         }
@@ -72,7 +73,7 @@ namespace Mithmarie
                         return false;
                 }
             }
-    
+
             minX = current.x;
             return true;
         }
@@ -91,7 +92,7 @@ namespace Mithmarie
                         return false;
                 }
             }
-    
+
             maxX = current.x;
             return true;
         }
@@ -110,11 +111,11 @@ namespace Mithmarie
                         return false;
                 }
             }
-    
+
             maxZ = current.z;
             return true;
         }
-    
+        
         public bool CanGoBack(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
         {
             Vector3Int current = new Vector3Int(0, 0, minZ - 1);
@@ -129,7 +130,7 @@ namespace Mithmarie
                         return false;
                 }
             }
-    
+
             minZ = current.z;
             return true;
         }
