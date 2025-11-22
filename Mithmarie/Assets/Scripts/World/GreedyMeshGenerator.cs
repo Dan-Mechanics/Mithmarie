@@ -293,66 +293,30 @@ namespace Mithmarie
                 int faceCount = 6;
                 int offset = verts.Count;
 
-                // up
-                /*verts.Add(blockPos + Vector3Int.up);
-                verts.Add(blockPos + upForward);
-                verts.Add(blockPos + Vector3Int.one);
-                verts.Add(blockPos + upRight);*/
-                verts.Add(new Vector3(minX, maxY, minZ));
-                verts.Add(new Vector3(minX, maxY, maxZ));
-                verts.Add(new Vector3(maxX, maxY, maxZ));
-                verts.Add(new Vector3(maxX, maxY, minZ));
-
-                // down
-                /*verts.Add(blockPos + Vector3Int.zero);
-                verts.Add(blockPos + Vector3Int.right);
-                verts.Add(blockPos + forwardRight);
-                verts.Add(blockPos + Vector3Int.forward);*/
-                verts.Add(new Vector3(minX, minY, minZ));
-                verts.Add(new Vector3(maxX, minY, minZ));
-                verts.Add(new Vector3(maxX, minY, maxZ));
-                verts.Add(new Vector3(minX, minY, maxZ));
-
-                // forward
-                /*verts.Add(blockPos + forwardRight);
-                verts.Add(blockPos + Vector3Int.one);
-                verts.Add(blockPos + upForward);
-                verts.Add(blockPos + Vector3Int.forward);*/
-                verts.Add(new Vector3(maxX, minY, maxZ));
-                verts.Add(new Vector3(maxX, maxY, maxZ));
-                verts.Add(new Vector3(minX, maxY, maxZ));
-                verts.Add(new Vector3(minX, minY, maxZ));
-
-                // right
-                /*verts.Add(blockPos + Vector3Int.right);
-                verts.Add(blockPos + upRight);
-                verts.Add(blockPos + Vector3Int.one);
-                verts.Add(blockPos + forwardRight);*/
-                verts.Add(new Vector3(minX, minY, maxZ));
-                verts.Add(new Vector3(minX, maxY, maxZ));
-                verts.Add(new Vector3(maxX, maxY, maxZ));
-                verts.Add(new Vector3(maxX, minY, maxZ));
-
-                // back
-                /*verts.Add(blockPos + Vector3Int.zero);
-                verts.Add(blockPos + Vector3Int.up);
-                verts.Add(blockPos + upRight);
-                verts.Add(blockPos + Vector3Int.right);*/
-                verts.Add(new Vector3(minX, minY, minZ));
-                verts.Add(new Vector3(minX, maxY, minZ));
-                verts.Add(new Vector3(minX, maxY, maxZ));
-                verts.Add(new Vector3(maxX, minY, minZ));
-
-
-                // left
-                /*verts.Add(blockPos + Vector3Int.forward);
-                verts.Add(blockPos + upForward);
-                verts.Add(blockPos + Vector3Int.up);
-                verts.Add(blockPos + Vector3Int.zero);*/
-                verts.Add(new Vector3(minX, minY, maxZ));
-                verts.Add(new Vector3(minX, maxY, maxZ));
-                verts.Add(new Vector3(minX, maxY, minZ));
-                verts.Add(new Vector3(minX, minY, minZ));
+                verts.Add(new Vector3(0, 1, 0));
+                verts.Add(new Vector3(0, 1, 1));
+                verts.Add(new Vector3(1, 1, 1));
+                verts.Add(new Vector3(1, 1, 0));
+                verts.Add(new Vector3(0, 0, 0));
+                verts.Add(new Vector3(1, 0, 0));
+                verts.Add(new Vector3(1, 0, 1));
+                verts.Add(new Vector3(0, 0, 1));
+                verts.Add(new Vector3(0, 0, 0));
+                verts.Add(new Vector3(0, 1, 0));
+                verts.Add(new Vector3(1, 1, 0));
+                verts.Add(new Vector3(1, 0, 0));
+                verts.Add(new Vector3(1, 0, 0));
+                verts.Add(new Vector3(1, 1, 0));
+                verts.Add(new Vector3(1, 1, 1));
+                verts.Add(new Vector3(1, 0, 1));
+                verts.Add(new Vector3(1, 0, 1));
+                verts.Add(new Vector3(1, 1, 1));
+                verts.Add(new Vector3(0, 1, 1));
+                verts.Add(new Vector3(0, 0, 1));
+                verts.Add(new Vector3(0, 0, 1));
+                verts.Add(new Vector3(0, 1, 1));
+                verts.Add(new Vector3(0, 1, 0));
+                verts.Add(new Vector3(0, 0, 0));
 
                 for (int i = 0; i < faceCount; i++)
                 {
