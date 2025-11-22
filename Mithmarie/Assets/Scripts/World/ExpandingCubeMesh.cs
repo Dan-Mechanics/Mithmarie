@@ -155,91 +155,69 @@ namespace Mithmarie
             List<Face> faces = new List<Face>();
 
             int[] tempTris = new int[6];
+            int faceCount = 6;
             int offset = verts.Count;
 
-            Face up = new Face (
+            Face up = new Face(
                 new Vector3(minX, maxY, minZ),
                 new Vector3(minX, maxY, maxZ),
                 new Vector3(maxX, maxY, maxZ),
                 new Vector3(maxX, maxY, minZ)
-            );
-            ProcessFace(verts, faces, up);
+                );
 
-            Face bottom = new Face   (
-                new Vector3(minX, minY, minZ),
-                new Vector3(maxX, minY, minZ),
-                new Vector3(maxX, minY, maxZ),
-                new Vector3(minX, minY, maxZ)
-            );
-            ProcessFace(verts, faces, bottom);
-
-            Face front = new Face (
-                new Vector3(minX, minY, minZ),
-                new Vector3(minX, maxY, minZ),
-                new Vector3(maxX, maxY, minZ),
-                new Vector3(maxX, minY, minZ)
-            );
-            ProcessFace(verts, faces, front);
-
-            Face right = new Face  (
-                new Vector3(maxX, minY, minZ),
-                new Vector3(maxX, maxY, minZ),
-                new Vector3(maxX, maxY, maxZ),
-                new Vector3(maxX, minY, maxZ)
-            );
-            ProcessFace(verts, faces, right);
-
-            Face back = new Face (
-                new Vector3(maxX, minY, maxZ),
-                new Vector3(maxX, maxY, maxZ),
-                new Vector3(minX, maxY, maxZ),
-                new Vector3(minX, minY, maxZ)
-            );
-            ProcessFace(verts, faces, back);
-
-            Face left = new Face (
-                new Vector3(minX, minY, maxZ),
-                new Vector3(minX, maxY, maxZ),
-                new Vector3(minX, maxY, minZ),
-                new Vector3(minX, minY, minZ)
-            );
-            ProcessFace(verts, faces, left);
-
+            bool isSame = false;
             for (int i = 0; i < faces.Count; i++)
+            {
+                if (!up.IsSame(faces[i]))
+                    continue;
+
+                isSame = true;
+                break;
+            }
+
+            if (!isSame)
+                up.AddSelfToVerts(verts);
+
+            verts.Add(new Vector3(minX, minY, minZ));
+            verts.Add(new Vector3(maxX, minY, minZ));
+            verts.Add(new Vector3(maxX, minY, maxZ));
+            verts.Add(new Vector3(minX, minY, maxZ));
+
+            verts.Add(new Vector3(minX, minY, minZ));
+            verts.Add(new Vector3(minX, maxY, minZ));
+            verts.Add(new Vector3(maxX, maxY, minZ));
+            verts.Add(new Vector3(maxX, minY, minZ));
+
+            verts.Add(new Vector3(maxX, minY, minZ));
+            verts.Add(new Vector3(maxX, maxY, minZ));
+            verts.Add(new Vector3(maxX, maxY, maxZ));
+            verts.Add(new Vector3(maxX, minY, maxZ));
+
+            verts.Add(new Vector3(maxX, minY, maxZ));
+            verts.Add(new Vector3(maxX, maxY, maxZ));
+            verts.Add(new Vector3(minX, maxY, maxZ));
+            verts.Add(new Vector3(minX, minY, maxZ));
+
+            verts.Add(new Vector3(minX, minY, maxZ));
+            verts.Add(new Vector3(minX, maxY, maxZ));
+            verts.Add(new Vector3(minX, maxY, minZ));
+            verts.Add(new Vector3(minX, minY, minZ));
+            
+            for (int i = 0; i < faceCount; i++)
             {
                 tempTris[0] = offset + i * 4;
                 tempTris[1] = offset + i * 4 + 1;
                 tempTris[2] = offset + i * 4 + 2;
-
+    
                 tempTris[3] = offset + i * 4;
                 tempTris[4] = offset + i * 4 + 2;
                 tempTris[5] = offset + i * 4 + 3;
-
+    
                 tris.AddRange(tempTris);
                 uvs.AddRange(CulledMeshGenerator.faceUvs);
             }
-        }
 
-        private void ProcessFace(List<Vector3> verts, List<Face> faces, Face face)
-        {
-            bool isDuplicate = false;
-            for (int i = 0; i < faces.Count; i++)
-            {
-                if (!face.Compare(faces[i]))
-                    continue;
-
-                isDuplicate = true;
-                break;
-            }
-
-            if (isDuplicate)
-            {
-                Debug.LogWarning("duplcate found. this is good");
-                return;
-            }
-
-            face.AddSelfToVerts(verts);
-            faces.Add(face);
+            WeldVertices(tris, verts);
         }
 
         private class Face
@@ -251,15 +229,12 @@ namespace Mithmarie
                 verts = new Vector3[] { a, b, c, d };
             }
 
-            public bool Compare(Face other)
+            public bool IsSame(Face other)
             {
                 for (int i = 0; i < verts.Length; i++)
                 {
-                    for (int j = 0; j < other.verts.Length; j++)
-                    {
-                        if(Vector3.Distance(verts[i], other.verts[j]) > 0.1f)
-                            return false;
-                    }
+                    if (!other.verts.Contains(verts[i]))
+                        return false;
                 }
 
                 return true;
