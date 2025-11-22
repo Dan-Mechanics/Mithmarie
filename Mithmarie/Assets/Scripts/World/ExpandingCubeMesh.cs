@@ -20,7 +20,7 @@ namespace Mithmarie
             minZ = maxZ = center.z;
         }
     
-        public bool CanGoUp(HashSet<Vector3Int> blocksLeft, ref Queue<Vector3Int> blocksToRemove)
+        public bool CanGoUp(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
         {
             blocksToRemove.Clear();
     
@@ -41,7 +41,7 @@ namespace Mithmarie
             return true;
         }
     
-        public bool CanGoDown(HashSet<Vector3Int> blocksLeft, ref Queue<Vector3Int> blocksToRemove)
+        public bool CanGoDown(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
         {
             blocksToRemove.Clear();
     
@@ -62,7 +62,7 @@ namespace Mithmarie
             return true;
         }
     
-        public bool CanGoLeft(HashSet<Vector3Int> blocksLeft, ref Queue<Vector3Int> blocksToRemove)
+        public bool CanGoLeft(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
         {
             blocksToRemove.Clear();
     
@@ -83,7 +83,7 @@ namespace Mithmarie
             return true;
         }
     
-        public bool CanGoRight(HashSet<Vector3Int> blocksLeft, ref Queue<Vector3Int> blocksToRemove)
+        public bool CanGoRight(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
         {
             blocksToRemove.Clear();
     
@@ -104,7 +104,7 @@ namespace Mithmarie
             return true;
         }
     
-        public bool CanGoForward(HashSet<Vector3Int> blocksLeft, ref Queue<Vector3Int> blocksToRemove)
+        public bool CanGoForward(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
         {
             blocksToRemove.Clear();
     
@@ -125,7 +125,7 @@ namespace Mithmarie
             return true;
         }
     
-        public bool CanGoBack(HashSet<Vector3Int> blocksLeft, ref Queue<Vector3Int> blocksToRemove)
+        public bool CanGoBack(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
         {
             blocksToRemove.Clear();
     
@@ -146,37 +146,26 @@ namespace Mithmarie
             return true;
         }
     
+        public void Spawn(GameObject prefab)
+        {
+            Transform cube = Object.Instantiate(prefab, new Vector3(minX + maxX, minY + maxY, minZ + maxZ) / 2f, Quaternion.identity).transform;
+            cube.localScale = new Vector3(Mathf.Abs(maxX - minX) + 1, Mathf.Abs(maxY - minY) + 1, Mathf.Abs(maxZ - minZ) + 1);
+        }
+
         public void AddSelfToMesh(List<Vector3> verts, List<int> tris, List<Vector2> uvs)
         {
             maxX++;
             maxY++;
             maxZ++;
 
-            List<Face> faces = new List<Face>();
-
             int[] tempTris = new int[6];
             int faceCount = 6;
             int offset = verts.Count;
 
-            Face up = new Face(
-                new Vector3(minX, maxY, minZ),
-                new Vector3(minX, maxY, maxZ),
-                new Vector3(maxX, maxY, maxZ),
-                new Vector3(maxX, maxY, minZ)
-                );
-
-            bool isSame = false;
-            for (int i = 0; i < faces.Count; i++)
-            {
-                if (!up.IsSame(faces[i]))
-                    continue;
-
-                isSame = true;
-                break;
-            }
-
-            if (!isSame)
-                up.AddSelfToVerts(verts);
+            verts.Add(new Vector3(minX, maxY, minZ));
+            verts.Add(new Vector3(minX, maxY, maxZ));
+            verts.Add(new Vector3(maxX, maxY, maxZ));
+            verts.Add(new Vector3(maxX, maxY, minZ));
 
             verts.Add(new Vector3(minX, minY, minZ));
             verts.Add(new Vector3(maxX, minY, minZ));
@@ -215,37 +204,6 @@ namespace Mithmarie
     
                 tris.AddRange(tempTris);
                 uvs.AddRange(CulledMeshGenerator.faceUvs);
-            }
-
-            WeldVertices(tris, verts);
-        }
-
-        private class Face
-        {
-            private readonly Vector3[] verts;
-
-            public Face(Vector3 a, Vector3 b, Vector3 c, Vector3 d)
-            {
-                verts = new Vector3[] { a, b, c, d };
-            }
-
-            public bool IsSame(Face other)
-            {
-                for (int i = 0; i < verts.Length; i++)
-                {
-                    if (!other.verts.Contains(verts[i]))
-                        return false;
-                }
-
-                return true;
-            }
-
-            public void AddSelfToVerts(List<Vector3> mainVerts)
-            {
-                for (int i = 0; i < verts.Length; i++)
-                {
-                    mainVerts.Add(verts[i]);
-                }
             }
         }
     }

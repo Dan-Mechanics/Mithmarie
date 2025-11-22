@@ -9,8 +9,10 @@ namespace Mithmarie
     /// https://github.com/VictorGordan/opengl-tutorials/blob/main/YoutubeOpenGL%209%20-%20Lighting/Main.cpp
     /// https://pastebin.com/DXKEmvap
     /// </summary>
-    public class GreedyMeshGenerator : IGenerateMeshStrat
+    public class GreedyMeshGenerator : MonoBehaviour, IGenerateMeshStrat
     {
+        public GameObject cubePrefab;
+        
         public Mesh GenerateMesh(HashSet<Vector3Int> blocks)
         {
             List<ExpandingCubeMesh> cubes = ExtractCubes(blocks);
@@ -49,43 +51,43 @@ namespace Mithmarie
                     continue;
 
                 ExpandingCubeMesh cube = new ExpandingCubeMesh(blocks[i]);
-                while (cube.CanGoRight(blocksLeft, ref blocksToRemove))
+                while (cube.CanGoRight(blocksLeft, blocksToRemove))
                 {
                     while (blocksToRemove.Count > 0)
                         blocksLeft.Remove(blocksToRemove.Dequeue());
                 }
 
-                while (cube.CanGoLeft(blocksLeft, ref blocksToRemove))
+                while (cube.CanGoLeft(blocksLeft, blocksToRemove))
                 {
                     while (blocksToRemove.Count > 0)
                         blocksLeft.Remove(blocksToRemove.Dequeue());
                 }
 
-                while (cube.CanGoForward(blocksLeft, ref blocksToRemove))
+                while (cube.CanGoForward(blocksLeft, blocksToRemove))
                 {
                     while (blocksToRemove.Count > 0)
                         blocksLeft.Remove(blocksToRemove.Dequeue());
                 }
 
-                while (cube.CanGoBack(blocksLeft, ref blocksToRemove))
+                while (cube.CanGoBack(blocksLeft, blocksToRemove))
                 {
                     while (blocksToRemove.Count > 0)
                         blocksLeft.Remove(blocksToRemove.Dequeue());
                 }
 
-                while (cube.CanGoUp(blocksLeft, ref blocksToRemove))
+                while (cube.CanGoUp(blocksLeft, blocksToRemove))
                 {
                     while (blocksToRemove.Count > 0)
                         blocksLeft.Remove(blocksToRemove.Dequeue());
                 }
 
-                while (cube.CanGoDown(blocksLeft, ref blocksToRemove))
+                while (cube.CanGoDown(blocksLeft, blocksToRemove))
                 {
                     while (blocksToRemove.Count > 0)
                         blocksLeft.Remove(blocksToRemove.Dequeue());
                 }
 
-              //  cube.SpawnDemoVersion(cubePrefab);
+                cube.Spawn(cubePrefab);
                 result.Add(cube);
             }
 
