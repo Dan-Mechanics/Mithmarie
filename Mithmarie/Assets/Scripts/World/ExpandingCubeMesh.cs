@@ -20,7 +20,7 @@ namespace Mithmarie
             minZ = maxZ = center.z;
         }
     
-        public bool CanGoUp(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
+        public void CanGoUp(HashSet<Vector3Int> blocksLeft)
         {
             Vector3Int current = new Vector3Int(0, maxY + 1, 0);
             for (int x = minX; x <= maxX; x++)
@@ -29,18 +29,26 @@ namespace Mithmarie
                 {
                     current.x = x;
                     current.z = z;
-                    blocksToRemove.Enqueue(current);
                     if (!blocksLeft.Contains(current))
-                        return false;
+                        return;
+                }
+            }
 
+            for (int x = minX; x <= maxX; x++)
+            {
+                for (int z = minZ; z <= maxZ; z++)
+                {
+                    current.x = x;
+                    current.z = z;
+                    blocksLeft.Remove(current);
                 }
             }
 
             maxY = current.y;
-            return true;
+            CanGoUp(blocksLeft);
         }
     
-        public bool CanGoDown(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
+        public void CanGoDown(HashSet<Vector3Int> blocksLeft)
         {
             Vector3Int current = new Vector3Int(0, minY - 1, 0);
             for (int x = minX; x <= maxX; x++)
@@ -49,17 +57,26 @@ namespace Mithmarie
                 {
                     current.x = x;
                     current.z = z;
-                    blocksToRemove.Enqueue(current);
                     if (!blocksLeft.Contains(current))
-                        return false;
+                        return;
+                }
+            }
+
+            for (int x = minX; x <= maxX; x++)
+            {
+                for (int z = minZ; z <= maxZ; z++)
+                {
+                    current.x = x;
+                    current.z = z;
+                    blocksLeft.Remove(current);
                 }
             }
 
             minY = current.y;
-            return true;
+            CanGoDown(blocksLeft);
         }
     
-        public bool CanGoLeft(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
+        public void CanGoLeft(HashSet<Vector3Int> blocksLeft)
         {
             Vector3Int current = new Vector3Int(minX - 1, 0, 0);
             for (int y = minY; y <= maxY; y++)
@@ -68,17 +85,26 @@ namespace Mithmarie
                 {
                     current.y = y;
                     current.z = z;
-                    blocksToRemove.Enqueue(current);
                     if (!blocksLeft.Contains(current))
-                        return false;
+                        return;
+                }
+            }
+
+            for (int y = minY; y <= maxY; y++)
+            {
+                for (int z = minZ; z <= maxZ; z++)
+                {
+                    current.y = y;
+                    current.z = z;
+                    blocksLeft.Remove(current);
                 }
             }
 
             minX = current.x;
-            return true;
+            CanGoLeft(blocksLeft);
         }
     
-        public bool CanGoRight(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
+        public void CanGoRight(HashSet<Vector3Int> blocksLeft)
         {
             Vector3Int current = new Vector3Int(maxX + 1, 0, 0);
             for (int y = minY; y <= maxY; y++)
@@ -87,17 +113,26 @@ namespace Mithmarie
                 {
                     current.y = y;
                     current.z = z;
-                    blocksToRemove.Enqueue(current);
                     if (!blocksLeft.Contains(current))
-                        return false;
+                        return;
+                }
+            }
+
+            for (int y = minY; y <= maxY; y++)
+            {
+                for (int z = minZ; z <= maxZ; z++)
+                {
+                    current.y = y;
+                    current.z = z;
+                    blocksLeft.Remove(current);
                 }
             }
 
             maxX = current.x;
-            return true;
+            CanGoRight(blocksLeft);
         }
     
-        public bool CanGoForward(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
+        public void CanGoForward(HashSet<Vector3Int> blocksLeft)
         {
             Vector3Int current = new Vector3Int(0, 0, maxZ + 1);
             for (int x = minX; x <= maxX; x++)
@@ -106,17 +141,26 @@ namespace Mithmarie
                 {
                     current.x = x;
                     current.y = y;
-                    blocksToRemove.Enqueue(current);
                     if (!blocksLeft.Contains(current))
-                        return false;
+                        return;
+                }
+            }
+
+            for (int x = minX; x <= maxX; x++)
+            {
+                for (int y = minY; y <= maxY; y++)
+                {
+                    current.x = x;
+                    current.y = y;
+                    blocksLeft.Remove(current);
                 }
             }
 
             maxZ = current.z;
-            return true;
+            CanGoForward(blocksLeft);
         }
         
-        public bool CanGoBack(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
+        public void CanGoBack(HashSet<Vector3Int> blocksLeft)
         {
             Vector3Int current = new Vector3Int(0, 0, minZ - 1);
             for (int x = minX; x <= maxX; x++)
@@ -125,14 +169,23 @@ namespace Mithmarie
                 {
                     current.x = x;
                     current.y = y;
-                    blocksToRemove.Enqueue(current);
                     if (!blocksLeft.Contains(current))
-                        return false;
+                        return;
+                }
+            }
+
+            for (int x = minX; x <= maxX; x++)
+            {
+                for (int y = minY; y <= maxY; y++)
+                {
+                    current.x = x;
+                    current.y = y;
+                    blocksLeft.Remove(current);
                 }
             }
 
             minZ = current.z;
-            return true;
+            CanGoBack(blocksLeft);
         }
     
         public void SpawnDemoCube(GameObject prefab)
