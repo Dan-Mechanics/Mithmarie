@@ -22,8 +22,6 @@ namespace Mithmarie
     
         public bool CanGoUp(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
         {
-            blocksToRemove.Clear();
-    
             Vector3Int current = new Vector3Int(0, maxY + 1, 0);
             for (int x = minX; x <= maxX; x++)
             {
@@ -43,8 +41,6 @@ namespace Mithmarie
     
         public bool CanGoDown(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
         {
-            blocksToRemove.Clear();
-    
             Vector3Int current = new Vector3Int(0, minY - 1, 0);
             for (int x = minX; x <= maxX; x++)
             {
@@ -64,8 +60,6 @@ namespace Mithmarie
     
         public bool CanGoLeft(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
         {
-            blocksToRemove.Clear();
-    
             Vector3Int current = new Vector3Int(minX - 1, 0, 0);
             for (int y = minY; y <= maxY; y++)
             {
@@ -85,8 +79,6 @@ namespace Mithmarie
     
         public bool CanGoRight(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
         {
-            blocksToRemove.Clear();
-    
             Vector3Int current = new Vector3Int(maxX + 1, 0, 0);
             for (int y = minY; y <= maxY; y++)
             {
@@ -106,15 +98,13 @@ namespace Mithmarie
     
         public bool CanGoForward(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
         {
-            blocksToRemove.Clear();
-    
             Vector3Int current = new Vector3Int(0, 0, maxZ + 1);
             for (int x = minX; x <= maxX; x++)
             {
                 for (int y = minY; y <= maxY; y++)
                 {
-                    current.y = y;
                     current.x = x;
+                    current.y = y;
                     blocksToRemove.Enqueue(current);
                     if (!blocksLeft.Contains(current))
                         return false;
@@ -127,15 +117,13 @@ namespace Mithmarie
     
         public bool CanGoBack(HashSet<Vector3Int> blocksLeft, Queue<Vector3Int> blocksToRemove)
         {
-            blocksToRemove.Clear();
-    
             Vector3Int current = new Vector3Int(0, 0, minZ - 1);
             for (int x = minX; x <= maxX; x++)
             {
                 for (int y = minY; y <= maxY; y++)
                 {
-                    current.y = y;
                     current.x = x;
+                    current.y = y;
                     blocksToRemove.Enqueue(current);
                     if (!blocksLeft.Contains(current))
                         return false;
@@ -146,7 +134,7 @@ namespace Mithmarie
             return true;
         }
     
-        public void Spawn(GameObject prefab)
+        public void SpawnDemoCube(GameObject prefab)
         {
             Transform cube = Object.Instantiate(prefab, new Vector3(minX + maxX, minY + maxY, minZ + maxZ) / 2f, Quaternion.identity).transform;
             cube.localScale = new Vector3(Mathf.Abs(maxX - minX) + 1, Mathf.Abs(maxY - minY) + 1, Mathf.Abs(maxZ - minZ) + 1);

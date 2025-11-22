@@ -57,37 +57,42 @@ namespace Mithmarie
                         blocksLeft.Remove(blocksToRemove.Dequeue());
                 }
 
+                blocksToRemove.Clear();
                 while (cube.CanGoLeft(blocksLeft, blocksToRemove))
                 {
                     while (blocksToRemove.Count > 0)
                         blocksLeft.Remove(blocksToRemove.Dequeue());
                 }
 
+                blocksToRemove.Clear();
                 while (cube.CanGoForward(blocksLeft, blocksToRemove))
                 {
                     while (blocksToRemove.Count > 0)
                         blocksLeft.Remove(blocksToRemove.Dequeue());
                 }
 
+                blocksToRemove.Clear();
                 while (cube.CanGoBack(blocksLeft, blocksToRemove))
                 {
                     while (blocksToRemove.Count > 0)
                         blocksLeft.Remove(blocksToRemove.Dequeue());
                 }
 
+                blocksToRemove.Clear();
                 while (cube.CanGoUp(blocksLeft, blocksToRemove))
                 {
                     while (blocksToRemove.Count > 0)
                         blocksLeft.Remove(blocksToRemove.Dequeue());
                 }
 
+                blocksToRemove.Clear();
                 while (cube.CanGoDown(blocksLeft, blocksToRemove))
                 {
                     while (blocksToRemove.Count > 0)
                         blocksLeft.Remove(blocksToRemove.Dequeue());
                 }
 
-                cube.Spawn(cubePrefab);
+                cube.SpawnDemoCube(cubePrefab);
                 result.Add(cube);
             }
 
