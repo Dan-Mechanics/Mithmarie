@@ -9,10 +9,8 @@ namespace Mithmarie
     /// https://github.com/VictorGordan/opengl-tutorials/blob/main/YoutubeOpenGL%209%20-%20Lighting/Main.cpp
     /// https://pastebin.com/DXKEmvap
     /// </summary>
-    public class GreedyMeshGenerator : MonoBehaviour, IGenerateMeshStrat
+    public class GreedyMeshGenerator : IGenerateMeshStrat
     {
-        public GameObject cubePrefab;
-        
         public Mesh GenerateMesh(HashSet<Vector3Int> blocks)
         {
             List<ExpandingCubeMesh> cubes = ExtractCubes(blocks);
@@ -23,7 +21,7 @@ namespace Mithmarie
 
             for (int i = 0; i < cubes.Count; i++)
             {
-                cubes[i].AddSelfToMesh(verts, tris, uvs);
+                cubes[i].AddSelfToMesh(verts, tris, uvs, HashSet<Vector3Int> blocks);
             }
 
             Mesh mesh = new Mesh
@@ -37,26 +35,24 @@ namespace Mithmarie
             return mesh;
         }
 
-        private List<ExpandingCubeMesh> ExtractCubes(HashSet<Vector3Int> blocksLeft)
+        private List<ExpandingCubeMesh> ExtractCubes(HashSet<Vector3Int> blocks)
         {
             List<ExpandingCubeMesh> result = new List<ExpandingCubeMesh>();
+            List<Vector3Int> blocksLeft = blocks.ToList();
 
-            Vector3Int[] blocks = blocksLeft.ToArray();
-            for (int i = 0; i < blocks.Length; i++)
-            {
-                // THIS BLOCK DOESN'T EXIST ANYMORE ...
-                if (!blocksLeft.Contains(blocks[i]))
-                    continue;
+            while(blocksLeft.Count > 0)
+            { 
+                ExpandingCubeMesh cube = new ExpandingCubeMesh(blocksLeft[0]);
+                blocksLeft.RemoveAt(0);
 
-                ExpandingCubeMesh cube = new ExpandingCubeMesh(blocks[i]);
+                cube.ExandRight(blocksLeft);
+                cube.ExpandLeft(blocksLeft);
 
-                cube.CanGoRight(blocksLeft);
-                cube.CanGoForward(blocksLeft);
-                cube.CanGoUp(blocksLeft);
+                cube.ExandUp(blocksLeft);
+                cube.ExpandDown(blocksLeft);
 
-                cube.CanGoLeft(blocksLeft);
-                cube.CanGoBack(blocksLeft);
-                cube.CanGoDown(blocksLeft);
+                cube.ExpandForward(blocksLeft);
+                cube.ExpandBack(blocksLeft);
 
                 result.Add(cube);
             }

@@ -21,7 +21,7 @@ namespace Mithmarie
             world.Flush();
 
             Menu menu = FindAnyObjectByType<Menu>();
-            menu.Setup(world, new Wavefront(), FindAnyObjectByType<GreedyMeshGenerator>(), message);
+            menu.Setup(world, new Wavefront(), new GreedyMeshGenerator(), message);
 
 
             Player playerState = FindAnyObjectByType<Player>();

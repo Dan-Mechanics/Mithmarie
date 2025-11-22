@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Mithmarie
@@ -20,7 +19,7 @@ namespace Mithmarie
             minZ = maxZ = center.z;
         }
     
-        public void CanGoUp(HashSet<Vector3Int> blocksLeft)
+        public void ExandUp(List<Vector3Int> blocksLeft)
         {
             Vector3Int current = new Vector3Int(0, maxY + 1, 0);
             for (int x = minX; x <= maxX; x++)
@@ -34,6 +33,7 @@ namespace Mithmarie
                 }
             }
 
+            // WE CAN EXPAND, REMOVE ALL IN PATH.
             for (int x = minX; x <= maxX; x++)
             {
                 for (int z = minZ; z <= maxZ; z++)
@@ -45,10 +45,10 @@ namespace Mithmarie
             }
 
             maxY = current.y;
-            CanGoUp(blocksLeft);
+            ExandUp(blocksLeft);
         }
     
-        public void CanGoDown(HashSet<Vector3Int> blocksLeft)
+        public void ExpandDown(List<Vector3Int> blocksLeft)
         {
             Vector3Int current = new Vector3Int(0, minY - 1, 0);
             for (int x = minX; x <= maxX; x++)
@@ -62,6 +62,7 @@ namespace Mithmarie
                 }
             }
 
+            // WE CAN EXPAND, REMOVE ALL IN PATH.
             for (int x = minX; x <= maxX; x++)
             {
                 for (int z = minZ; z <= maxZ; z++)
@@ -73,10 +74,10 @@ namespace Mithmarie
             }
 
             minY = current.y;
-            CanGoDown(blocksLeft);
+            ExpandDown(blocksLeft);
         }
     
-        public void CanGoLeft(HashSet<Vector3Int> blocksLeft)
+        public void ExpandLeft(List<Vector3Int> blocksLeft)
         {
             Vector3Int current = new Vector3Int(minX - 1, 0, 0);
             for (int y = minY; y <= maxY; y++)
@@ -90,6 +91,7 @@ namespace Mithmarie
                 }
             }
 
+            // WE CAN EXPAND, REMOVE ALL IN PATH.
             for (int y = minY; y <= maxY; y++)
             {
                 for (int z = minZ; z <= maxZ; z++)
@@ -101,10 +103,10 @@ namespace Mithmarie
             }
 
             minX = current.x;
-            CanGoLeft(blocksLeft);
+            ExpandLeft(blocksLeft);
         }
     
-        public void CanGoRight(HashSet<Vector3Int> blocksLeft)
+        public void ExandRight(List<Vector3Int> blocksLeft)
         {
             Vector3Int current = new Vector3Int(maxX + 1, 0, 0);
             for (int y = minY; y <= maxY; y++)
@@ -118,6 +120,7 @@ namespace Mithmarie
                 }
             }
 
+            // WE CAN EXPAND, REMOVE ALL IN PATH.
             for (int y = minY; y <= maxY; y++)
             {
                 for (int z = minZ; z <= maxZ; z++)
@@ -129,10 +132,10 @@ namespace Mithmarie
             }
 
             maxX = current.x;
-            CanGoRight(blocksLeft);
+            ExandRight(blocksLeft);
         }
     
-        public void CanGoForward(HashSet<Vector3Int> blocksLeft)
+        public void ExpandForward(List<Vector3Int> blocksLeft)
         {
             Vector3Int current = new Vector3Int(0, 0, maxZ + 1);
             for (int x = minX; x <= maxX; x++)
@@ -146,6 +149,7 @@ namespace Mithmarie
                 }
             }
 
+            // WE CAN EXPAND, REMOVE ALL IN PATH.
             for (int x = minX; x <= maxX; x++)
             {
                 for (int y = minY; y <= maxY; y++)
@@ -157,10 +161,10 @@ namespace Mithmarie
             }
 
             maxZ = current.z;
-            CanGoForward(blocksLeft);
+            ExpandForward(blocksLeft);
         }
         
-        public void CanGoBack(HashSet<Vector3Int> blocksLeft)
+        public void ExpandBack(List<Vector3Int> blocksLeft)
         {
             Vector3Int current = new Vector3Int(0, 0, minZ - 1);
             for (int x = minX; x <= maxX; x++)
@@ -174,6 +178,7 @@ namespace Mithmarie
                 }
             }
 
+            // WE CAN EXPAND, REMOVE ALL IN PATH.
             for (int x = minX; x <= maxX; x++)
             {
                 for (int y = minY; y <= maxY; y++)
@@ -185,20 +190,18 @@ namespace Mithmarie
             }
 
             minZ = current.z;
-            CanGoBack(blocksLeft);
-        }
-    
-        public void SpawnDemoCube(GameObject prefab)
-        {
-            Transform cube = Object.Instantiate(prefab, new Vector3(minX + maxX, minY + maxY, minZ + maxZ) / 2f, Quaternion.identity).transform;
-            cube.localScale = new Vector3(Mathf.Abs(maxX - minX) + 1, Mathf.Abs(maxY - minY) + 1, Mathf.Abs(maxZ - minZ) + 1);
+            ExpandBack(blocksLeft);
         }
 
-        public void AddSelfToMesh(List<Vector3> verts, List<int> tris, List<Vector2> uvs)
+        public void AddSelfToMesh(List<Vector3> verts, List<int> tris, List<Vector2> uvs, HashSet<Vector3Int> blocks)
         {
             maxX++;
             maxY++;
             maxZ++;
+
+            int width = Mathf.Abs(maxX - minX);
+            int depth = Mathf.Abs(maxZ - minZ);
+            int height = Mathf.Abs(maxY - minY);
 
             int[] tempTris = new int[6];
             int faceCount = 6;
@@ -209,31 +212,79 @@ namespace Mithmarie
             verts.Add(new Vector3(maxX, maxY, maxZ));
             verts.Add(new Vector3(maxX, maxY, minZ));
 
+            uvs.AddRange(new Vector2[]
+            {
+                new Vector2(0, 0),
+                new Vector2(0, depth),
+                new Vector2(width, depth),
+                new Vector2(width, 0)
+            });
+
             verts.Add(new Vector3(minX, minY, minZ));
             verts.Add(new Vector3(maxX, minY, minZ));
             verts.Add(new Vector3(maxX, minY, maxZ));
             verts.Add(new Vector3(minX, minY, maxZ));
+
+            uvs.AddRange(new Vector2[]
+            {
+                new Vector2(0, 0),
+                new Vector2(0, width),
+                new Vector2(depth, width),
+                new Vector2(depth, 0)
+            });
 
             verts.Add(new Vector3(minX, minY, minZ));
             verts.Add(new Vector3(minX, maxY, minZ));
             verts.Add(new Vector3(maxX, maxY, minZ));
             verts.Add(new Vector3(maxX, minY, minZ));
 
+            uvs.AddRange(new Vector2[]
+            {
+                new Vector2(0, 0),
+                new Vector2(0, height),
+                new Vector2(width, height),
+                new Vector2(width, 0)
+            });
+
             verts.Add(new Vector3(maxX, minY, minZ));
             verts.Add(new Vector3(maxX, maxY, minZ));
             verts.Add(new Vector3(maxX, maxY, maxZ));
             verts.Add(new Vector3(maxX, minY, maxZ));
 
+            uvs.AddRange(new Vector2[]
+            {
+                new Vector2(0, 0),
+                new Vector2(0, height),
+                new Vector2(depth, height),
+                new Vector2(depth, 0)
+            });
+
             verts.Add(new Vector3(maxX, minY, maxZ));
             verts.Add(new Vector3(maxX, maxY, maxZ));
             verts.Add(new Vector3(minX, maxY, maxZ));
             verts.Add(new Vector3(minX, minY, maxZ));
 
+            uvs.AddRange(new Vector2[]
+            {
+                new Vector2(0, 0),
+                new Vector2(0, height),
+                new Vector2(width, height),
+                new Vector2(width, 0)
+            });
+
             verts.Add(new Vector3(minX, minY, maxZ));
             verts.Add(new Vector3(minX, maxY, maxZ));
             verts.Add(new Vector3(minX, maxY, minZ));
             verts.Add(new Vector3(minX, minY, minZ));
-            
+
+            uvs.AddRange(new Vector2[]
+            {
+                new Vector2(0, 0),
+                new Vector2(0, height),
+                new Vector2(depth, height),
+                new Vector2(depth, 0)
+            });
+
             for (int i = 0; i < faceCount; i++)
             {
                 tempTris[0] = offset + i * 4;
@@ -245,7 +296,13 @@ namespace Mithmarie
                 tempTris[5] = offset + i * 4 + 3;
     
                 tris.AddRange(tempTris);
-                uvs.AddRange(CulledMeshGenerator.faceUvs);
+                /*uvs.AddRange(new Vector2[]
+                {
+                    new Vector2(0, 0),
+                    new Vector2(0, Mathf.Abs(maxY-minY)),
+                    new Vector2(Mathf.Abs(maxX-minX), Mathf.Abs(maxY-minY)),
+                    new Vector2(Mathf.Abs(maxX-minX), 0)
+                });*/
             }
         }
     }
