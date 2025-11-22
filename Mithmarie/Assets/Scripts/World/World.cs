@@ -10,12 +10,12 @@ namespace Mithmarie
     /// </summary>
     public class World : MonoBehaviour, IBinarySerializable
     {
-        public const int CHUNK_SIZE = 16;
+        public const int CHUNK_SIZE = 8;
         
         private readonly Dictionary<Vector3Int, HashSet<Vector3Int>> chunks = new Dictionary<Vector3Int, HashSet<Vector3Int>>();
-        private readonly HashSet<Vector3Int> changedChunkPositions;
+        private readonly HashSet<Vector3Int> changedChunkPositions = new HashSet<Vector3Int>();
         
-        private ChunksVisualizer chunksVisualizer;
+        private WorldVisualizer chunksVisualizer;
         private IMessageService message;
 
         private delegate void EditBlock(Vector3Int blockPos);
@@ -23,7 +23,7 @@ namespace Mithmarie
 
         private void Awake()
         {
-            chunksVisualizer = FindAnyObjectByType<ChunksVisualizer>();
+            chunksVisualizer = FindAnyObjectByType<WorldVisualizer>();
         }
 
         private void Start()
@@ -45,7 +45,7 @@ namespace Mithmarie
 
         public void Add(Vector3Int blockPos)
         {
-            Vector3Int chunkPos = blockPos / CHUNK_SIZE;
+            Vector3Int chunkPos = Utils.GetChunkPos(blockPos, CHUNK_SIZE);
             if (!chunks.ContainsKey(chunkPos))
                 chunks.Add(chunkPos, new HashSet<Vector3Int>());
 
@@ -53,12 +53,12 @@ namespace Mithmarie
                 return;
 
             chunks[chunkPos].Add(blockPos);
-            changedChunkPositions.Add(chunkPos);
+            NotifyChunkChange(chunkPos);
         }
 
         public void Remove(Vector3Int blockPos)
         {
-            Vector3Int chunkPos = blockPos / CHUNK_SIZE;
+            Vector3Int chunkPos = Utils.GetChunkPos(blockPos, CHUNK_SIZE);
             if (!chunks.ContainsKey(chunkPos))
                 return;
 
@@ -66,7 +66,7 @@ namespace Mithmarie
                 return;
 
             chunks[chunkPos].Remove(blockPos);
-            changedChunkPositions.Add(chunkPos);
+            NotifyChunkChange(chunkPos);
         }
 
         public void Clear()
@@ -86,11 +86,11 @@ namespace Mithmarie
                 if(!chunks.ContainsKey(chunkPos) || chunks[chunkPos] == null || chunks[chunkPos].Count <= 0)
                 {
                     chunks.Remove(chunkPos);
-                    chunksVisualizer.DrawChunk(chunkPos, null);
+                    chunksVisualizer.DrawChunk(chunkPos, chunks);
                     continue;
                 }
 
-                chunksVisualizer.DrawChunk(chunkPos, chunks[chunkPos]);
+                chunksVisualizer.DrawChunk(chunkPos, chunks);
             }
         }
 
@@ -127,34 +127,58 @@ namespace Mithmarie
             }
         }
 
-        private Vector3Int[] GetAllBlocks()
+        public HashSet<Vector3Int> GetAllBlocks()
         {
-            List<Vector3Int> blocks = new List<Vector3Int>();
+            HashSet<Vector3Int> blocks = new HashSet<Vector3Int>();
             foreach (HashSet<Vector3Int> chunk in chunks.Values)
             {
-                foreach (Vector3Int block in chunk)
+                foreach (Vector3Int blockPos in chunk)
                 {
-                    blocks.Add(block);
+                    blocks.Add(blockPos);
                 }
             }
 
-            return blocks.ToArray();
+            return blocks;
+        }
+
+        private void NotifyChunkChange(Vector3Int chunkPos)
+        {
+            changedChunkPositions.Add(chunkPos);
+            changedChunkPositions.Add(chunkPos + Vector3Int.up);
+            changedChunkPositions.Add(chunkPos + Vector3Int.down);
+            changedChunkPositions.Add(chunkPos + Vector3Int.forward);
+            changedChunkPositions.Add(chunkPos + Vector3Int.back);
+            changedChunkPositions.Add(chunkPos + Vector3Int.left);
+            changedChunkPositions.Add(chunkPos + Vector3Int.right);
         }
         
         public void Serialize(BinaryWriter writer)
         {
-            Vector3Int[] blocks = GetAllBlocks();
+            int blockCount = 0;
+            foreach (KeyValuePair<Vector3Int, HashSet<Vector3Int>> chunk in chunks)
+            {
+                blockCount += chunk.Value.Count;
+            }
 
             try
             {
                 writer.Write(Application.version);
-                writer.Write(blocks.Length * 3);
-                for (int i = 0; i < blocks.Length; i++)
+                writer.Write(blockCount * 3);
+                foreach (KeyValuePair<Vector3Int, HashSet<Vector3Int>> chunk in chunks)
+                {
+                    foreach (Vector3Int blockPos in chunk.Value)
+                    {
+                        writer.Write(blockPos.x);
+                        writer.Write(blockPos.y);
+                        writer.Write(blockPos.z);
+                    }
+                }
+                /*for (int i = 0; i < blocks.Length; i++)
                 {
                     writer.Write(blocks[i].x);
                     writer.Write(blocks[i].y);
                     writer.Write(blocks[i].z);
-                }
+                }*/
             }
             catch (Exception exception)
             {

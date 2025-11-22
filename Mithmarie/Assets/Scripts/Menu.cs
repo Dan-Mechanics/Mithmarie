@@ -98,7 +98,7 @@ namespace Mithmarie
             world.Flush();
 
             // !FIX
-            exportStrategy.Export(path, FindAnyObjectByType<CulledMeshGenerator>().GetComponent<MeshFilter>().sharedMesh, message);
+            exportStrategy.Export(path, new CulledMeshGenerator().GenerateMesh(world.GetAllBlocks()), message);
 
             Close();
         }

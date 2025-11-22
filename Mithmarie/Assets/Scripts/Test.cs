@@ -6,10 +6,15 @@ namespace Mithmarie
     {
         private void Start()
         {
-            Mesh mesh = GetComponent<MeshFilter>().sharedMesh;
+            for (int i = 0; i < 100; i++)
+            {
+                print(i / 16);
+            }
+            
+            /*Mesh mesh = GetComponent<MeshFilter>().sharedMesh;
             Wavefront wavefront = new Wavefront();
 
-            wavefront.Export(@"C:\Users\Dan-Mechanics\3D Objects\mesh.obj", mesh, ServiceLocator<IMessageService>.Locate());
+            wavefront.Export(@"C:\Users\Dan-Mechanics\3D Objects\mesh.obj", mesh, ServiceLocator<IMessageService>.Locate());*/
         }
     }
 }

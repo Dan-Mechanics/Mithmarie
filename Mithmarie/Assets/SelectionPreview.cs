@@ -6,6 +6,7 @@ namespace Mithmarie
     {
         [SerializeField] private GameObject previewPrefab = default;
         [SerializeField] private Material previewMaterial = default;
+        [SerializeField, Min(1f)] private float scaleOffset = default;
 
         private GameObject preview;
 
@@ -28,7 +29,7 @@ namespace Mithmarie
             Vector3Int a = (Vector3Int)firstPos;
             Vector3Int b = (Vector3Int)secondPos;
             preview.transform.position = Vector3.Lerp(a, b, 0.5f);
-            preview.transform.localScale = new Vector3(Mathf.Abs(b.x - a.x) + 1.1f, Mathf.Abs(b.y - a.y) + 1.1f, Mathf.Abs(b.z - a.z) + 1.1f);
+            preview.transform.localScale = new Vector3(Mathf.Abs(b.x - a.x) + scaleOffset, Mathf.Abs(b.y - a.y) + scaleOffset, Mathf.Abs(b.z - a.z) + scaleOffset);
         }
     }
 }

@@ -13,6 +13,9 @@ namespace Mithmarie
             ServiceLocator<IMessageService>.Locate().Send("[WASD] for movement and [MOUSE] for looking.\nUse [RMB] to place blocks, [LMB] to destroy.", Color.black);
 
             World world = FindAnyObjectByType<World>();
+            if (world == null)
+                Debug.Log("problem");
+
             world.Add(Vector3Int.zero);
             world.Flush();
             
