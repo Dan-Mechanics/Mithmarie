@@ -22,13 +22,16 @@ namespace Mithmarie
 
         private World world;
         private IMessageService message;
-        private readonly IMeshExportStrategy exportStrategy = new Wavefront();
+        private IMeshExportStrategy exportStrat;
+        private IGenerateMeshStrat generatable;
         private bool wantsToClose;
 
-        private void Start()
+        public void Setup(World world, IMeshExportStrategy exportStrat, IGenerateMeshStrat generatable, IMessageService message)
         {
-            world = FindAnyObjectByType<World>();
-            message = ServiceLocator<IMessageService>.Locate();
+            this.world = world;
+            this.exportStrat = exportStrat;
+            this.generatable = generatable;
+            this.message = message;
         }
 
         private void Save()
@@ -97,8 +100,8 @@ namespace Mithmarie
 
             world.Flush();
 
-            // !FIX
-            exportStrategy.Export(path, new CulledMeshGenerator().GenerateMesh(world.GetAllBlocks()), message);
+            Mesh mesh = generatable.GenerateMesh(world.GetAllBlocks());
+            exportStrat.Export(path, mesh, message);
 
             Close();
         }

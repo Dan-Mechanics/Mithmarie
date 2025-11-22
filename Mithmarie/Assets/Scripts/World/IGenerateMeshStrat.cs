@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Mithmarie
 {
-    public interface IMeshGeneratable
+    public interface IGenerateMeshStrat
     {
         Mesh GenerateMesh(HashSet<Vector3Int> blocks);
     }

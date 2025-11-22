@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Mithmarie
 {
+    /// <summary>
+    /// Source: https://github.com/samhogan/Minecraft-Unity3D/blob/master/Assets/Scripts/TerrainChunk.cs
+    /// </summary>
     public class ChunkMesh : MonoBehaviour
     {
         [SerializeField] private MeshFilter filter = default;
@@ -19,7 +22,7 @@ namespace Mithmarie
         private static readonly List<Vector3> verts = new List<Vector3>();
         private static readonly List<int> tris = new List<int>();
         private static readonly List<Vector2> uvs = new List<Vector2>();
-        private static readonly int[] newTris = new int[6];
+        private static readonly int[] tempTris = new int[6];
         private static readonly Vector2[] faceUvs = new Vector2[]
         { 
             new Vector2(0, 0), 
@@ -56,10 +59,9 @@ namespace Mithmarie
 
         public void GenerateMesh(HashSet<Vector3Int> blocks, Dictionary<Vector3Int, HashSet<Vector3Int>> chunks)
         {
-            /*verts.Clear();
+            verts.Clear();
             tris.Clear();
-            uvs.Clear();*/
-            
+            uvs.Clear();
             mesh.Clear();
             
             foreach (Vector3Int blockPos in blocks)
@@ -123,15 +125,15 @@ namespace Mithmarie
                 
                 for (int i = 0; i < faceCount; i++)
                 {
-                    newTris[0] = offset + i * 4;
-                    newTris[1] = offset + i * 4 + 1;
-                    newTris[2] = offset + i * 4 + 2;
+                    tempTris[0] = offset + i * 4;
+                    tempTris[1] = offset + i * 4 + 1;
+                    tempTris[2] = offset + i * 4 + 2;
 
-                    newTris[3] = offset + i * 4;
-                    newTris[4] = offset + i * 4 + 2;
-                    newTris[5] = offset + i * 4 + 3;
+                    tempTris[3] = offset + i * 4;
+                    tempTris[4] = offset + i * 4 + 2;
+                    tempTris[5] = offset + i * 4 + 3;
 
-                    tris.AddRange(newTris);
+                    tris.AddRange(tempTris);
                     uvs.AddRange(faceUvs);
                 }
             }

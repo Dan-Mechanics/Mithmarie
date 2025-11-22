@@ -10,7 +10,8 @@ namespace Mithmarie
 
         private void Start()
         {
-            ServiceLocator<IMessageService>.Locate().Send("[WASD] for movement and [MOUSE] for looking.\nUse [RMB] to place blocks, [LMB] to destroy.", Color.black);
+            IMessageService message = ServiceLocator<IMessageService>.Locate();
+            message.Send("[WASD] for movement and [MOUSE] for looking.\nUse [RMB] to place blocks, [LMB] to destroy.", Color.black);
 
             World world = FindAnyObjectByType<World>();
             if (world == null)
@@ -18,7 +19,11 @@ namespace Mithmarie
 
             world.Add(Vector3Int.zero);
             world.Flush();
-            
+
+            Menu menu = FindAnyObjectByType<Menu>();
+            menu.Setup(world, new Wavefront(), new CulledMeshGenerator(), message);
+
+
             Player playerState = FindAnyObjectByType<Player>();
             Menu menuState = FindAnyObjectByType<Menu>();
 
