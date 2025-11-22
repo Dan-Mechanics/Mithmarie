@@ -18,7 +18,7 @@ namespace Mithmarie
         private static readonly List<Vector2> uvs = new List<Vector2>();
 
         private static readonly int[] tempTris = new int[6];
-        private static readonly Vector2[] faceUvs = new Vector2[]
+        public static readonly Vector2[] faceUvs = new Vector2[]
         { 
             new Vector2(0, 0), 
             new Vector2(0, 1), 

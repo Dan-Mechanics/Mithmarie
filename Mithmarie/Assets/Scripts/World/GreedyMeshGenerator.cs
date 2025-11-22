@@ -19,7 +19,10 @@ namespace Mithmarie
             List<int> tris = new List<int>();
             List<Vector2> uvs = new List<Vector2>();
 
-            cubes.ForEach(x => x.AddSelfToMesh(ref verts, ref tris, ref uvs));
+            for (int i = 0; i < cubes.Count; i++)
+            {
+                cubes[i].AddSelfToMesh(ref verts, ref tris, ref uvs);
+            }
 
             Mesh mesh = new Mesh
             {
@@ -232,61 +235,138 @@ namespace Mithmarie
                 return true;
             }
 
-            public void AddSelfToMesh(ref List<Vector3> verts, ref List<int> tris, ref List<Vector2> uvs)
+            /*public void AddSelfToMesh(ref List<Vector3> verts, ref List<int> tris, ref List<Vector2> uvs, int offset)
             {
-                Vector3[] cubeVertices = 
+                minX--;
+                minY--;
+                minZ--;
+                
+                Vector3[] cubeVerts = new Vector3[]
                 {
-                    new Vector3(minX, minY,  maxZ),
                     new Vector3(minX, minY, minZ),
                     new Vector3(maxX, minY, minZ),
-                    new Vector3(maxX, minY,  maxZ),
-                    new Vector3(minX,  maxY,  maxZ),
-                    new Vector3(minX,  maxY, minZ),
-                    new Vector3( maxX,  maxY, minZ),
-                    new Vector3(maxX,  maxY,  maxZ)
+                    new Vector3(maxX, maxY, minZ),
+                    new Vector3(minX, maxY, minZ),
+                    new Vector3(minX, minY, maxZ),
+                    new Vector3(maxX, minY, maxZ),
+                    new Vector3(maxX, maxY, maxZ),
+                    new Vector3(minX, maxY, maxZ)
                 };
 
-                verts.AddRange(cubeVertices);
-
-                int[] cubeIndices = new int[]  
+                int[] cubeTris =
                 {
-                    0, 1, 2,
-                    0, 2, 3,
-                    0, 4, 7,
-                    0, 7, 3,
-                    3, 7, 6,
-                    3, 6, 2,
-                    2, 6, 5,
-                    2, 5, 1,
-                    1, 5, 4,
-                    1, 4, 0,
-                    4, 5, 6,
-                    4, 6, 7
+                    0, 1, 3, 3, 1, 2,
+                    1, 5, 2, 2, 5, 6,
+                    5, 4, 6, 6, 4, 7,
+                    4, 0, 7, 7, 0, 3,
+                    3, 2, 7, 7, 2, 6,
+                    4, 5, 0, 0, 5, 1
                 };
 
-                tris.AddRange(cubeIndices);
-
-                Vector2[] cubeUVs = new Vector2[]
+                Vector2[] cubeUvs =
                 {
-                    new Vector2(0.0f, 0.0f),
-                    new Vector2(0.0f, 5.0f),
-                    new Vector2(5.0f, 5.0f),
-                    new Vector2(5.0f, 0.0f),
-                    new Vector2(0.0f, 0.0f),
-                    new Vector2(5.0f, 0.0f),
-                    new Vector2(2.5f, 5.0f),
-                    new Vector2(5.0f, 0.0f),
-                    new Vector2(0.0f, 0.0f),
-                    new Vector2(2.5f, 5.0f),
-                    new Vector2(0.0f, 0.0f),
-                    new Vector2(5.0f, 0.0f),
-                    new Vector2(2.5f, 5.0f),
-                    new Vector2(5.0f, 0.0f),
-                    new Vector2(0.0f, 0.0f),
-                    new Vector2(2.5f, 5.0f)
+                    new Vector2(0, 0),
+                    new Vector2(1, 0),
+                    new Vector2(1, 1),
+                    new Vector2(0, 1)
                 };
 
-                uvs.AddRange(cubeUVs);
+                verts.AddRange(cubeVerts);
+                //tris.AddRange(cubeTris);
+
+                for (int i = 0; i < cubeTris.Length; i++)
+                {
+                    tris.Add(cubeTris[i] + offset);
+                }
+
+                uvs.AddRange(cubeUvs);
+                uvs.AddRange(cubeUvs);
+            }*/
+
+            public void AddSelfToMesh(ref List<Vector3> verts, ref List<int> tris, ref List<Vector2> uvs)
+            {
+                maxX++;
+                maxY++;
+                maxZ++;
+                
+                int[] tempTris = new int[6];
+                int faceCount = 6;
+                int offset = verts.Count;
+
+                // up
+                /*verts.Add(blockPos + Vector3Int.up);
+                verts.Add(blockPos + upForward);
+                verts.Add(blockPos + Vector3Int.one);
+                verts.Add(blockPos + upRight);*/
+                verts.Add(new Vector3(minX, maxY, minZ));
+                verts.Add(new Vector3(minX, maxY, maxZ));
+                verts.Add(new Vector3(maxX, maxY, maxZ));
+                verts.Add(new Vector3(maxX, maxY, minZ));
+
+                // down
+                /*verts.Add(blockPos + Vector3Int.zero);
+                verts.Add(blockPos + Vector3Int.right);
+                verts.Add(blockPos + forwardRight);
+                verts.Add(blockPos + Vector3Int.forward);*/
+                verts.Add(new Vector3(minX, minY, minZ));
+                verts.Add(new Vector3(maxX, minY, minZ));
+                verts.Add(new Vector3(maxX, minY, maxZ));
+                verts.Add(new Vector3(minX, minY, maxZ));
+
+                // forward
+                /*verts.Add(blockPos + forwardRight);
+                verts.Add(blockPos + Vector3Int.one);
+                verts.Add(blockPos + upForward);
+                verts.Add(blockPos + Vector3Int.forward);*/
+                verts.Add(new Vector3(maxX, minY, maxZ));
+                verts.Add(new Vector3(maxX, maxY, maxZ));
+                verts.Add(new Vector3(minX, maxY, maxZ));
+                verts.Add(new Vector3(minX, minY, maxZ));
+
+                // right
+                /*verts.Add(blockPos + Vector3Int.right);
+                verts.Add(blockPos + upRight);
+                verts.Add(blockPos + Vector3Int.one);
+                verts.Add(blockPos + forwardRight);*/
+                verts.Add(new Vector3(minX, minY, maxZ));
+                verts.Add(new Vector3(minX, maxY, maxZ));
+                verts.Add(new Vector3(maxX, maxY, maxZ));
+                verts.Add(new Vector3(maxX, minY, maxZ));
+
+                // back
+                /*verts.Add(blockPos + Vector3Int.zero);
+                verts.Add(blockPos + Vector3Int.up);
+                verts.Add(blockPos + upRight);
+                verts.Add(blockPos + Vector3Int.right);*/
+                verts.Add(new Vector3(minX, minY, minZ));
+                verts.Add(new Vector3(minX, maxY, minZ));
+                verts.Add(new Vector3(minX, maxY, maxZ));
+                verts.Add(new Vector3(maxX, minY, minZ));
+
+
+                // left
+                /*verts.Add(blockPos + Vector3Int.forward);
+                verts.Add(blockPos + upForward);
+                verts.Add(blockPos + Vector3Int.up);
+                verts.Add(blockPos + Vector3Int.zero);*/
+                verts.Add(new Vector3(minX, minY, maxZ));
+                verts.Add(new Vector3(minX, maxY, maxZ));
+                verts.Add(new Vector3(minX, maxY, minZ));
+                verts.Add(new Vector3(minX, minY, minZ));
+
+                for (int i = 0; i < faceCount; i++)
+                {
+                    tempTris[0] = offset + i * 4;
+                    tempTris[1] = offset + i * 4 + 1;
+                    tempTris[2] = offset + i * 4 + 2;
+
+                    tempTris[3] = offset + i * 4;
+                    tempTris[4] = offset + i * 4 + 2;
+                    tempTris[5] = offset + i * 4 + 3;
+
+                    tris.AddRange(tempTris);
+                    uvs.AddRange(CulledMeshGenerator.faceUvs);
+                }
             }
         }
     }
