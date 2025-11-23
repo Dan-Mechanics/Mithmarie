@@ -13,10 +13,6 @@ namespace Mithmarie
         public int minZ;
         public int maxZ;
 
-        public int _maxX;
-        public int _maxY;
-        public int _maxZ;
-
         public ExpandingCubeMesh(Vector3Int center)
         {
             minX = maxX = center.x;
@@ -198,118 +194,8 @@ namespace Mithmarie
             ExpandBack(blocksLeft);
         }
 
-        #region CanDraw
-
-        public bool CanDrawUpFace(HashSet<Vector3Int> blocks)
-        {
-            Vector3Int current = new Vector3Int(0, _maxY + 1, 0);
-            for (int x = minX; x <= _maxY; x++)
-            {
-                for (int z = minZ; z <= _maxY; z++)
-                {
-                    current.x = x;
-                    current.z = z;
-                    if (!blocks.Contains(current))
-                        return true;
-                }
-            }
-
-            // HERE, WE WILL NOT DRAW BECAUSE THERE IS NO
-            // AIR BLOCK TO SEE IT THROUGH.
-            return false;
-        }
-
-        public bool CanDrawBottomFace(HashSet<Vector3Int> blocks)
-        {
-            Vector3Int current = new Vector3Int(0, minY - 1, 0);
-            for (int x = minX; x <= _maxX; x++)
-            {
-                for (int z = minZ; z <= _maxZ; z++)
-                {
-                    current.x = x;
-                    current.z = z;
-                    if (!blocks.Contains(current))
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool CanDrawLeftFace(HashSet<Vector3Int> blocks)
-        {
-            Vector3Int current = new Vector3Int(minX - 1, 0, 0);
-            for (int y = minY; y <= _maxY; y++)
-            {
-                for (int z = minZ; z <= _maxZ; z++)
-                {
-                    current.y = y;
-                    current.z = z;
-                    if (!blocks.Contains(current))
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool CanDrawRightFace(HashSet<Vector3Int> blocks)
-        {
-            Vector3Int current = new Vector3Int(_maxX + 1, 0, 0);
-            for (int y = minY; y <= _maxY; y++)
-            {
-                for (int z = minZ; z <= _maxZ; z++)
-                {
-                    current.y = y;
-                    current.z = z;
-                    if (!blocks.Contains(current))
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool CanDrawFrontFace(HashSet<Vector3Int> blocks)
-        {
-            Vector3Int current = new Vector3Int(0, 0, _maxZ + 1);
-            for (int x = minX; x <= _maxX; x++)
-            {
-                for (int y = minY; y <= _maxY; y++)
-                {
-                    current.x = x;
-                    current.y = y;
-                    if (!blocks.Contains(current))
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool CanDrawBackFace(HashSet<Vector3Int> blocks)
-        {
-            Vector3Int current = new Vector3Int(0, 0, minZ - 1);
-            for (int x = minX; x <= _maxX; x++)
-            {
-                for (int y = minY; y <= _maxX; y++)
-                {
-                    current.x = x;
-                    current.y = y;
-                    if (!blocks.Contains(current))
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-        #endregion
-
         public void AddSelfToMesh(List<Vector3> verts, List<int> tris, List<Vector2> uvs, HashSet<Vector3Int> blocks)
         {
-            SaveMax();
-            
             maxX++;
             maxY++;
             maxZ++;
@@ -322,8 +208,13 @@ namespace Mithmarie
             int faceCount = 0;
             int offset = verts.Count;
 
-            var ySlice = blocks.Where(x => x.x >= minX && x.x < maxX).Where(x => x.z >= minZ && x.z < maxZ);
-            int blocksAbove = ySlice.Where(x => x.y == maxY).Count();
+            var xSlice = blocks.Where(block => block.y >= minY && block.y < maxY).Where(block => block.z >= minZ && block.z < maxZ);
+            var ySlice = blocks.Where(block => block.x >= minX && block.x < maxX).Where(block => block.z >= minZ && block.z < maxZ);
+            var zSlice = blocks.Where(block => block.x >= minX && block.x < maxX).Where(block => block.y >= minY && block.y < maxY);
+
+            // Y =======================
+
+            int blocksAbove = ySlice.Where(block => block.y == maxY).Count();
             if (blocksAbove < width * depth)
             {
                 verts.Add(new Vector3(minX, maxY, minZ));
@@ -342,7 +233,7 @@ namespace Mithmarie
                 faceCount++;
             }
 
-            int blocksBelow = ySlice.Where(x => x.y == minY-1).Count();
+            int blocksBelow = ySlice.Where(block => block.y == minY - 1).Count();
             if (blocksBelow < width * depth)
             {
                 verts.Add(new Vector3(minX, minY, minZ));
@@ -361,45 +252,10 @@ namespace Mithmarie
                 faceCount++;
             }
 
-            // left side of the house.
-            if (CanDrawFrontFace(blocks))
-            {
-                verts.Add(new Vector3(minX, minY, minZ));
-                verts.Add(new Vector3(minX, maxY, minZ));
-                verts.Add(new Vector3(maxX, maxY, minZ));
-                verts.Add(new Vector3(maxX, minY, minZ));
+            // Z =======================
 
-                uvs.AddRange(new Vector2[]
-                {
-                    new Vector2(0, 0),
-                    new Vector2(0, height),
-                    new Vector2(width, height),
-                    new Vector2(width, 0)
-                });
-
-                faceCount++;
-            }
-
-            if (CanDrawRightFace(blocks))
-            {
-                verts.Add(new Vector3(maxX, minY, minZ));
-                verts.Add(new Vector3(maxX, maxY, minZ));
-                verts.Add(new Vector3(maxX, maxY, maxZ));
-                verts.Add(new Vector3(maxX, minY, maxZ));
-
-                uvs.AddRange(new Vector2[]
-                {
-                new Vector2(0, 0),
-                new Vector2(0, height),
-                new Vector2(depth, height),
-                new Vector2(depth, 0)
-                });
-
-                faceCount++;
-            }
-            
-            // right side of the house.
-            if (CanDrawFrontFace(blocks))
+            int blocksInFront = zSlice.Where(block => block.z == maxZ).Count();
+            if (blocksInFront < width * height)
             {
                 verts.Add(new Vector3(maxX, minY, maxZ));
                 verts.Add(new Vector3(maxX, maxY, maxZ));
@@ -417,7 +273,48 @@ namespace Mithmarie
                 faceCount++;
             }
 
-            if (CanDrawRightFace(blocks))
+            int blockBehind = zSlice.Where(block => block.z == minZ - 1).Count();
+            if (blockBehind < width * height)
+            {
+                verts.Add(new Vector3(minX, minY, minZ));
+                verts.Add(new Vector3(minX, maxY, minZ));
+                verts.Add(new Vector3(maxX, maxY, minZ));
+                verts.Add(new Vector3(maxX, minY, minZ));
+
+                uvs.AddRange(new Vector2[]
+                {
+                    new Vector2(0, 0),
+                    new Vector2(0, height),
+                    new Vector2(width, height),
+                    new Vector2(width, 0)
+                });
+
+                faceCount++;
+            }
+
+            // X =======================
+
+            int blocksRight = xSlice.Where(block => block.x == maxX).Count();
+            if (blocksRight < depth * height)
+            {
+                verts.Add(new Vector3(maxX, minY, minZ));
+                verts.Add(new Vector3(maxX, maxY, minZ));
+                verts.Add(new Vector3(maxX, maxY, maxZ));
+                verts.Add(new Vector3(maxX, minY, maxZ));
+
+                uvs.AddRange(new Vector2[]
+                {
+                new Vector2(0, 0),
+                new Vector2(0, height),
+                new Vector2(depth, height),
+                new Vector2(depth, 0)
+                });
+
+                faceCount++;
+            }
+
+            int blockLeft = xSlice.Where(block => block.x == minX - 1).Count();
+            if (blockLeft < depth * height)
             {
                 verts.Add(new Vector3(minX, minY, maxZ));
                 verts.Add(new Vector3(minX, maxY, maxZ));
@@ -435,6 +332,8 @@ namespace Mithmarie
 
             }
 
+            // =======================
+
             for (int i = 0; i < faceCount; i++)
             {
                 tempTris[0] = offset + i * 4;
@@ -446,35 +345,7 @@ namespace Mithmarie
                 tempTris[5] = offset + i * 4 + 3;
     
                 tris.AddRange(tempTris);
-                /*uvs.AddRange(new Vector2[]
-                {
-                    new Vector2(0, 0),
-                    new Vector2(0, Mathf.Abs(maxY-minY)),
-                    new Vector2(Mathf.Abs(maxX-minX), Mathf.Abs(maxY-minY)),
-                    new Vector2(Mathf.Abs(maxX-minX), 0)
-                });*/
             }
-        }
-
-        public bool WhereUp(Vector3Int pos)
-        {
-            return pos.x >= minX && pos.x <= _maxX &&
-                pos.y == _maxY + 1 &&
-                pos.z >= minZ && pos.z <= _maxZ;
-        }
-
-        private bool WhereDown(Vector3Int pos)
-        {
-            return pos.x >= minX && pos.x <= _maxX &&
-                pos.y == minY - 1 &&
-                pos.z >= minZ && pos.z <= _maxZ;
-        }
-
-        private void SaveMax()
-        {
-            _maxX = maxX;
-            _maxY = maxY;
-            _maxZ = maxZ;
         }
     }
 }
