@@ -8,7 +8,7 @@ namespace Mithmarie
         public event Action<string> OnOutputText;
 
         [SerializeField] private Transform eyes = default;
-        [SerializeField] private GameObject outlineCubePrefab = default;
+        [SerializeField] private GameObject previewPrefab = default;
         [SerializeField] private Raycast raycast = default;
         [SerializeField] private float hitPointExtrusion = default;
 
@@ -17,7 +17,7 @@ namespace Mithmarie
 
         private void Awake()
         {
-            outline = Instantiate(outlineCubePrefab, Vector3.zero, Quaternion.identity).transform;
+            outline = Instantiate(previewPrefab, Vector3.zero, Quaternion.identity).transform;
             outline.gameObject.SetActive(false);
         }
 
