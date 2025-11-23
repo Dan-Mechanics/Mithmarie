@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Mithmarie
 {
-    public interface IMeshExportStrategy
+    public interface IExportStrategy
     {
         void Export(string path, Mesh mesh, IMessageService message);
     }

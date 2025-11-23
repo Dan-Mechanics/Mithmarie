@@ -6,36 +6,34 @@ namespace Mithmarie
     /// <summary>
     /// Source: https://github.com/samhogan/Minecraft-Unity3D/blob/master/Assets/Scripts/TerrainChunk.cs
     /// </summary>
-    public class CulledMeshGenerator : IGenerateMeshStrat
+    public class CulledMeshGenerator : IMeshingStrategy
     {
-        // make an exentions class.
-        private static readonly Vector3 upForward = new Vector3(0, 1, 1);
-        private static readonly Vector3 upRight = new Vector3(1, 1, 0);
-        private static readonly Vector3 forwardRight = new Vector3(1, 0, 1);
-
-        private static readonly List<Vector3> verts = new List<Vector3>();
-        private static readonly List<int> tris = new List<int>();
-        private static readonly List<Vector2> uvs = new List<Vector2>();
-
-        private static readonly int[] tempTris = new int[6];
-        public static readonly Vector2[] faceUvs = new Vector2[]
-        { 
-            new Vector2(0, 0), 
-            new Vector2(0, 1), 
-            new Vector2(1, 1),
-            new Vector2(1, 0)
-        };
+        private Vector3 upForward = new Vector3(0, 1, 1);
+        private Vector3 upRight = new Vector3(1, 1, 0);
+        private Vector3 forwardRight = new Vector3(1, 0, 1);
 
         public Mesh GenerateMesh(HashSet<Vector3Int> blocks)
         {
+            List<Vector3> verts = new List<Vector3>();
+            List<int> tris = new List<int>();
+            List<Vector2> uvs = new List<Vector2>();
+            int[] tempTris = new int[6];
+
+            Vector2[] faceUvs = new Vector2[]
+            {
+                new Vector2(0, 0),
+                new Vector2(0, 1),
+                new Vector2(1, 1),
+                new Vector2(1, 0)
+            };
+
             Mesh mesh = new Mesh();
-            mesh.Clear();
             
             foreach (Vector3Int blockPos in blocks)
             {
                 int faceCount = 0;
                 int offset = verts.Count;
-
+                
                 if (!blocks.Contains(blockPos + Vector3Int.up))
                 {
                     verts.Add(blockPos + Vector3Int.up);

@@ -9,7 +9,7 @@ namespace Mithmarie
     /// https://github.com/VictorGordan/opengl-tutorials/blob/main/YoutubeOpenGL%209%20-%20Lighting/Main.cpp
     /// https://pastebin.com/DXKEmvap
     /// </summary>
-    public class GreedyMeshGenerator : IGenerateMeshStrat
+    public class GreedyMeshGenerator : IMeshingStrategy
     {
         public Mesh GenerateMesh(HashSet<Vector3Int> blocks)
         {

@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Mithmarie
 {
+    /// <summary>
+    /// This class belong to GreedyMeshGenerator.cs
+    /// </summary>
     public class ExpandingCubeMesh
     {
         public int minX;

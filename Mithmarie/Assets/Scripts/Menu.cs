@@ -22,11 +22,11 @@ namespace Mithmarie
 
         private World world;
         private IMessageService message;
-        private IMeshExportStrategy exportStrat;
-        private IGenerateMeshStrat generatable;
+        private IExportStrategy exportStrat;
+        private IMeshingStrategy generatable;
         private bool wantsToClose;
 
-        public void Setup(World world, IMeshExportStrategy exportStrat, IGenerateMeshStrat generatable, IMessageService message)
+        public void Setup(World world, IExportStrategy exportStrat, IMeshingStrategy generatable, IMessageService message)
         {
             this.world = world;
             this.exportStrat = exportStrat;

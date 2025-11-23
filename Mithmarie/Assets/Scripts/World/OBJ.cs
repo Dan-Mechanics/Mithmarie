@@ -10,7 +10,7 @@ namespace Mithmarie
     /// <summary>
     /// Source: https://discussions.unity.com/t/export-unity-mesh-to-obj-or-fbx-format/525773/14
     /// </summary>
-    public class Wavefront : IMeshExportStrategy
+    public class OBJ : IExportStrategy
     {
         public void Export(string path, Mesh mesh, IMessageService message)
         {
