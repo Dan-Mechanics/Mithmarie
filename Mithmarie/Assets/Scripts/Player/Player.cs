@@ -11,7 +11,7 @@ namespace Mithmarie
         [SerializeField] private Terraformer removeTerraform = default;
         [SerializeField] private SelectionPreview addSelectionPreview = default;
         [SerializeField] private SelectionPreview removeSelectionPreview = default;
-        [SerializeField] private AimedBlockHighlight blockHighlight = default;
+        [SerializeField] private AimedBlockOutline blockHighlight = default;
 
         private StateBehaviour[] playerBehaviour;
         private PlayerHUD playerHUD;
@@ -35,13 +35,11 @@ namespace Mithmarie
             Cursor.lockState = CursorLockMode.Locked;
 
             playerHUD.Show();
-            addTerraform.OnBeginEditing += blockHighlight.Configure;
-            removeTerraform.OnBeginEditing += blockHighlight.Configure;
 
             addTerraform.OnShowPreview += addSelectionPreview.UpdatePreview;
             removeTerraform.OnShowPreview += removeSelectionPreview.UpdatePreview;
 
-            blockHighlight.OnOutputText += playerHUD.SetCenterText;
+            blockHighlight.OnAim += playerHUD.SetCenterText;
 
             addTerraform.OnEditSelection += world.AddSelection;
             removeTerraform.OnEditSelection += world.RemoveSelection;
@@ -52,18 +50,13 @@ namespace Mithmarie
             base.Exit();
             wantsToClose = false;
 
-            // APPLICATION.QUIT --> DESTROY --> EXIT --> PLAYERHUD DOESNT EXIST ANYMORE,
-            // THIS FIXES IT.
             if (playerHUD != null)
                 playerHUD.Hide();
-
-            addTerraform.OnBeginEditing -= blockHighlight.Configure;
-            removeTerraform.OnBeginEditing -= blockHighlight.Configure;
 
             addTerraform.OnShowPreview -= addSelectionPreview.UpdatePreview;
             removeTerraform.OnShowPreview -= removeSelectionPreview.UpdatePreview;
 
-            blockHighlight.OnOutputText -= playerHUD.SetCenterText;
+            blockHighlight.OnAim -= playerHUD.SetCenterText;
 
             addTerraform.OnEditSelection -= world.AddSelection;
             removeTerraform.OnEditSelection -= world.RemoveSelection;

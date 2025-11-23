@@ -3,48 +3,52 @@ using UnityEngine;
 
 namespace Mithmarie
 {
-    public class AimedBlockHighlight : StateBehaviour
+    public class AimedBlockOutline : StateBehaviour
     {
-        public event Action<string> OnOutputText;
+        public event Action<object> OnAim;
 
         [SerializeField] private Transform eyes = default;
         [SerializeField] private GameObject previewPrefab = default;
-        [SerializeField] private Raycast raycast = default;
-        [SerializeField] private float hitPointExtrusion = default;
+        [SerializeField] private MonoBehaviour raycastProvider = default;
+        [SerializeField, Min(0f)] private float scale = default; 
 
         private Transform outline;
+        private RaycastSettings raycast;
         private RaycastHit hit;
 
         private void Awake()
         {
             outline = Instantiate(previewPrefab, Vector3.zero, Quaternion.identity).transform;
+            outline.localScale = Vector3.one * scale;
             outline.gameObject.SetActive(false);
         }
 
-        public void Configure(Raycast raycast) => this.raycast = raycast;
+        private void Start()
+        {
+            raycast = raycastProvider.GetComponent<IRaycastProvider>().GetSettings();
+        }
+
         public override void OnTick()
         {
             base.OnFrame();
-            Highlight(null, Vector3.zero);
+            OutlineBlock(null);
             if (raycast.Cast(eyes, out hit))
-                Highlight(Utils.ApplyGrid(hit.point + (hit.normal * hitPointExtrusion)), hit.normal);
+                OutlineBlock(Utils.ConvertToBlockPos(hit.point));
 
         }
 
-        private void Highlight(Vector3Int? blockPos, Vector3 normal)
+        private void OutlineBlock(Vector3Int? blockPos)
         {
             if(blockPos == null)
             {
                 outline.gameObject.SetActive(false);
-                OnOutputText?.Invoke(string.Empty);
+                OnAim?.Invoke(null);
                 return;
             }
 
             outline.gameObject.SetActive(true);
             outline.position = (Vector3Int)blockPos;
-            OnOutputText?.Invoke(blockPos.ToString());
-
-            outline.forward = normal;
+            OnAim?.Invoke(blockPos);
         }
 
     }

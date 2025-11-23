@@ -1,5 +1,5 @@
 using System;
-using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Mithmarie
 {
@@ -8,5 +8,18 @@ namespace Mithmarie
         public event Action OnSave;
         public event Action OnUndo;
         public event Action OnRedo;
+
+        public override void OnFrame()
+        {
+            base.OnFrame();
+            if (!Keyboard.current.leftCtrlKey.isPressed)
+                return;
+
+            if (Keyboard.current.sKey.wasPressedThisFrame)
+                OnSave?.Invoke();
+
+            if (Keyboard.current.zKey.wasPressedThisFrame)
+                (!Keyboard.current.leftShiftKey.isPressed ? OnUndo : OnRedo)?.Invoke();
+        }
     }
 }

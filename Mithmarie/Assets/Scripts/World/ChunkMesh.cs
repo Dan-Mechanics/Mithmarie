@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Mithmarie
 {
     /// <summary>
-    /// Source: https://github.com/samhogan/Minecraft-Unity3D/blob/master/Assets/Scripts/TerrainChunk.cs
+    /// https://github.com/samhogan/Minecraft-Unity3D/blob/master/Assets/Scripts/TerrainChunk.cs
     /// </summary>
     public class ChunkMesh : MonoBehaviour
     {
@@ -16,6 +16,7 @@ namespace Mithmarie
         private Transform eyes;
         private Mesh mesh;
         private Vector3 center;
+
         private static readonly Vector3 upForward = new Vector3(0, 1, 1);
         private static readonly Vector3 upRight = new Vector3(1, 1, 0);
         private static readonly Vector3 forwardRight = new Vector3(1, 0, 1);

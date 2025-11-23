@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 4141907983917415685}
   - component: {fileID: 1271512375170221928}
   - component: {fileID: 2515062756933341086}
-  - component: {fileID: 4590409987253486602}
   m_Layer: 3
   m_Name: player
   m_TagString: Player
@@ -100,14 +99,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
+  leftMouseButton: 0
   raycast:
-    range: 12
+    range: 10
     mask:
       serializedVersion: 2
       m_Bits: 1
+    normalOffset: 0.4
     interaction: 1
-  hitPointExtrusion: 0.4
-  leftMouseButton: 0
 --- !u!114 &6277602641836883055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,14 +120,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
+  leftMouseButton: 1
   raycast:
-    range: 12
+    range: 10
     mask:
       serializedVersion: 2
       m_Bits: 1
+    normalOffset: -0.4
     interaction: 1
-  hitPointExtrusion: -0.4
-  leftMouseButton: 1
 --- !u!114 &4141907983917415685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,18 +137,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 293393832251157704}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ed400ad6ac005341a23cc4692e76911, type: 3}
+  m_Script: {fileID: 11500000, guid: e3ee4844e5b10a845a83204a944ea7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
   previewPrefab: {fileID: 711197107212623808, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
-  raycast:
-    range: 12
-    mask:
-      serializedVersion: 2
-      m_Bits: 1
-    interaction: 1
-  hitPointExtrusion: -0.4
+  raycastProvider: {fileID: 6277602641836883055}
+  scale: 1.1
 --- !u!114 &1271512375170221928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,7 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   previewPrefab: {fileID: 9125353668538272078, guid: 6b04c716f67080d4aa453e28a5f69272, type: 3}
-  scaleOffset: 1.05
+  scale: 1.05
 --- !u!114 &2515062756933341086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,19 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   previewPrefab: {fileID: 9125353668538272078, guid: 7637c7c107267804c8eeb011364a4eee, type: 3}
-  scaleOffset: 1.05
---- !u!114 &4590409987253486602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293393832251157704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5892ae3eefb3b49b628ad207bd714b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  scale: 1.05
 --- !u!1 &3889645060876896680
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,7 +24,14 @@ namespace Mithmarie
             }
         }
 
-        public void SetCenterText(string str) => centerText.text = str;
+        public void SetCenterText(object obj) 
+        {
+            centerText.text = string.Empty;
+            if (obj == null)
+                return;
+
+            centerText.text = obj as string;
+        }
 
         public void Show() => gameObject.SetActive(true);
         public void Hide() => gameObject.SetActive(false);

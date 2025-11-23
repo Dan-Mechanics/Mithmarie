@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Mithmarie
 {
     /// <summary>
-    /// Source: https://discussions.unity.com/t/export-unity-mesh-to-obj-or-fbx-format/525773/14
+    /// https://discussions.unity.com/t/export-unity-mesh-to-obj-or-fbx-format/525773/14
     /// </summary>
     public class OBJ : IExportStrategy
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Mithmarie
 {
     /// <summary>
-    /// Sources: https://www.reddit.com/r/VoxelGameDev/comments/cmwqwy/whats_the_simplest_greedy_meshing_example_with/
+    /// https://www.reddit.com/r/VoxelGameDev/comments/cmwqwy/whats_the_simplest_greedy_meshing_example_with/
     /// https://github.com/VictorGordan/opengl-tutorials/blob/main/YoutubeOpenGL%209%20-%20Lighting/Main.cpp
     /// https://pastebin.com/DXKEmvap
     /// </summary>

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Mithmarie
 {
     /// <summary>
-    /// Source: https://github.com/samhogan/Minecraft-Unity3D/blob/master/Assets/Scripts/TerrainChunk.cs
+    /// https://github.com/samhogan/Minecraft-Unity3D/blob/master/Assets/Scripts/TerrainChunk.cs
     /// </summary>
     public class CulledMeshGenerator : IMeshingStrategy
     {

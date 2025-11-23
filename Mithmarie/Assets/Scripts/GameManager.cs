@@ -14,15 +14,8 @@ namespace Mithmarie
             message.Send("[WASD] for movement and [MOUSE] for looking.\nUse [RMB] to place blocks, [LMB] to destroy.", Color.black);
 
             World world = FindAnyObjectByType<World>();
-            if (world == null)
-                Debug.Log("problem");
-
             world.Add(Vector3Int.zero);
             world.Flush();
-
-            Menu menu = FindAnyObjectByType<Menu>();
-            menu.Setup(world, new OBJ(), new GreedyMeshGenerator(), message);
-
 
             Player playerState = FindAnyObjectByType<Player>();
             Menu menuState = FindAnyObjectByType<Menu>();

@@ -5,7 +5,7 @@ namespace Mithmarie
     public class SelectionPreview : MonoBehaviour
     {
         [SerializeField] private GameObject previewPrefab = default;
-        [SerializeField, Min(1f)] private float scaleOffset = default;
+        [SerializeField, Min(1f)] private float scale = default;
         private GameObject preview;
 
         private void Awake()
@@ -23,7 +23,7 @@ namespace Mithmarie
             Vector3Int a = (Vector3Int)firstPos;
             Vector3Int b = (Vector3Int)secondPos;
             preview.transform.position = Vector3.Lerp(a, b, 0.5f);
-            preview.transform.localScale = new Vector3(Mathf.Abs(b.x - a.x) + scaleOffset, Mathf.Abs(b.y - a.y) + scaleOffset, Mathf.Abs(b.z - a.z) + scaleOffset);
+            preview.transform.localScale = new Vector3(Mathf.Abs(b.x - a.x) + scale, Mathf.Abs(b.y - a.y) + scale, Mathf.Abs(b.z - a.z) + scale);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Mithmarie
         {
             print($"Entering {gameObject.name} state ...");
         }
+
         public virtual void Exit() { }
         public virtual void OnFrame() { }
         public virtual void OnTick() { }

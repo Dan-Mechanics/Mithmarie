@@ -66,5 +66,14 @@ namespace Mithmarie
             current = state;
             current.Enter();
         }
+
+        public void Close()
+        {
+            if (current == null)
+                return;
+
+            current.Exit();
+            current = null;
+        }
     }
 }

@@ -4,16 +4,14 @@ using UnityEngine.InputSystem;
 
 namespace Mithmarie
 {
-    public class Terraformer : StateBehaviour
+    public class Terraformer : StateBehaviour, IRaycastProvider
     {
-        public event Action<Raycast> OnBeginEditing;
         public event Action<Vector3Int?, Vector3Int?> OnShowPreview;
         public event Action<Vector3Int, Vector3Int> OnEditSelection;
         
         [SerializeField] private Transform eyes = default;
-        [SerializeField] private Raycast raycast = default;
-        [SerializeField] private float hitPointExtrusion = default;
         [SerializeField] private bool leftMouseButton = default;
+        [SerializeField] private RaycastSettings raycast = default;
 
         private RaycastHit hit;
         private Vector3Int? firstPos;
@@ -33,7 +31,7 @@ namespace Mithmarie
         {
             base.OnTick();
             if(firstPos != null && raycast.Cast(eyes, out hit))
-                secondPos = Utils.ApplyGrid(hit.point + (hit.normal * hitPointExtrusion));
+                secondPos = Utils.ConvertToBlockPos(hit.point);
 
             OnShowPreview?.Invoke(firstPos, secondPos);
         }
@@ -43,17 +41,16 @@ namespace Mithmarie
             base.OnFrame();
             if (ButtonPressed)
             {
-                OnBeginEditing?.Invoke(raycast);
                 ResetToDefault();
                 if(raycast.Cast(eyes, out hit))
-                    firstPos = Utils.ApplyGrid(hit.point + (hit.normal * hitPointExtrusion));
+                    firstPos = Utils.ConvertToBlockPos(hit.point);
             }
 
             if (firstPos != null && ButtonReleased)
             {
                 if (raycast.Cast(eyes, out hit))
                 {
-                    secondPos = Utils.ApplyGrid(hit.point + (hit.normal * hitPointExtrusion));
+                    secondPos = Utils.ConvertToBlockPos(hit.point);
                     OnEditSelection?.Invoke((Vector3Int)firstPos, (Vector3Int)secondPos);
                     world.Flush();
                 }
@@ -67,5 +64,7 @@ namespace Mithmarie
             firstPos = null;
             secondPos = null;
         }
+
+        public RaycastSettings GetSettings() => raycast;
     }
 }
