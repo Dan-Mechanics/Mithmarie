@@ -13,16 +13,13 @@ namespace Mithmarie
     {
         public Mesh GenerateMesh(HashSet<Vector3Int> blocks)
         {
-            List<ExpandingCubeMesh> cubes = ExtractCubes(blocks);
+            List<ExpandingCubeMesh> cubes = ExtractCubes(blocks.ToList());
 
             List<Vector3> verts = new List<Vector3>();
             List<int> tris = new List<int>();
             List<Vector2> uvs = new List<Vector2>();
 
-            for (int i = 0; i < cubes.Count; i++)
-            {
-                cubes[i].AddSelfToMesh(verts, tris, uvs, blocks);
-            }
+            cubes.ForEach(x => x.AddSelfToMesh(verts, tris, uvs, blocks));
 
             Mesh mesh = new Mesh
             {
@@ -35,10 +32,9 @@ namespace Mithmarie
             return mesh;
         }
 
-        private List<ExpandingCubeMesh> ExtractCubes(HashSet<Vector3Int> blocks)
+        private List<ExpandingCubeMesh> ExtractCubes(List<Vector3Int> blocksLeft)
         {
             List<ExpandingCubeMesh> result = new List<ExpandingCubeMesh>();
-            List<Vector3Int> blocksLeft = blocks.ToList();
 
             while(blocksLeft.Count > 0)
             { 
@@ -51,7 +47,7 @@ namespace Mithmarie
                 cube.ExpandForward(blocksLeft);
                 cube.ExpandBack(blocksLeft);
 
-                cube.ExandUp(blocksLeft);
+                cube.ExpandUp(blocksLeft);
                 cube.ExpandDown(blocksLeft);
 
                 result.Add(cube);
