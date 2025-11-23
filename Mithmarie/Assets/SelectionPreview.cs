@@ -5,9 +5,7 @@ namespace Mithmarie
     public class SelectionPreview : MonoBehaviour
     {
         [SerializeField] private GameObject previewPrefab = default;
-        [SerializeField] private Material previewMaterial = default;
         [SerializeField, Min(1f)] private float scaleOffset = default;
-
         private GameObject preview;
 
         private void Awake()
@@ -15,15 +13,11 @@ namespace Mithmarie
             preview = Instantiate(previewPrefab, Vector3.zero, Quaternion.identity);
         }
 
-        public void UpdatePreview(Vector3Int? firstPos, Vector3Int? secondPos, Color color)
+        public void UpdatePreview(Vector3Int? firstPos, Vector3Int? secondPos)
         {
             preview.SetActive(false);
             if (firstPos == null || secondPos == null)
                 return;
-
-            if (color.a <= 0f)
-                color.a = 0.5f;
-            previewMaterial.color = color;
 
             preview.SetActive(true);
             Vector3Int a = (Vector3Int)firstPos;

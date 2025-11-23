@@ -1,0 +1,27 @@
+using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
+
+namespace Mithmarie
+{
+    public class KeyHighlight : MonoBehaviour
+    {
+        [SerializeField] private Key key = default;
+        [SerializeField] private Image image = default;
+        [SerializeField] private Image icon = default;
+        [SerializeField] private TMP_Text text = default;
+
+        private void Start()
+        {
+            text.text = key.ToString().ToUpperInvariant();
+        }
+
+        public void Draw(Color colorA, Color colorB)
+        {
+            image.color = Keyboard.current[key].isPressed ? colorB : colorA;
+            text.color = Keyboard.current[key].isPressed ? colorA : colorB;
+            icon.color = text.color;
+        }
+    }
+}

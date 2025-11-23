@@ -6,18 +6,14 @@ namespace Mithmarie
 {
     public class Terraformer : StateBehaviour
     {
-        public float HitPointExtrusion => hitPointExtrusion;
-        public Raycast Raycast => raycast;
-
-        public event Action OnBeginEditing;
-        public event Action<Vector3Int?, Vector3Int?, Color> OnShowPreview;
+        public event Action<Raycast> OnBeginEditing;
+        public event Action<Vector3Int?, Vector3Int?> OnShowPreview;
         public event Action<Vector3Int, Vector3Int> OnEditSelection;
         
         [SerializeField] private Transform eyes = default;
         [SerializeField] private Raycast raycast = default;
         [SerializeField] private float hitPointExtrusion = default;
         [SerializeField] private bool leftMouseButton = default;
-        [SerializeField] private Color color = default;
 
         private RaycastHit hit;
         private Vector3Int? firstPos;
@@ -39,7 +35,7 @@ namespace Mithmarie
             if(firstPos != null && raycast.Cast(eyes, out hit))
                 secondPos = Utils.ApplyGrid(hit.point + (hit.normal * hitPointExtrusion));
 
-            OnShowPreview?.Invoke(firstPos, secondPos, color);
+            OnShowPreview?.Invoke(firstPos, secondPos);
         }
 
         public override void OnFrame()
@@ -47,7 +43,7 @@ namespace Mithmarie
             base.OnFrame();
             if (ButtonPressed)
             {
-                OnBeginEditing?.Invoke();
+                OnBeginEditing?.Invoke(raycast);
                 ResetToDefault();
                 if(raycast.Cast(eyes, out hit))
                     firstPos = Utils.ApplyGrid(hit.point + (hit.normal * hitPointExtrusion));

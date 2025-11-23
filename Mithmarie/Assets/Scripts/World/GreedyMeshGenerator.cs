@@ -41,11 +41,11 @@ namespace Mithmarie
                 ExpandingCubeMesh cube = new ExpandingCubeMesh(blocksLeft[0]);
                 blocksLeft.RemoveAt(0);
 
-                cube.ExandRight(blocksLeft);
-                cube.ExpandLeft(blocksLeft);
-
                 cube.ExpandForward(blocksLeft);
                 cube.ExpandBack(blocksLeft);
+
+                cube.ExandRight(blocksLeft);
+                cube.ExpandLeft(blocksLeft);
 
                 cube.ExpandUp(blocksLeft);
                 cube.ExpandDown(blocksLeft);

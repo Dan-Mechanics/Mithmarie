@@ -9,10 +9,10 @@ namespace Mithmarie
 
         [SerializeField] private Transform eyes = default;
         [SerializeField] private GameObject outlineCubePrefab = default;
+        [SerializeField] private Raycast raycast = default;
+        [SerializeField] private float hitPointExtrusion = default;
 
         private Transform outline;
-        private Raycast raycast;
-        private float hitPointExtrusion;
         private RaycastHit hit;
 
         private void Awake()
@@ -21,22 +21,17 @@ namespace Mithmarie
             outline.gameObject.SetActive(false);
         }
 
-        public void Configure(Raycast raycast, float hitPointExtrusion)
-        {
-            this.raycast = raycast;
-            this.hitPointExtrusion = hitPointExtrusion;
-        }
-
+        public void Configure(Raycast raycast) => this.raycast = raycast;
         public override void OnTick()
         {
             base.OnFrame();
-            Highlight(null);
+            Highlight(null, Vector3.zero);
             if (raycast.Cast(eyes, out hit))
-                Highlight(Utils.ApplyGrid(hit.point + (hit.normal * hitPointExtrusion)));
+                Highlight(Utils.ApplyGrid(hit.point + (hit.normal * hitPointExtrusion)), hit.normal);
 
         }
 
-        private void Highlight(Vector3Int? blockPos)
+        private void Highlight(Vector3Int? blockPos, Vector3 normal)
         {
             if(blockPos == null)
             {
@@ -48,6 +43,8 @@ namespace Mithmarie
             outline.gameObject.SetActive(true);
             outline.position = (Vector3Int)blockPos;
             OnOutputText?.Invoke(blockPos.ToString());
+
+            outline.forward = normal;
         }
 
     }

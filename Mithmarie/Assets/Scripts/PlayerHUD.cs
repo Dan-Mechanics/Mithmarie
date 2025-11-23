@@ -1,69 +1,32 @@
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using System;
-using UnityEngine.InputSystem;
-using System.Collections.Generic;
+using UnityEngine;
 
 namespace Mithmarie
 {
     public class PlayerHUD : MonoBehaviour
     {
         [SerializeField] private TMP_Text centerText = default;
-        
-        
-        [SerializeField] private Highlight sprintHighlight = default;
-     //   [SerializeField] private Highlight selectHighlight = default;
-        [SerializeField] private Highlight menuHighlight = default;
         [SerializeField] private Color colorA = Color.white;
         [SerializeField] private Color colorB = Color.white;
 
-        private readonly List<Highlight> highlights = new List<Highlight>();
+        private KeyHighlight[] keyHighlights;
 
-        private void Start()
+        private void Awake()
         {
-            
-            
-            sprintHighlight.key = PlayerMovement.SPRINT_KEY;
-          //  selectHighlight.key = Terraformer.SELECTION_KEY;
-            menuHighlight.key = GameManager.TOGGLE_STATE_KEY;
-
-            highlights.Add(sprintHighlight);
-         //   highlights.Add(selectHighlight);
-            highlights.Add(menuHighlight);
-
-            Draw();
+            keyHighlights = transform.GetComponentsInChildren<KeyHighlight>();
         }
 
-        private void Update() => Draw();
-
-        private void Draw()
+        private void Update()
         {
-            highlights.ForEach(x => x.Draw(colorA, colorB));
+            for (int i = 0; i < keyHighlights.Length; i++)
+            {
+                keyHighlights[i].Draw(colorA, colorB); ;
+            }
         }
 
         public void SetCenterText(string str) => centerText.text = str;
 
         public void Show() => gameObject.SetActive(true);
         public void Hide() => gameObject.SetActive(false);
-
-        /// <summary>
-        /// Note: you could make a further abstraction of this.
-        /// </summary>
-        [Serializable]
-        public class Highlight
-        {
-            public Image image;
-            public TMP_Text text;
-            public Image icon;
-            [HideInInspector] public Key key;
-
-            public void Draw(Color colorA, Color colorB)
-            {
-                image.color = Keyboard.current[key].isPressed ? colorB : colorA;
-                text.color = Keyboard.current[key].isPressed ? colorA : colorB;
-                icon.color = text.color;
-            }
-        }
     }
 }
