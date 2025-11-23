@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Mithmarie
 {
     [Serializable]
-    public class RaycastSettings
+    public struct RaycastSettings
     {
-        [Min(0.1f)] public float range = 10f;
-        public LayerMask mask = 1;
-        public float normalOffset = 0f;
-        public QueryTriggerInteraction interaction = QueryTriggerInteraction.Ignore;
+        [Min(0.1f)] public float range;
+        public LayerMask mask;
+        public float normalOffset;
+        public QueryTriggerInteraction interaction;
 
         public bool Cast(Transform arrow, out RaycastHit hit)
         {

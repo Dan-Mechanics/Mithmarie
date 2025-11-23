@@ -15,8 +15,7 @@ namespace Mithmarie
         public void Draw(Color colorA, Color colorB)
         {
             image.color = Keyboard.current[key].isPressed ? colorB : colorA;
-            text.color = Keyboard.current[key].isPressed ? colorA : colorB;
-            icon.color = text.color;
+            text.color = icon.color = Keyboard.current[key].isPressed ? colorA : colorB;
         }
     }
 }

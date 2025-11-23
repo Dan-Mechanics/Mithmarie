@@ -9,7 +9,6 @@ namespace Mithmarie
 
         [SerializeField] private Transform eyes = default;
         [SerializeField] private GameObject previewPrefab = default;
-        [SerializeField] private MonoBehaviour raycastProvider = default;
         [SerializeField, Min(0f)] private float scale = default; 
 
         private Transform outline;
@@ -25,7 +24,7 @@ namespace Mithmarie
 
         private void Start()
         {
-            raycast = raycastProvider.GetComponent<IRaycastProvider>().GetSettings();
+            raycast = GetComponent<IRaycastProvider>().GetSettings();
         }
 
         public override void OnTick()

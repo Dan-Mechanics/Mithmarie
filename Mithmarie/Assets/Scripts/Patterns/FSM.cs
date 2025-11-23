@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System;
 
 namespace Mithmarie
 {
@@ -7,14 +6,13 @@ namespace Mithmarie
     {
         private readonly List<IState> states = new List<IState>();
         private readonly List<Transition> transitions = new List<Transition>();
-
         private IState current;
 
         public void AddState(IState state)
         {
             if (state == null)
-                throw new NullReferenceException();
-            
+                return;
+
             if (!states.Contains(state))
                 states.Add(state);
         }
@@ -22,7 +20,7 @@ namespace Mithmarie
         public void AddTransition(Transition transition)
         {
             if (transition == null)
-                throw new NullReferenceException();
+                return;
 
             if (!transitions.Contains(transition))
                 transitions.Add(transition);
@@ -32,7 +30,6 @@ namespace Mithmarie
         {
             current?.OnFrame();
 
-            // !DICT
             foreach (var transition in transitions)
             {
                 if (transition.from != current)

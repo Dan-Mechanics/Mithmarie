@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1947845970665496768}
   - component: {fileID: 3481532798549250696}
   - component: {fileID: 771546152580428926}
-  - component: {fileID: 4304039197132537368}
   - component: {fileID: 6277602641836883055}
+  - component: {fileID: 4304039197132537368}
   - component: {fileID: 4141907983917415685}
   - component: {fileID: 1271512375170221928}
   - component: {fileID: 2515062756933341086}
@@ -86,27 +86,6 @@ MonoBehaviour:
   eyes: {fileID: 3062100453456221858}
   sensitivity: 0.33
   rotation: {x: 45, y: 45}
---- !u!114 &4304039197132537368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293393832251157704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e973ae11206a7164997a47330f3eeaee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eyes: {fileID: 3062100453456221858}
-  leftMouseButton: 0
-  raycast:
-    range: 10
-    mask:
-      serializedVersion: 2
-      m_Bits: 1
-    normalOffset: 0.4
-    interaction: 1
 --- !u!114 &6277602641836883055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,6 +107,27 @@ MonoBehaviour:
       m_Bits: 1
     normalOffset: -0.4
     interaction: 1
+--- !u!114 &4304039197132537368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293393832251157704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e973ae11206a7164997a47330f3eeaee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eyes: {fileID: 3062100453456221858}
+  leftMouseButton: 0
+  raycast:
+    range: 10
+    mask:
+      serializedVersion: 2
+      m_Bits: 1
+    normalOffset: 0.4
+    interaction: 1
 --- !u!114 &4141907983917415685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,7 +142,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
   previewPrefab: {fileID: 711197107212623808, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
-  raycastProvider: {fileID: 6277602641836883055}
   scale: 1.1
 --- !u!114 &1271512375170221928
 MonoBehaviour:
