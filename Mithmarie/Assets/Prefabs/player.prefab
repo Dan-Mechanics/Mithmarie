@@ -100,6 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
   leftMouseButton: 1
+  swapMouseButtons: {fileID: 11400000, guid: 728d7cc42f69d9845aa4cea8bf604f1b, type: 2}
   raycast:
     range: 10
     mask:
@@ -121,6 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
   leftMouseButton: 0
+  swapMouseButtons: {fileID: 11400000, guid: 728d7cc42f69d9845aa4cea8bf604f1b, type: 2}
   raycast:
     range: 10
     mask:

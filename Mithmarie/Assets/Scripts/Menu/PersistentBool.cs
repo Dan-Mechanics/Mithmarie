@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace Mithmarie
 {
-    [CreateAssetMenu(menuName = "ScriptableObject/" + nameof(PersistentFloat), fileName = "New " + nameof(PersistentFloat))]
-    public class PersistentFloat : ScriptableObject
+    [CreateAssetMenu(menuName = "ScriptableObject/" + nameof(PersistentBool), fileName = "New " + nameof(PersistentBool))]
+    public class PersistentBool : ScriptableObject
     {
-        [HideInInspector] public float value;
-        public float defaultValue;
+        [HideInInspector] public bool value;
+        public bool defaultValue;
 
         public void Save()
         {
@@ -35,7 +35,7 @@ namespace Mithmarie
             {
                 string path = $"{Application.persistentDataPath}/{name}.txt";
                 Debug.Log(path);
-                if (File.Exists(path) && float.TryParse(File.ReadAllText(path), out value))
+                if (File.Exists(path) && bool.TryParse(File.ReadAllText(path), out value))
                     return;
 
                 value = defaultValue;
@@ -43,7 +43,6 @@ namespace Mithmarie
             catch (Exception exception)
             {
                 ServiceLocator<IMessageService>.Locate()?.Send(exception.Message, Color.red);
-                Debug.LogError(exception.Message);
             }
         }
     }

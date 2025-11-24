@@ -11,6 +11,7 @@ namespace Mithmarie
         
         [SerializeField] private Transform eyes = default;
         [SerializeField] private bool leftMouseButton = default;
+        [SerializeField] private PersistentBool swapMouseButtons;
         [SerializeField] private RaycastSettings raycast = default;
 
         private RaycastHit hit;
@@ -18,8 +19,21 @@ namespace Mithmarie
         private Vector3Int? secondPos;
         private World world;
 
-        private bool ButtonPressed => leftMouseButton ? Mouse.current.leftButton.wasPressedThisFrame : Mouse.current.rightButton.wasPressedThisFrame;
-        private bool ButtonReleased => leftMouseButton ? Mouse.current.leftButton.wasReleasedThisFrame : Mouse.current.rightButton.wasReleasedThisFrame;
+        private bool ButtonPressed()
+        {
+            if (!swapMouseButtons.value)
+                return leftMouseButton ? Mouse.current.leftButton.wasPressedThisFrame : Mouse.current.rightButton.wasPressedThisFrame;
+
+            return !leftMouseButton ? Mouse.current.leftButton.wasPressedThisFrame : Mouse.current.rightButton.wasPressedThisFrame;
+        }
+
+        private bool ButtonReleased()
+        {
+            if (!swapMouseButtons.value)
+                return leftMouseButton ? Mouse.current.leftButton.wasReleasedThisFrame : Mouse.current.rightButton.wasReleasedThisFrame;
+
+            return !leftMouseButton ? Mouse.current.leftButton.wasReleasedThisFrame : Mouse.current.rightButton.wasReleasedThisFrame;
+        }
 
         private void Start()
         {
@@ -39,14 +53,14 @@ namespace Mithmarie
         public override void OnFrame()
         {
             base.OnFrame();
-            if (ButtonPressed)
+            if (ButtonPressed())
             {
                 ResetToDefault();
                 if(raycast.Cast(eyes, out hit))
                     firstPos = Utils.ConvertToBlockPos(hit.point);
             }
 
-            if (firstPos != null && ButtonReleased)
+            if (firstPos != null && ButtonReleased())
             {
                 if (raycast.Cast(eyes, out hit))
                 {

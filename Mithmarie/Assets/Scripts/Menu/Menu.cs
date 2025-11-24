@@ -24,7 +24,6 @@ namespace Mithmarie
             message = ServiceLocator<IMessageService>.Locate();
             filePage.Setup(FindAnyObjectByType<World>(), new OBJ(), new GreedyMeshGenerator(), message);
             settingsPage.Setup(message);
-            settingsPage.Exit();
 
             fsm.AddState(filePage);
             fsm.AddState(settingsPage);

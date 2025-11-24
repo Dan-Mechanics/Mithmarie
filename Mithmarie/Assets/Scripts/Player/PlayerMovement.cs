@@ -5,7 +5,6 @@ namespace Mithmarie
 {
     public class PlayerMovement : StateBehaviour
     {
-        public const Key SPRINT_KEY = Key.LeftCtrl;
         [SerializeField, Min(0f)] private float sprintSpeedMult = default;
         [SerializeField] private PersistentFloat speed = default;
 
@@ -23,7 +22,7 @@ namespace Mithmarie
 
             movement *= speed.value;
 
-            if (Keyboard.current[SPRINT_KEY].isPressed)
+            if (Keyboard.current.leftCtrlKey.isPressed)
                 movement *= sprintSpeedMult;
 
             transform.Translate(movement * Time.deltaTime, Space.World);

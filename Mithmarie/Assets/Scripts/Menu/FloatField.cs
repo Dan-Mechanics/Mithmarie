@@ -23,10 +23,9 @@ namespace Mithmarie
         public override void Enter()
         {
             base.Enter();
-            Debug.LogWarning("dwd");
             persistent.Load();
-            defaultButton.onClick.AddListener(ReturnToDefault);
             Edit(persistent.value.ToString());
+            defaultButton.onClick.AddListener(ReturnToDefault);
             field.onEndEdit.AddListener(Edit);
         }
 

@@ -21,6 +21,7 @@ namespace Mithmarie
             list.RemoveAt(list.FindIndex(x => x is SettingsPage));
             behaviours = list.ToArray();
 
+            gameObject.SetActive(false);
             defaultables = GetComponentsInChildren<IDefaultable>();
             this.message = message;
         }
