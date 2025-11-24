@@ -21,6 +21,7 @@ namespace Mithmarie
             movement.Normalize();
 
             movement *= speed.value;
+            movement.y *= 1.175f;
 
             if (Keyboard.current.leftCtrlKey.isPressed)
                 movement *= sprintSpeedMult;

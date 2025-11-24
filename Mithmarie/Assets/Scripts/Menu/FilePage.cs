@@ -19,6 +19,7 @@ namespace Mithmarie
         private IMessageService message;
         private IExportStrategy filetype;
         private IMeshingStrategy meshing;
+        private string exportPath;
 
         public void Setup(World world, IExportStrategy filetype, IMeshingStrategy meshing, IMessageService message)
         {
@@ -69,7 +70,7 @@ namespace Mithmarie
             OnDone?.Invoke();
         }
 
-        private void Export()
+        private void BeginExport()
         {
             ExtensionFilter[] extensionList = new[] { new ExtensionFilter("Wavefront", "obj") };
 
@@ -78,9 +79,16 @@ namespace Mithmarie
                 return;
 
             world.Flush();
+            exportPath = path;
+            message.Send("Exporting ...", Color.black, 1f);
 
+            Invoke(nameof(Export), 0.1f);
+        }
+
+        private void Export()
+        {
             Mesh mesh = meshing.GenerateMesh(world.GetAllBlocks());
-            filetype.Export(path, mesh, message);
+            filetype.Export(exportPath, mesh, message);
 
             OnDone?.Invoke();
         }
@@ -92,7 +100,7 @@ namespace Mithmarie
 
             saveButton.onClick.AddListener(Save);
             loadButton.onClick.AddListener(Load);
-            exportButton.onClick.AddListener(Export);
+            exportButton.onClick.AddListener(BeginExport);
             newButton.onClick.AddListener(New);
         }
 
@@ -104,7 +112,7 @@ namespace Mithmarie
             saveButton.onClick.RemoveListener(Save);
             loadButton.onClick.RemoveListener(Load);
             newButton.onClick.RemoveListener(New);
-            exportButton.onClick.RemoveListener(Export);
+            exportButton.onClick.RemoveListener(BeginExport);
         }
     }
 }
