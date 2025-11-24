@@ -13,7 +13,7 @@ namespace Mithmarie
         [SerializeField] private SelectionPreview removeSelectionPreview = default;
         [SerializeField] private AimedBlockOutline blockHighlight = default;
 
-        private StateBehaviour[] playerBehaviour;
+        private StateBehaviour[] behaviour;
         private PlayerHUD playerHUD;
         private bool wantsToClose;
         private World world;
@@ -25,7 +25,7 @@ namespace Mithmarie
 
             List<StateBehaviour> list = GetComponents<StateBehaviour>().ToList();
             list.RemoveAt(list.FindIndex(x => x is Player));
-            playerBehaviour = list.ToArray();
+            behaviour = list.ToArray();
         }
         
         public override void Enter()
@@ -33,6 +33,11 @@ namespace Mithmarie
             base.Enter();
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+
+            for (int i = 0; i < behaviour.Length; i++)
+            {
+                behaviour[i].Enter();
+            }
 
             playerHUD.Show();
 
@@ -50,9 +55,12 @@ namespace Mithmarie
             base.Exit();
             wantsToClose = false;
 
-            if (playerHUD != null)
-                playerHUD.Hide();
+            for (int i = 0; i < behaviour.Length; i++)
+            {
+                behaviour[i].Exit();
+            }
 
+            playerHUD.Hide();
             addTerraform.OnShowPreview -= addSelectionPreview.UpdatePreview;
             removeTerraform.OnShowPreview -= removeSelectionPreview.UpdatePreview;
 
@@ -66,9 +74,9 @@ namespace Mithmarie
         {
             base.OnFrame();
 
-            for (int i = 0; i < playerBehaviour.Length; i++)
+            for (int i = 0; i < behaviour.Length; i++)
             {
-                playerBehaviour[i].OnFrame();
+                behaviour[i].OnFrame();
             }
 
             if (Keyboard.current[GameManager.TOGGLE_STATE_KEY].wasPressedThisFrame)
@@ -78,9 +86,9 @@ namespace Mithmarie
         public override void OnTick()
         {
             base.OnTick();
-            for (int i = 0; i < playerBehaviour.Length; i++)
+            for (int i = 0; i < behaviour.Length; i++)
             {
-                playerBehaviour[i].OnTick();
+                behaviour[i].OnTick();
             }
         }
 

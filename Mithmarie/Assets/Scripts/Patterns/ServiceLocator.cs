@@ -8,8 +8,8 @@ namespace Mithmarie
 
         public static T Locate()
         {
-            if (!HasBeenProvided())
-                throw new Exception("Cannot locate service because it has not been provided yet.");
+            /*if (!HasBeenProvided())
+                throw new Exception("Cannot locate service because it has not been provided yet.");*/
 
             return instance;
         }

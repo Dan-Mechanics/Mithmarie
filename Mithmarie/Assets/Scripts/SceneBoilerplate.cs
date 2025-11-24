@@ -9,7 +9,7 @@ namespace Mithmarie
         [SerializeField, Min(1)] private int fps = default;
         [SerializeField, Min(1f)] private float physicsTicksPerSecond = default;
 
-        private void Start()
+        private void Awake()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Application.targetFrameRate = fps;

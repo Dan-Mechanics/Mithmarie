@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 namespace Mithmarie
 {
@@ -7,20 +8,24 @@ namespace Mithmarie
     {
         [SerializeField] private TMP_InputField field = default;
         [SerializeField] private TMP_Text placeholder = default;
+        [SerializeField] private Button defaultButton = default;
         [SerializeField] private PersistentFloat persistent = default;
         [SerializeField] private float minValue = default;
         [SerializeField] private float maxValue = default;
 
         private void Start()
         {
-            placeholder.text = $"{minValue} - {maxValue}";
+            gameObject.name = persistent.name;
+            placeholder.text = $"{minValue} --- {maxValue}";
             print($"{gameObject.name} {placeholder.text}");
         }
 
         public override void Enter()
         {
             base.Enter();
+            Debug.LogWarning("dwd");
             persistent.Load();
+            defaultButton.onClick.AddListener(ReturnToDefault);
             Edit(persistent.value.ToString());
             field.onEndEdit.AddListener(Edit);
         }
@@ -29,15 +34,16 @@ namespace Mithmarie
         {
             base.Exit();
             persistent.Save();
+            defaultButton.onClick.RemoveListener(ReturnToDefault);
             field.onEndEdit.RemoveListener(Edit);
         }
 
         private void Edit(string str)
         {
-            float newValue = persistent.value;
-            if (float.TryParse(str, out newValue))
-                newValue = Mathf.Clamp(newValue, minValue, maxValue);
+            if (!float.TryParse(str, out float newValue))
+                newValue = persistent.value;
 
+            newValue = Mathf.Clamp(newValue, minValue, maxValue);
             persistent.value = newValue;
             field.text = newValue.ToString();
         }
@@ -47,5 +53,7 @@ namespace Mithmarie
             persistent.value = persistent.defaultValue;
             field.text = persistent.value.ToString();
         }
+
+        private void OnApplicationQuit() => persistent.Save();
     }
 }

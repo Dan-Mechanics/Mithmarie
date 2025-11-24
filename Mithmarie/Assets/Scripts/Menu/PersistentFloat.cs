@@ -11,9 +11,6 @@ namespace Mithmarie
     {
         [HideInInspector] public float value;
         public float defaultValue;
-        private IMessageService message;
-
-        public void Setup(IMessageService message) => this.message = message;
 
         public void Save()
         {
@@ -22,13 +19,11 @@ namespace Mithmarie
             try
             {
                 string path = $"{Application.persistentDataPath}/{name}.txt";
-                Debug.Log(path);
-                // does it need to exist first ??
                 File.WriteAllText(path, value.ToString());
             }
             catch (Exception exception)
             {
-                message.Send(exception.Message, Color.red);
+                ServiceLocator<IMessageService>.Locate()?.Send(exception.Message, Color.red);
             }
         }
 
@@ -39,15 +34,16 @@ namespace Mithmarie
             try
             {
                 string path = $"{Application.persistentDataPath}/{name}.txt";
+                Debug.Log(path);
                 if (File.Exists(path) && float.TryParse(File.ReadAllText(path), out value))
                     return;
 
-                message.Send($"Loading default value for {name} ...", Color.yellow, 0.5f);
+                ServiceLocator<IMessageService>.Locate()?.Send($"Loading default value for {name} ...", Color.yellow, 3f);
                 value = defaultValue;
             }
             catch (Exception exception)
             {
-                message.Send(exception.Message, Color.red);
+                ServiceLocator<IMessageService>.Locate()?.Send(exception.Message, Color.red);
             }
         }
     }

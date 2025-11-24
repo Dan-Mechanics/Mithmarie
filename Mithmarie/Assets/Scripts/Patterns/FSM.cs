@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Mithmarie
 {
     public class FSM 
     {
+        public IState Current => current;
+        
         private readonly List<IState> states = new List<IState>();
         private readonly List<Transition> transitions = new List<Transition>();
         private IState current;
@@ -62,6 +65,7 @@ namespace Mithmarie
             current?.Exit();
             current = state;
             current.Enter();
+            Debug.Log(current.ToString().ToUpperInvariant());
         }
 
         public void Close()

@@ -20,11 +20,11 @@ namespace Mithmarie
         private IExportStrategy filetype;
         private IMeshingStrategy meshing;
 
-        public void Setup(World world, IExportStrategy exportStrat, IMeshingStrategy generatable, IMessageService message)
+        public void Setup(World world, IExportStrategy filetype, IMeshingStrategy meshing, IMessageService message)
         {
             this.world = world;
-            this.filetype = exportStrat;
-            this.meshing = generatable;
+            this.filetype = filetype;
+            this.meshing = meshing;
             this.message = message;
         }
 

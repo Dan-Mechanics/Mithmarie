@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprintSpeedMult: 2.5
-  speed: 12.5
+  speed: {fileID: 11400000, guid: 5d089e7e052fa3c499c293d13a7b1227, type: 2}
 --- !u!114 &771546152580428926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
-  sensitivity: 0.33
+  sens: {fileID: 11400000, guid: ea9148efa7b98f64bbb6cd03974db853, type: 2}
   rotation: {x: 45, y: 45}
 --- !u!114 &6277602641836883055
 MonoBehaviour:
