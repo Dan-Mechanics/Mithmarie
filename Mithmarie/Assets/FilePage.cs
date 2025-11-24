@@ -17,14 +17,14 @@ namespace Mithmarie
 
         private World world;
         private IMessageService message;
-        private IExportStrategy exportStrat;
-        private IMeshingStrategy generatable;
+        private IExportStrategy filetype;
+        private IMeshingStrategy meshing;
 
         public void Setup(World world, IExportStrategy exportStrat, IMeshingStrategy generatable, IMessageService message)
         {
             this.world = world;
-            this.exportStrat = exportStrat;
-            this.generatable = generatable;
+            this.filetype = exportStrat;
+            this.meshing = generatable;
             this.message = message;
         }
 
@@ -79,8 +79,8 @@ namespace Mithmarie
 
             world.Flush();
 
-            Mesh mesh = generatable.GenerateMesh(world.GetAllBlocks());
-            exportStrat.Export(path, mesh, message);
+            Mesh mesh = meshing.GenerateMesh(world.GetAllBlocks());
+            filetype.Export(path, mesh, message);
 
             OnDone?.Invoke();
         }

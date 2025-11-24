@@ -3,14 +3,17 @@ using UnityEngine.InputSystem;
 
 namespace Mithmarie
 {
-    public class PlayerMovement : StateBehaviour//, ISettingsRequired
+    public class PlayerMovement : StateBehaviour
     {
         public const Key SPRINT_KEY = Key.LeftCtrl;
         [SerializeField, Min(0f)] private float sprintSpeedMult = default;
-        [SerializeField, Min(0f)] private float speed = default;
-       // private PlayerSettings settings;
+        [SerializeField] private PersistentFloat speed = default;
 
-      //  public void AssignSettings(PlayerSettings settings) => this.settings = settings;
+        public override void Enter()
+        {
+            base.Enter();
+            speed.Load();
+        }
 
         public override void OnFrame()
         {
@@ -18,7 +21,7 @@ namespace Mithmarie
             movement = transform.TransformDirection(movement);
             movement.Normalize();
 
-            movement *= speed;
+            movement *= speed.value;
 
             if (Keyboard.current[SPRINT_KEY].isPressed)
                 movement *= sprintSpeedMult;
