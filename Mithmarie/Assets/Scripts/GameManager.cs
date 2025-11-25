@@ -16,6 +16,13 @@ namespace Mithmarie
             IMessageService message = ServiceLocator<IMessageService>.Locate();
             message.Send("[WASD] for movement and [MOUSE] for looking.\nUse [RMB] to place blocks, [LMB] to destroy.", Color.black);
 
+            // SOMETHING LIKE THE FOLLOWING !!
+            FindAnyObjectByType<KeyboardShortcuts>().OnUndo += FindAnyObjectByType<WorldHistory>().Undo;
+            FindAnyObjectByType<KeyboardShortcuts>().OnRedo += FindAnyObjectByType<WorldHistory>().Redo;
+
+            FindAnyObjectByType<World>().OnAdd += FindAnyObjectByType<WorldHistory>().LogAdd;
+            FindAnyObjectByType<World>().OnRemove += FindAnyObjectByType<WorldHistory>().LogRemove;
+
             World world = FindAnyObjectByType<World>();
             world.Add(Vector3Int.zero);
             world.Flush();

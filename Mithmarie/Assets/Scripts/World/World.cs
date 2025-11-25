@@ -10,6 +10,9 @@ namespace Mithmarie
     /// </summary>
     public class World : MonoBehaviour, IBinarySerializable
     {
+        public event Action<HashSet<Vector3Int>> OnAdd;
+        public event Action<HashSet<Vector3Int>> OnRemove;
+        
         public const int CHUNK_SIZE = 8;
         
         private readonly Dictionary<Vector3Int, HashSet<Vector3Int>> chunks = new Dictionary<Vector3Int, HashSet<Vector3Int>>();
@@ -20,6 +23,9 @@ namespace Mithmarie
 
         private delegate void EditBlock(Vector3Int blockPos);
         private EditBlock editBlock;
+
+        private readonly HashSet<Vector3Int> roamingAdds = new HashSet<Vector3Int>();
+        private readonly HashSet<Vector3Int> roamingRemoves = new HashSet<Vector3Int>();
 
         private void Awake()
         {
@@ -43,7 +49,7 @@ namespace Mithmarie
             EditSelection(a, b);
         }
 
-        public void Add(Vector3Int blockPos)
+        public void SilentAdd(Vector3Int blockPos)
         {
             Vector3Int chunkPos = Utils.GetChunkPos(blockPos, CHUNK_SIZE);
             if (!chunks.ContainsKey(chunkPos))
@@ -56,7 +62,7 @@ namespace Mithmarie
             NotifyChunkChange(chunkPos);
         }
 
-        public void Remove(Vector3Int blockPos)
+        public void SilentRemove(Vector3Int blockPos)
         {
             Vector3Int chunkPos = Utils.GetChunkPos(blockPos, CHUNK_SIZE);
             if (!chunks.ContainsKey(chunkPos))
@@ -67,6 +73,18 @@ namespace Mithmarie
 
             chunks[chunkPos].Remove(blockPos);
             NotifyChunkChange(chunkPos);
+        }
+
+        public void Add(Vector3Int blockPos)
+        {
+            SilentAdd(blockPos);
+            roamingAdds.Add(blockPos);
+        }
+
+        public void Remove(Vector3Int blockPos)
+        {
+            SilentRemove(blockPos);
+            roamingRemoves.Add(blockPos);
         }
 
         public void Clear()
@@ -92,6 +110,11 @@ namespace Mithmarie
 
                 chunksVisualizer.DrawChunk(chunkPos, chunks);
             }
+
+            OnAdd?.Invoke(roamingAdds);
+            OnRemove?.Invoke(roamingRemoves);
+            roamingAdds.Clear();
+            roamingRemoves.Clear();
         }
 
         private void EditSelection(Vector3Int a, Vector3Int b)
@@ -173,12 +196,6 @@ namespace Mithmarie
                         writer.Write(blockPos.z);
                     }
                 }
-                /*for (int i = 0; i < blocks.Length; i++)
-                {
-                    writer.Write(blocks[i].x);
-                    writer.Write(blocks[i].y);
-                    writer.Write(blocks[i].z);
-                }*/
             }
             catch (Exception exception)
             {

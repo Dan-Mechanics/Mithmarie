@@ -8,10 +8,13 @@ namespace Mithmarie
 {
     public class FilePage : StateBehaviour
     {
+        private string SavePathPath => Application.persistentDataPath + "/lastsave.txt";
+        
         public event Action OnDone;
         
         [SerializeField] private Button newButton = default;
         [SerializeField] private Button saveButton = default;
+        [SerializeField] private Button saveAsButton = default;
         [SerializeField] private Button loadButton = default;
         [SerializeField] private Button exportButton = default;
 
@@ -19,6 +22,7 @@ namespace Mithmarie
         private IMessageService message;
         private IExportStrategy filetype;
         private IMeshingStrategy meshing;
+        private string savePath;
         private string exportPath;
 
         public void Setup(World world, IExportStrategy filetype, IMeshingStrategy meshing, IMessageService message)
@@ -27,9 +31,29 @@ namespace Mithmarie
             this.filetype = filetype;
             this.meshing = meshing;
             this.message = message;
+
+            if (File.Exists(SavePathPath))
+                savePath = File.ReadAllText(SavePathPath);
         }
 
         private void Save()
+        {
+            if (!Utils.IsStringValid(savePath) || !File.Exists(savePath))
+            {
+                SaveAs();
+                return;
+            }
+
+            FileStream stream = File.OpenWrite(savePath);
+            BinaryWriter writer = new BinaryWriter(stream);
+
+            world.Flush();
+            world.Serialize(writer);
+
+            OnDone?.Invoke();
+        }
+
+        private void SaveAs()
         {
             ExtensionFilter[] extensionList = new[] { new ExtensionFilter("Mithmarie", "mth") };
 
@@ -37,13 +61,8 @@ namespace Mithmarie
             if (!Utils.IsStringValid(path))
                 return;
 
-            FileStream stream = File.OpenWrite(path);
-            BinaryWriter writer = new BinaryWriter(stream);
-
-            world.Flush();
-            world.Serialize(writer);
-
-            OnDone?.Invoke();
+            savePath = path;
+            Save();
         }
 
         private void New()
@@ -82,6 +101,7 @@ namespace Mithmarie
             exportPath = path;
             message.Send("Exporting ...", Color.black, 1f);
 
+            CancelInvoke(nameof(Export));
             Invoke(nameof(Export), 0.1f);
         }
 
@@ -98,6 +118,7 @@ namespace Mithmarie
             base.Enter();
             gameObject.SetActive(true);
 
+            saveAsButton.onClick.AddListener(SaveAs);
             saveButton.onClick.AddListener(Save);
             loadButton.onClick.AddListener(Load);
             exportButton.onClick.AddListener(BeginExport);
@@ -109,10 +130,16 @@ namespace Mithmarie
             base.Exit();
             gameObject.SetActive(false);
 
+            saveAsButton.onClick.RemoveListener(SaveAs);
             saveButton.onClick.RemoveListener(Save);
             loadButton.onClick.RemoveListener(Load);
             newButton.onClick.RemoveListener(New);
             exportButton.onClick.RemoveListener(BeginExport);
+        }
+
+        private void OnApplicationQuit()
+        {
+            File.WriteAllText(SavePathPath, savePath);
         }
     }
 }
