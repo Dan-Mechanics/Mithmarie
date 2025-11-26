@@ -19,7 +19,7 @@ namespace Mithmarie
                 OnSave?.Invoke();
 
             if (Keyboard.current.zKey.wasPressedThisFrame)
-                (!Keyboard.current.leftShiftKey.isPressed ? OnUndo : OnRedo)?.Invoke();
+                (Keyboard.current.leftShiftKey.isPressed ? OnRedo : OnUndo)?.Invoke();
         }
     }
 }

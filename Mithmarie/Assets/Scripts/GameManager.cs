@@ -14,17 +14,23 @@ namespace Mithmarie
         private void Start()
         {
             IMessageService message = ServiceLocator<IMessageService>.Locate();
-            message.Send("[WASD] for movement and [MOUSE] for looking.\nUse [RMB] to place blocks, [LMB] to destroy.", Color.black);
-
-            // SOMETHING LIKE THE FOLLOWING !!
-            FindAnyObjectByType<KeyboardShortcuts>().OnUndo += FindAnyObjectByType<WorldHistory>().Undo;
-            FindAnyObjectByType<KeyboardShortcuts>().OnRedo += FindAnyObjectByType<WorldHistory>().Redo;
-
-            FindAnyObjectByType<World>().OnAdd += FindAnyObjectByType<WorldHistory>().LogAdd;
-            FindAnyObjectByType<World>().OnRemove += FindAnyObjectByType<WorldHistory>().LogRemove;
+            message.Send("[WASD] for movement and [MOUSE] for looking.\nUse [RMB] to place blocks, [LMB] to destroy.", Color.black, 4f);
 
             World world = FindAnyObjectByType<World>();
+            WorldHistory history = FindAnyObjectByType<WorldHistory>();
+            KeyboardShortcuts shortcuts = FindAnyObjectByType<KeyboardShortcuts>();
+
+            shortcuts.OnSave += FindAnyObjectByType<FilePage>().Save;
+            shortcuts.OnUndo += history.Undo;
+            shortcuts.OnRedo += history.Redo;
+
+            world.OnAdd += history.EnscribeAddCommand;
+            world.OnRemove += history.EnscribeRemoveCommand;
+
+            world.OnClear += history.Clear;
+
             world.Add(Vector3Int.zero);
+            world.ClearCaches();
             world.Flush();
 
             Player playerState = FindAnyObjectByType<Player>();

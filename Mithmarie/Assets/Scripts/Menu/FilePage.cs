@@ -34,15 +34,19 @@ namespace Mithmarie
 
             if (File.Exists(SavePathPath))
                 savePath = File.ReadAllText(SavePathPath);
+
+            Load(savePath);
         }
 
-        private void Save()
+        public void Save()
         {
-            if (!Utils.IsStringValid(savePath) || !File.Exists(savePath))
+            if (!Utils.IsStringValid(savePath))
             {
                 SaveAs();
                 return;
             }
+
+            message.Send("Saving ...", Color.green, 0.5f);
 
             FileStream stream = File.OpenWrite(savePath);
             BinaryWriter writer = new BinaryWriter(stream);
@@ -67,8 +71,11 @@ namespace Mithmarie
 
         private void New()
         {
+            savePath = string.Empty;
+
             world.Clear();
             world.Flush();
+            message.Send("Cleared.", Color.gray, 0.25f);
             OnDone?.Invoke();
         }
 
@@ -79,13 +86,24 @@ namespace Mithmarie
                 return;
 
             string path = paths[0];
+            Load(path);
+        }
+
+        private void Load(string path)
+        {
+            if (!Utils.IsStringValid(path) || !File.Exists(path))
+                return;
+
             FileStream stream = File.OpenRead(path);
             BinaryReader reader = new BinaryReader(stream);
 
+            savePath = path;
+
             world.Clear();
             world.Deserialize(reader);
+            world.ClearCaches();
             world.Flush();
-
+            message.Send(path, Color.gray, 1f);
             OnDone?.Invoke();
         }
 

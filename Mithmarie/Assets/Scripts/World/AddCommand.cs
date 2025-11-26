@@ -16,7 +16,7 @@ namespace Mithmarie
         {
             foreach (Vector3Int block in blocks)
             {
-                world.SilentAdd(block);
+                world.Add(block);
             }
         }
 
@@ -24,7 +24,7 @@ namespace Mithmarie
         {
             foreach (Vector3Int block in blocks)
             {
-                world.SilentRemove(block);
+                world.Add(block);
             }
         }
     }

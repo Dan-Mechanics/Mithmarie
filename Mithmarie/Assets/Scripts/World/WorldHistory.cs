@@ -15,10 +15,10 @@ namespace Mithmarie
             world = FindAnyObjectByType<World>();
         }
 
-        public void LogAdd(HashSet<Vector3Int> blocks) => LogCommand(new AddCommand(blocks));
-        public void LogRemove(HashSet<Vector3Int> blocks) => LogCommand(new RemoveCommand(blocks));
+        public void EnscribeAddCommand(HashSet<Vector3Int> blocks) => EnscribeCommand(new AddCommand(blocks));
+        public void EnscribeRemoveCommand(HashSet<Vector3Int> blocks) => EnscribeCommand(new RemoveCommand(blocks));
 
-        private void LogCommand(IWorldCommand command)
+        private void EnscribeCommand(IWorldCommand command)
         {
             history.Add(command);
             while(history.Count > maxHistoryCount)
@@ -27,6 +27,12 @@ namespace Mithmarie
             }
 
             index = history.Count - 1;
+        }
+
+        public void Clear()
+        {
+            history.Clear();
+            index = 0;
         }
 
         public void Undo()
@@ -39,6 +45,8 @@ namespace Mithmarie
 
             history[index].Undo(world);
             index--;
+
+            world.ClearCaches();
             world.Flush();
         }
 
@@ -52,6 +60,9 @@ namespace Mithmarie
 
             history[index].Execute(world);
             index++;
+
+            world.ClearCaches();
+            world.Flush();
         }
     }
 }

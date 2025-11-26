@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 namespace Mithmarie
 {
@@ -10,6 +12,7 @@ namespace Mithmarie
     /// </summary>
     public class World : MonoBehaviour, IBinarySerializable
     {
+        public event Action OnClear;
         public event Action<HashSet<Vector3Int>> OnAdd;
         public event Action<HashSet<Vector3Int>> OnRemove;
         
@@ -24,8 +27,8 @@ namespace Mithmarie
         private delegate void EditBlock(Vector3Int blockPos);
         private EditBlock editBlock;
 
-        private readonly HashSet<Vector3Int> roamingAdds = new HashSet<Vector3Int>();
-        private readonly HashSet<Vector3Int> roamingRemoves = new HashSet<Vector3Int>();
+        private readonly HashSet<Vector3Int> addedBlocksCache = new HashSet<Vector3Int>();
+        private readonly HashSet<Vector3Int> removedBlocksCache = new HashSet<Vector3Int>();
 
         private void Awake()
         {
@@ -49,7 +52,7 @@ namespace Mithmarie
             EditSelection(a, b);
         }
 
-        public void SilentAdd(Vector3Int blockPos)
+        public void Add(Vector3Int blockPos)
         {
             Vector3Int chunkPos = Utils.GetChunkPos(blockPos, CHUNK_SIZE);
             if (!chunks.ContainsKey(chunkPos))
@@ -60,9 +63,11 @@ namespace Mithmarie
 
             chunks[chunkPos].Add(blockPos);
             NotifyChunkChange(chunkPos);
+
+            addedBlocksCache.Add(blockPos);
         }
 
-        public void SilentRemove(Vector3Int blockPos)
+        public void Remove(Vector3Int blockPos)
         {
             Vector3Int chunkPos = Utils.GetChunkPos(blockPos, CHUNK_SIZE);
             if (!chunks.ContainsKey(chunkPos))
@@ -73,18 +78,8 @@ namespace Mithmarie
 
             chunks[chunkPos].Remove(blockPos);
             NotifyChunkChange(chunkPos);
-        }
 
-        public void Add(Vector3Int blockPos)
-        {
-            SilentAdd(blockPos);
-            roamingAdds.Add(blockPos);
-        }
-
-        public void Remove(Vector3Int blockPos)
-        {
-            SilentRemove(blockPos);
-            roamingRemoves.Add(blockPos);
+            removedBlocksCache.Add(blockPos);
         }
 
         public void Clear()
@@ -95,26 +90,36 @@ namespace Mithmarie
             }
 
             chunks.Clear();
+            OnClear?.Invoke();
+        }
+
+        public void ClearCaches()
+        {
+            addedBlocksCache.Clear();
+            removedBlocksCache.Clear();
         }
 
         public void Flush()
         {
             foreach (Vector3Int chunkPos in changedChunkPositions)
             {
-                if(!chunks.ContainsKey(chunkPos) || chunks[chunkPos] == null || chunks[chunkPos].Count <= 0)
-                {
+                if (!chunks.ContainsKey(chunkPos) || chunks[chunkPos] == null || chunks[chunkPos].Count <= 0)
                     chunks.Remove(chunkPos);
-                    chunksVisualizer.DrawChunk(chunkPos, chunks);
-                    continue;
-                }
 
                 chunksVisualizer.DrawChunk(chunkPos, chunks);
             }
 
-            OnAdd?.Invoke(roamingAdds);
-            OnRemove?.Invoke(roamingRemoves);
-            roamingAdds.Clear();
-            roamingRemoves.Clear();
+            if (addedBlocksCache.Count > 0)
+            {
+                OnAdd?.Invoke(addedBlocksCache);
+                addedBlocksCache.Clear();
+            }
+
+            if (removedBlocksCache.Count > 0)
+            {
+                OnRemove?.Invoke(removedBlocksCache);
+                removedBlocksCache.Clear();
+            }
         }
 
         private void EditSelection(Vector3Int a, Vector3Int b)
@@ -155,10 +160,12 @@ namespace Mithmarie
             HashSet<Vector3Int> blocks = new HashSet<Vector3Int>();
             foreach (HashSet<Vector3Int> chunk in chunks.Values)
             {
-                foreach (Vector3Int blockPos in chunk)
+                /*foreach (Vector3Int blockPos in chunk)
                 {
-                    blocks.Add(blockPos);
-                }
+                    blocks.Join(blockPos);
+                }*/
+
+                blocks.UnionWith(chunk);
             }
 
             return blocks;
@@ -200,6 +207,7 @@ namespace Mithmarie
             catch (Exception exception)
             {
                 message.Send(exception.Message, Color.red);
+                Debug.LogError(exception.Message);
             }
         }
 
@@ -236,6 +244,8 @@ namespace Mithmarie
 
                     axisCounter++;
                 }
+
+                //ClearCaches();
             }
             catch (Exception exception)
             {
