@@ -3122,7 +3122,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: b79baffb9b5cd4649b6d199f74cf2c58, type: 3}
     - target: {fileID: 4235869844101446557, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: m_text
-      value: SHIFT
+      value: ALT
       objectReference: {fileID: 0}
     - target: {fileID: 6541160808978498079, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: m_Name
@@ -3130,7 +3130,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6603908903243256910, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: key
-      value: 51
+      value: 53
       objectReference: {fileID: 0}
     - target: {fileID: 6811851903293659961, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: m_SizeDelta.x
@@ -4127,7 +4127,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 05cdbf3e1e8e2d2489bb9fbf772c9876, type: 3}
     - target: {fileID: 4235869844101446557, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: m_text
-      value: CTRL
+      value: SHIFT
       objectReference: {fileID: 0}
     - target: {fileID: 6541160808978498079, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: m_Name
@@ -4135,7 +4135,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6603908903243256910, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: key
-      value: 55
+      value: 51
       objectReference: {fileID: 0}
     - target: {fileID: 8255196616565296070, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: m_Pivot.x
@@ -4233,6 +4233,14 @@ PrefabInstance:
     - target: {fileID: 293393832251157704, guid: 9393d9580c1a3224cbe38fcf4d284a62, type: 3}
       propertyPath: m_Name
       value: player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3481532798549250696, guid: 9393d9580c1a3224cbe38fcf4d284a62, type: 3}
+      propertyPath: downKey
+      value: 53
+      objectReference: {fileID: 0}
+    - target: {fileID: 3481532798549250696, guid: 9393d9580c1a3224cbe38fcf4d284a62, type: 3}
+      propertyPath: sprintKey
+      value: 51
       objectReference: {fileID: 0}
     - target: {fileID: 7707490481465344754, guid: 9393d9580c1a3224cbe38fcf4d284a62, type: 3}
       propertyPath: m_LocalPosition.x
