@@ -26,11 +26,14 @@ namespace Mithmarie
 
         public void SetCenterText(object obj) 
         {
-            centerText.text = string.Empty;
-            if (obj == null)
-                return;
-
-            centerText.text = obj as string;
+            if(obj != null)
+            {
+                centerText.text = obj.ToString();
+            }
+            else
+            {
+                centerText.text = string.Empty;
+            }
         }
 
         public void Show() => gameObject.SetActive(true);

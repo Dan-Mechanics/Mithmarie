@@ -57,7 +57,7 @@ MonoBehaviour:
   removeTerraform: {fileID: 6277602641836883055}
   addSelectionPreview: {fileID: 1271512375170221928}
   removeSelectionPreview: {fileID: 2515062756933341086}
-  blockHighlight: {fileID: 4141907983917415685}
+  faceFeedback: {fileID: 4141907983917415685}
 --- !u!114 &3481532798549250696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,6 +71,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprintSpeedMult: 2.5
+  sprintKey: 51
+  downKey: 53
   speed: {fileID: 11400000, guid: 5d089e7e052fa3c499c293d13a7b1227, type: 2}
 --- !u!114 &771546152580428926
 MonoBehaviour:

@@ -31,12 +31,15 @@ namespace Mithmarie
         public override void OnTick()
         {
             base.OnFrame();
-            OutlineFace(null);
-            if (!raycast.Cast(eyes, out hit))
-                return;
-
-            faceOutline.forward = hit.normal;
-            OnAim?.Invoke(Utils.ConvertToBlockPos(hit.point));
+            if (raycast.Cast(eyes, out hit))
+            {
+                faceOutline.forward = hit.normal;
+                OnAim?.Invoke(Utils.ConvertToBlockPos(hit.point));
+            }
+            else
+            {
+                OnAim?.Invoke(null);
+            }
         }
 
         private void OutlineFace(object blockPos)
