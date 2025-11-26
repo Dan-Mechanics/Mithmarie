@@ -5,10 +5,6 @@ namespace Mithmarie
 {
     public class GameManager : MonoBehaviour
     {
-        /// <summary>
-        /// FIX !! not solid
-        /// </summary>
-        public const Key TOGGLE_STATE_KEY = Key.Escape;
         private readonly FSM fsm = new FSM();
 
         private void Start()
@@ -40,8 +36,8 @@ namespace Mithmarie
 
             fsm.AddState(playerState);
             fsm.AddState(menuState);
-            fsm.AddTransition(new Transition(playerState, menuState, playerState.GetWantsToClose));
-            fsm.AddTransition(new Transition(menuState, playerState, menuState.GetWantsToClose));
+            fsm.AddTransition(new Transition(playerState, menuState));
+            fsm.AddTransition(new Transition(menuState, playerState));
 
             menuState.Exit();
             // NOTE: THIS MIGHT BE AN ORDERING PROBLEM SOON

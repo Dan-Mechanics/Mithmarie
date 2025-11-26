@@ -10,7 +10,7 @@ namespace Mithmarie
     {
         private string SavePathPath => Application.persistentDataPath + "/lastsave.txt";
         
-        public event Action OnDone;
+        public event Action OnDoneWithTask;
         [SerializeField] private Button newButton = default;
         [SerializeField] private Button saveButton = default;
         [SerializeField] private Button saveAsButton = default;
@@ -53,7 +53,7 @@ namespace Mithmarie
             world.Flush();
             world.Serialize(writer);
 
-            OnDone?.Invoke();
+            OnDoneWithTask?.Invoke();
         }
 
         private void SaveAs()
@@ -75,7 +75,7 @@ namespace Mithmarie
             world.Clear();
             world.Flush();
             message.Send("Cleared.", Color.gray, 0.25f);
-            OnDone?.Invoke();
+            OnDoneWithTask?.Invoke();
         }
 
         private void Load()
@@ -103,7 +103,7 @@ namespace Mithmarie
             world.ClearCaches();
             world.Flush();
             message.Send(path, Color.gray, 1f);
-            OnDone?.Invoke();
+            OnDoneWithTask?.Invoke();
         }
 
         private void BeginExport()
@@ -127,7 +127,7 @@ namespace Mithmarie
             Mesh mesh = meshing.GenerateMesh(world.GetAllBlocks());
             filetype.Export(exportPath, mesh, message);
 
-            OnDone?.Invoke();
+            OnDoneWithTask?.Invoke();
         }
 
         public override void Enter()

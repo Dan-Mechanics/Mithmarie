@@ -5,40 +5,55 @@ namespace Mithmarie
 {
     public class FSM 
     {
-        public IState Current => current;
-        
         private readonly List<IState> states = new List<IState>();
         private readonly List<Transition> transitions = new List<Transition>();
         private IState current;
 
         public void AddState(IState state)
         {
-            if (state == null)
+            if (state == null || states.Contains(state))
                 return;
 
-            if (!states.Contains(state))
-                states.Add(state);
+            states.Add(state);
         }
 
         public void AddTransition(Transition transition)
         {
-            if (transition == null)
+            if (transitions.Contains(transition))
                 return;
 
-            if (!transitions.Contains(transition))
-                transitions.Add(transition);
+            transitions.Add(transition);
         }
 
-        public void Update()
+        public void Update() => current?.OnFrame();
+        public void FixedUpdate() => current?.OnTick();
+
+        public void Open(IState state)
         {
-            current?.OnFrame();
+            if (state == null || !states.Contains(state))
+                return;
 
-            foreach (var transition in transitions)
+            if (state == current)
+                return;
+
+            if (current != null)
             {
-                if (transition.from != current)
-                    continue;
+                current.OnYield -= Yield;
+                current.Exit();
+            }
 
-                if (!transition.goNext())
+            current = state;
+            current.Enter();
+            current.OnYield += Yield;
+
+            Debug.Log(current.ToString());
+        }
+
+        private void Yield(IState from)
+        {
+            foreach (Transition transition in transitions)
+            {
+                if (transition.from != from)
                     continue;
 
                 Open(transition.to);
@@ -46,33 +61,12 @@ namespace Mithmarie
             }
         }
 
-        public void FixedUpdate()
-        {
-            current?.OnTick();
-        }
-
-        public void Open(IState state)
-        {
-            if (state == null)
-                return;
-            
-            if (!states.Contains(state))
-                return;
-
-            if (state == current)
-                return;
-
-            current?.Exit();
-            current = state;
-            current.Enter();
-            Debug.Log(current.ToString().ToUpperInvariant());
-        }
-
         public void Close()
         {
             if (current == null)
                 return;
 
+            current.OnYield -= Yield;
             current.Exit();
             current = null;
         }

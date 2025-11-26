@@ -15,7 +15,6 @@ namespace Mithmarie
 
         private StateBehaviour[] behaviour;
         private PlayerHUD playerHUD;
-        private bool wantsToClose;
         private World world;
 
         private void Awake()
@@ -23,6 +22,7 @@ namespace Mithmarie
             world = FindAnyObjectByType<World>();
             playerHUD = FindAnyObjectByType<PlayerHUD>();
 
+            // !FIX 
             List<StateBehaviour> list = GetComponents<StateBehaviour>().ToList();
             list.RemoveAt(list.FindIndex(x => x is PlayerState));
             behaviour = list.ToArray();
@@ -53,8 +53,6 @@ namespace Mithmarie
         public override void Exit()
         {
             base.Exit();
-            wantsToClose = false;
-
             for (int i = 0; i < behaviour.Length; i++)
             {
                 behaviour[i].Exit();
@@ -79,7 +77,7 @@ namespace Mithmarie
                 behaviour[i].OnFrame();
             }
 
-            if (Keyboard.current[GameManager.TOGGLE_STATE_KEY].wasPressedThisFrame)
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
                 Close();
         }
 
@@ -91,8 +89,5 @@ namespace Mithmarie
                 behaviour[i].OnTick();
             }
         }
-
-        public bool GetWantsToClose() => wantsToClose;
-        private void Close() => wantsToClose = true;
     }
 }

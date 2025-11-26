@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -14,9 +13,7 @@ namespace Mithmarie
         [SerializeField] private Button quitButton = default;
 
         private IMessageService message;
-        private bool wantsToClose;
         private readonly FSM fsm = new FSM();
-        private IState desiredScreen;
 
         private void Start()
         {
@@ -26,8 +23,8 @@ namespace Mithmarie
 
             fsm.AddState(fileScreen);
             fsm.AddState(settingsScreen);
-            fsm.AddTransition(new Transition(fileScreen, settingsScreen, WantsNextPage));
-            fsm.AddTransition(new Transition(settingsScreen, fileScreen, WantsNextPage));
+            fsm.AddTransition(new Transition(fileScreen, settingsScreen));
+            fsm.AddTransition(new Transition(settingsScreen, fileScreen));
         }
 
         public override void OnFrame()
@@ -35,8 +32,7 @@ namespace Mithmarie
             base.OnFrame();
             fsm.Update();
 
-            // !FIX
-            if (Keyboard.current[GameManager.TOGGLE_STATE_KEY].wasPressedThisFrame)
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
                 Close();
         }
 
@@ -45,9 +41,6 @@ namespace Mithmarie
             base.OnTick();
             fsm.FixedUpdate();
         }
-
-        private void Close() => wantsToClose = true;
-        public bool GetWantsToClose() => wantsToClose;
 
         public override void Enter()
         {
@@ -60,29 +53,25 @@ namespace Mithmarie
             quitButton.onClick.AddListener(Application.Quit);
             closeButton.onClick.AddListener(Close);
 
-            fileScreen.OnDone += Close;
+            fileScreen.OnDoneWithTask += Close;
             fsm.Open(fileScreen);
-            desiredScreen = fileScreen;
 
-            fileScreen.Button.onClick.AddListener(() => { desiredScreen = fileScreen; });
-            settingsScreen.Button.onClick.AddListener(() => { desiredScreen = settingsScreen; });
+            fileScreen.Button.onClick.AddListener(() => { fsm.Open(fileScreen); });
+            settingsScreen.Button.onClick.AddListener(() => { fsm.Open(settingsScreen); });
         }
-
-        private bool WantsNextPage() => desiredScreen != fsm.Current;
 
         public override void Exit()
         {
             base.Exit();
             gameObject.SetActive(false);
-            wantsToClose = false;
 
             fsm.Close();
             quitButton.onClick.RemoveListener(Application.Quit);
             closeButton.onClick.RemoveListener(Close);
-            fileScreen.OnDone -= Close;
+            fileScreen.OnDoneWithTask -= Close;
 
-            fileScreen.Button.onClick.RemoveListener(() => { desiredScreen = fileScreen; });
-            settingsScreen.Button.onClick.RemoveListener(() => { desiredScreen = settingsScreen; });
+            fileScreen.Button.onClick.RemoveListener(() => { fsm.Open(fileScreen); });
+            settingsScreen.Button.onClick.RemoveListener(() => { fsm.Open(settingsScreen); });
         }
     }
 }
