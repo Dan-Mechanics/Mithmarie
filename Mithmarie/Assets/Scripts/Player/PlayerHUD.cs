@@ -20,7 +20,7 @@ namespace Mithmarie
         {
             for (int i = 0; i < keyHighlights.Length; i++)
             {
-                keyHighlights[i].Draw(colorA, colorB); ;
+                keyHighlights[i].Draw(colorA, colorB);
             }
         }
 
@@ -30,10 +30,17 @@ namespace Mithmarie
             if (obj == null)
                 return;
 
-            centerText.text = obj as string;
+            centerText.text = obj.ToString();
         }
 
-        public void Show() => gameObject.SetActive(true);
-        public void Hide() => gameObject.SetActive(false);
+        public void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

@@ -7,6 +7,8 @@ namespace Mithmarie
 {
     public class MenuState : StateBehaviour
     {
+        [SerializeField] private Button fileButton = default;
+        [SerializeField] private Button settingsButton = default;
         [SerializeField] private FileScreen fileScreen = default;
         [SerializeField] private SettingsScreen settingsScreen = default;
         [Space(15)]
@@ -16,7 +18,7 @@ namespace Mithmarie
         private IMessageService message;
         private bool wantsToClose;
         private readonly FSM fsm = new FSM();
-        private IState desiredScreen;
+        private IState current;
 
         private void Start()
         {
@@ -62,13 +64,13 @@ namespace Mithmarie
 
             fileScreen.OnDone += Close;
             fsm.Open(fileScreen);
-            desiredScreen = fileScreen;
+            current = fileScreen;
 
-            fileScreen.Button.onClick.AddListener(() => { desiredScreen = fileScreen; });
-            settingsScreen.Button.onClick.AddListener(() => { desiredScreen = settingsScreen; });
+            fileButton.onClick.AddListener(() => { current = fileScreen; });
+            settingsButton.onClick.AddListener(() => { current = settingsScreen; });
         }
 
-        private bool WantsNextPage() => desiredScreen != fsm.Current;
+        private bool WantsNextPage() => current != fsm.Current;
 
         public override void Exit()
         {
@@ -81,8 +83,8 @@ namespace Mithmarie
             closeButton.onClick.RemoveListener(Close);
             fileScreen.OnDone -= Close;
 
-            fileScreen.Button.onClick.RemoveListener(() => { desiredScreen = fileScreen; });
-            settingsScreen.Button.onClick.RemoveListener(() => { desiredScreen = settingsScreen; });
+            fileButton.onClick.RemoveListener(() => { current = fileScreen; });
+            settingsButton.onClick.RemoveListener(() => { current = settingsScreen; });
         }
     }
 }
