@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
-  previewPrefab: {fileID: 711197107212623808, guid: 17c67fcb40aa33c47896e7651b02027d, type: 3}
+  faceOutlinePrefab: {fileID: 711197107212623808, guid: 17c67fcb40aa33c47896e7651b02027d, type: 3}
   scale: 1.1
 --- !u!114 &1271512375170221928
 MonoBehaviour:

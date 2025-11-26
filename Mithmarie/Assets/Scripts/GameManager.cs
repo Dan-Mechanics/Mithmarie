@@ -35,7 +35,7 @@ namespace Mithmarie
             world.ClearCaches();
             world.Flush();
 
-            Player playerState = FindAnyObjectByType<Player>();
+            PlayerState playerState = FindAnyObjectByType<PlayerState>();
             MenuState menuState = FindAnyObjectByType<MenuState>();
 
             fsm.AddState(playerState);

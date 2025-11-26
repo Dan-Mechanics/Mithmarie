@@ -804,9 +804,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileScreen: {fileID: 571241512}
   settingsScreen: {fileID: 1126528187}
-  screens:
-  - {fileID: 571241512}
-  - {fileID: 1126528187}
   closeButton: {fileID: 1084102325}
   quitButton: {fileID: 1244550824}
 --- !u!1001 &554613770

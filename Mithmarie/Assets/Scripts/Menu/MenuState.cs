@@ -9,7 +9,6 @@ namespace Mithmarie
     {
         [SerializeField] private FileScreen fileScreen = default;
         [SerializeField] private SettingsScreen settingsScreen = default;
-        [SerializeField] private Screen[] screens = default;
         [Space(15)]
         [SerializeField] private Button closeButton = default;
         [SerializeField] private Button quitButton = default;

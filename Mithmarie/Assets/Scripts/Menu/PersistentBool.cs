@@ -34,7 +34,6 @@ namespace Mithmarie
             try
             {
                 string path = $"{Application.persistentDataPath}/{name}.txt";
-                Debug.Log(path);
                 if (File.Exists(path) && bool.TryParse(File.ReadAllText(path), out value))
                     return;
 

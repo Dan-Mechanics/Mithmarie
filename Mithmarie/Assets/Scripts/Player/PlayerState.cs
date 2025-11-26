@@ -5,13 +5,13 @@ using UnityEngine.InputSystem;
 
 namespace Mithmarie
 {
-    public class Player : StateBehaviour
+    public class PlayerState : StateBehaviour
     {   
         [SerializeField] private Terraformer addTerraform = default;
         [SerializeField] private Terraformer removeTerraform = default;
         [SerializeField] private SelectionPreview addSelectionPreview = default;
         [SerializeField] private SelectionPreview removeSelectionPreview = default;
-        [SerializeField] private AimedBlockOutline blockHighlight = default;
+        [SerializeField] private AimedFaceFeedback blockHighlight = default;
 
         private StateBehaviour[] behaviour;
         private PlayerHUD playerHUD;
@@ -24,7 +24,7 @@ namespace Mithmarie
             playerHUD = FindAnyObjectByType<PlayerHUD>();
 
             List<StateBehaviour> list = GetComponents<StateBehaviour>().ToList();
-            list.RemoveAt(list.FindIndex(x => x is Player));
+            list.RemoveAt(list.FindIndex(x => x is PlayerState));
             behaviour = list.ToArray();
         }
         
