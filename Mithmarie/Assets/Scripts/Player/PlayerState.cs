@@ -57,7 +57,9 @@ namespace Mithmarie
                 behaviour[i].Exit();
             }
 
-            playerHUD.Hide();
+            if (playerHUD != null)
+                playerHUD.Hide();
+
             addTerraform.OnShowPreview -= addSelectionPreview.UpdatePreview;
             removeTerraform.OnShowPreview -= removeSelectionPreview.UpdatePreview;
 
