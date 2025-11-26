@@ -6,8 +6,6 @@ namespace Mithmarie
     public class PlayerMovement : StateBehaviour
     {
         [SerializeField, Min(0f)] private float sprintSpeedMult = default;
-        [SerializeField] private Key downKey = default;
-        [SerializeField] private Key sprintKey = default;
         [SerializeField] private PersistentFloat speed = default;
 
         public override void Enter()
@@ -24,7 +22,7 @@ namespace Mithmarie
 
             movement *= speed.Value;
 
-            if (Keyboard.current[sprintKey].isPressed)
+            if (Keyboard.current.leftCtrlKey.isPressed)
                 movement *= sprintSpeedMult;
 
             transform.Translate(movement * Time.deltaTime, Space.World);
@@ -50,7 +48,7 @@ namespace Mithmarie
             if (Keyboard.current.spaceKey.isPressed)
                 y++;
 
-            if (Keyboard.current[downKey].isPressed)
+            if (Keyboard.current.leftShiftKey.isPressed)
                 y--;
 
             return new Vector3(x, y, z);

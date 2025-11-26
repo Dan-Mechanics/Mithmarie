@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Mithmarie
 {
-    public class SettingsScreen : StateBehaviour
+    public class SettingsScreen : Screen
     {
         [SerializeField] private Button defaultAllButton = default;
 
@@ -16,7 +16,7 @@ namespace Mithmarie
         public void Setup(IMessageService message)
         {
             List<StateBehaviour> list = GetComponentsInChildren<StateBehaviour>().ToList();
-            list.Remove(this);
+            list.RemoveAt(list.FindIndex(x => x is SettingsScreen));
             behaviours = list.ToArray();
 
             gameObject.SetActive(false);

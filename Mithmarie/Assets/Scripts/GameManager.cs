@@ -20,14 +20,14 @@ namespace Mithmarie
             WorldHistory history = FindAnyObjectByType<WorldHistory>();
             KeyboardShortcuts shortcuts = FindAnyObjectByType<KeyboardShortcuts>();
 
-         //   shortcuts.OnSave += FindAnyObjectByType<FileScreen>().Save;
-            /*shortcuts.OnUndo += history.Undo;
+            shortcuts.OnSave += FindAnyObjectByType<FileScreen>().Save;
+            shortcuts.OnUndo += history.Undo;
             shortcuts.OnRedo += history.Redo;
 
             world.OnAdd += history.EnscribeAddCommand;
             world.OnRemove += history.EnscribeRemoveCommand;
 
-            world.OnClear += history.Clear;*/
+            world.OnClear += history.Clear;
 
             world.OnDrawChunk += FindAnyObjectByType<WorldVisualizer>().DrawChunk;
 
