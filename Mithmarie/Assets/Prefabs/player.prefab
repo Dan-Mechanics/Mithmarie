@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 4141907983917415685}
   - component: {fileID: 1271512375170221928}
   - component: {fileID: 2515062756933341086}
+  - component: {fileID: 2326464578914296636}
+  - component: {fileID: 2814914406350638197}
   m_Layer: 3
   m_Name: player
   m_TagString: Player
@@ -143,7 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
-  previewPrefab: {fileID: 711197107212623808, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
+  previewPrefab: {fileID: 711197107212623808, guid: 17c67fcb40aa33c47896e7651b02027d, type: 3}
   scale: 1.1
 --- !u!114 &1271512375170221928
 MonoBehaviour:
@@ -173,6 +175,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previewPrefab: {fileID: 9125353668538272078, guid: 7637c7c107267804c8eeb011364a4eee, type: 3}
   scale: 1.05
+--- !u!114 &2326464578914296636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293393832251157704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b5892ae3eefb3b49b628ad207bd714b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2814914406350638197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293393832251157704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08935278d9748dd41b212f15d16f4f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 7032356765651341419}
+  fov: {fileID: 11400000, guid: 863fbcfe2ef7d82449c98395c9b9f739, type: 2}
+  fovPerScroll: 5
+  minValue: 90
+  maxValue: 200
 --- !u!1 &3889645060876896680
 GameObject:
   m_ObjectHideFlags: 0

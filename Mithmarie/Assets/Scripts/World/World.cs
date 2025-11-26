@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace Mithmarie
 {
@@ -12,6 +13,7 @@ namespace Mithmarie
     /// </summary>
     public class World : MonoBehaviour, IBinarySerializable
     {
+        public event Action<Vector3Int, Dictionary<Vector3Int, HashSet<Vector3Int>>> OnDrawChunk;
         public event Action OnClear;
         public event Action<HashSet<Vector3Int>> OnAdd;
         public event Action<HashSet<Vector3Int>> OnRemove;
@@ -21,7 +23,7 @@ namespace Mithmarie
         private readonly Dictionary<Vector3Int, HashSet<Vector3Int>> chunks = new Dictionary<Vector3Int, HashSet<Vector3Int>>();
         private readonly HashSet<Vector3Int> changedChunkPositions = new HashSet<Vector3Int>();
         
-        private WorldVisualizer chunksVisualizer;
+   //     private WorldVisualizer chunksVisualizer;
         private IMessageService message;
 
         private delegate void EditBlock(Vector3Int blockPos);
@@ -29,11 +31,6 @@ namespace Mithmarie
 
         private readonly HashSet<Vector3Int> addedBlocksCache = new HashSet<Vector3Int>();
         private readonly HashSet<Vector3Int> removedBlocksCache = new HashSet<Vector3Int>();
-
-        private void Awake()
-        {
-            chunksVisualizer = FindAnyObjectByType<WorldVisualizer>();
-        }
 
         private void Start()
         {
@@ -106,7 +103,8 @@ namespace Mithmarie
                 if (!chunks.ContainsKey(chunkPos) || chunks[chunkPos] == null || chunks[chunkPos].Count <= 0)
                     chunks.Remove(chunkPos);
 
-                chunksVisualizer.DrawChunk(chunkPos, chunks);
+               // chunksVisualizer.DrawChunk(chunkPos, chunks);
+                OnDrawChunk?.Invoke(chunkPos, chunks);
             }
 
             if (addedBlocksCache.Count > 0)
@@ -160,11 +158,6 @@ namespace Mithmarie
             HashSet<Vector3Int> blocks = new HashSet<Vector3Int>();
             foreach (HashSet<Vector3Int> chunk in chunks.Values)
             {
-                /*foreach (Vector3Int blockPos in chunk)
-                {
-                    blocks.Join(blockPos);
-                }*/
-
                 blocks.UnionWith(chunk);
             }
 

@@ -23,7 +23,7 @@ namespace Mithmarie
             movement *= speed.value;
             /*if(movement.y < 0f)
                 movement.y *= 1.25f;*/
-            movement.y *= 1.25f;
+           // movement.y *= 1.25f;
 
             if (Keyboard.current.leftCtrlKey.isPressed)
                 movement *= sprintSpeedMult;

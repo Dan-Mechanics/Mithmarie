@@ -1,3 +1,12 @@
+save as needs to work
+
+
+FACE IS HIGHLIGHTED SAME FOR ALL EDIT MODES
+SELECTION VIA ALT
+FOV SETTING AND SCROLL WHEEL VV --> same max min values?? maybe store max min in the SCRIptabl object itself.
+
+===
+
 what is absolutely essential to the enduser experience:
 1. blocks loading and saving
 	greedy meshing
