@@ -24,7 +24,8 @@ namespace Mithmarie
 
             // !FIX 
             List<StateBehaviour> list = GetComponents<StateBehaviour>().ToList();
-            list.RemoveAt(list.FindIndex(x => x is PlayerState));
+            list.Remove(this);
+            //list.RemoveAt(list.FindIndex(x => x is PlayerState));
             behaviour = list.ToArray();
         }
         

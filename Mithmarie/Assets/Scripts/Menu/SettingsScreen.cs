@@ -16,7 +16,7 @@ namespace Mithmarie
         public void Setup(IMessageService message)
         {
             List<StateBehaviour> list = GetComponentsInChildren<StateBehaviour>().ToList();
-            list.RemoveAt(list.FindIndex(x => x is SettingsScreen));
+            list.Remove(this);
             behaviours = list.ToArray();
 
             gameObject.SetActive(false);
