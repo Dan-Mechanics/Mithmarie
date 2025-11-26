@@ -11,6 +11,7 @@ namespace Mithmarie
     public class SettingsPage : StateBehaviour
     {
         [SerializeField] private Button defaultAllButton = default;
+
         private StateBehaviour[] behaviours;
         private IDefaultable[] defaultables;
         private IMessageService message;
@@ -29,6 +30,7 @@ namespace Mithmarie
         public override void Enter()
         {
             base.Enter();
+            button.interactable = false;
             gameObject.SetActive(true);
 
             defaultAllButton.onClick.AddListener(DefaultAll);
@@ -41,6 +43,7 @@ namespace Mithmarie
         public override void Exit()
         {
             base.Exit();
+            button.interactable = true;
             gameObject.SetActive(false);
 
             defaultAllButton.onClick.RemoveListener(DefaultAll);

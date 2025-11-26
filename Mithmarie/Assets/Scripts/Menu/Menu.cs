@@ -9,8 +9,8 @@ namespace Mithmarie
         [SerializeField] private Button fileButton = default;
         [SerializeField] private Button settingsButton = default;
 
-        [SerializeField] private FilePage filePage = default;
-        [SerializeField] private SettingsPage settingsPage = default;
+        [SerializeField] private FilePage fileScreen = default;
+        [SerializeField] private SettingsPage settingsScreen = default;
         [Space(15)]
         [SerializeField] private Button closeButton = default;
         [SerializeField] private Button quitButton = default;
@@ -23,13 +23,13 @@ namespace Mithmarie
         private void Start()
         {
             message = ServiceLocator<IMessageService>.Locate();
-            filePage.Setup(FindAnyObjectByType<World>(), new OBJ(), new GreedyMeshGenerator(), message);
-            settingsPage.Setup(message);
+            fileScreen.Setup(FindAnyObjectByType<World>(), new OBJ(), new GreedyMeshGenerator(), message);
+            settingsScreen.Setup(message);
 
-            fsm.AddState(filePage);
-            fsm.AddState(settingsPage);
-            fsm.AddTransition(new Transition(filePage, settingsPage, WantsNextPage));
-            fsm.AddTransition(new Transition(settingsPage, filePage, WantsNextPage));
+            fsm.AddState(fileScreen);
+            fsm.AddState(settingsScreen);
+            fsm.AddTransition(new Transition(fileScreen, settingsScreen, WantsNextPage));
+            fsm.AddTransition(new Transition(settingsScreen, fileScreen, WantsNextPage));
         }
 
         public override void OnFrame()
@@ -62,11 +62,11 @@ namespace Mithmarie
             quitButton.onClick.AddListener(Application.Quit);
             closeButton.onClick.AddListener(Close);
 
-            fileButton.onClick.AddListener(() => { currentHover = filePage; });
-            settingsButton.onClick.AddListener(() => { currentHover = settingsPage; });
-            filePage.OnDone += Close;
-            fsm.Open(filePage);
-            currentHover = filePage;
+            fileButton.onClick.AddListener(() => { currentHover = fileScreen; });
+            settingsButton.onClick.AddListener(() => { currentHover = settingsScreen; });
+            fileScreen.OnDone += Close;
+            fsm.Open(fileScreen);
+            currentHover = fileScreen;
         }
 
         private bool WantsNextPage() => currentHover != fsm.Current;
@@ -80,9 +80,9 @@ namespace Mithmarie
             fsm.Close();
             quitButton.onClick.RemoveListener(Application.Quit);
             closeButton.onClick.RemoveListener(Close);
-            filePage.OnDone -= Close;
-            fileButton.onClick.RemoveListener(() => { currentHover = filePage; });
-            settingsButton.onClick.RemoveListener(() => { currentHover = settingsPage; });
+            fileScreen.OnDone -= Close;
+            fileButton.onClick.RemoveListener(() => { currentHover = fileScreen; });
+            settingsButton.onClick.RemoveListener(() => { currentHover = settingsScreen; });
         }
 
     }

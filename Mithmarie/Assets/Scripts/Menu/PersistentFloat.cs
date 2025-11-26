@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Mithmarie
 {
     [CreateAssetMenu(menuName = "ScriptableObject/" + nameof(PersistentFloat), fileName = "New " + nameof(PersistentFloat))]
-    public class PersistentFloat : ScriptableObject
+    public class PersistentFloat : ScriptableObject, IDefaultable
     {
         public float Value => value;
         
@@ -45,7 +45,7 @@ namespace Mithmarie
                     return;
                 }
 
-                MakeDefault();
+                ReturnToDefault();
             }
             catch (Exception exception)
             {
@@ -61,7 +61,7 @@ namespace Mithmarie
         }
 
         public override string ToString() => value.ToString();
-        public void MakeDefault() => Set(defaultValue);
+        public void ReturnToDefault() => Set(defaultValue);
 
         private void OnValidate()
         {

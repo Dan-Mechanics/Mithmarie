@@ -804,8 +804,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileButton: {fileID: 1627056246}
   settingsButton: {fileID: 2015850751}
-  filePage: {fileID: 571241512}
-  settingsPage: {fileID: 1126528187}
+  fileScreen: {fileID: 571241512}
+  settingsScreen: {fileID: 1126528187}
   closeButton: {fileID: 1084102325}
   quitButton: {fileID: 1244550824}
 --- !u!1001 &554613770
@@ -939,7 +939,7 @@ GameObject:
   - component: {fileID: 571241510}
   - component: {fileID: 571241512}
   m_Layer: 5
-  m_Name: file_page
+  m_Name: file_screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1927,7 +1927,7 @@ GameObject:
   - component: {fileID: 1126528185}
   - component: {fileID: 1126528187}
   m_Layer: 5
-  m_Name: settings_page
+  m_Name: settings_screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2008,6 +2008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8621021f9eabbcb4eb20bf7b6189a140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  openPageButton: {fileID: 0}
   defaultAllButton: {fileID: 2098015875}
 --- !u!1 &1162151954
 GameObject:
@@ -3863,7 +3864,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5204027504810843817, guid: 997c4cf1caf4eaf4aaf65120f9bfd203, type: 3}
       propertyPath: m_Name
-      value: bool_field
+      value: swap_mouse_buttons
       objectReference: {fileID: 0}
     - target: {fileID: 6537905861248979831, guid: 997c4cf1caf4eaf4aaf65120f9bfd203, type: 3}
       propertyPath: m_Pivot.x
@@ -4017,7 +4018,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1242270894519921237, guid: 4c64cdfaa088740478ebdebe09341657, type: 3}
       propertyPath: m_Name
-      value: close_button
+      value: x_button
       objectReference: {fileID: 0}
     - target: {fileID: 6999978860998783263, guid: 4c64cdfaa088740478ebdebe09341657, type: 3}
       propertyPath: m_Pivot.x

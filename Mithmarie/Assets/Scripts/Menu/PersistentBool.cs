@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Mithmarie
 {
     [CreateAssetMenu(menuName = "ScriptableObject/" + nameof(PersistentBool), fileName = "New " + nameof(PersistentBool))]
-    public class PersistentBool : ScriptableObject
+    public class PersistentBool : ScriptableObject, IDefaultable
     {
         [HideInInspector] public bool value;
         public bool defaultValue;
@@ -38,12 +38,14 @@ namespace Mithmarie
                 if (File.Exists(path) && bool.TryParse(File.ReadAllText(path), out value))
                     return;
 
-                value = defaultValue;
+                ReturnToDefault();
             }
             catch (Exception exception)
             {
                 ServiceLocator<IMessageService>.Locate()?.Send(exception.Message, Color.red);
             }
         }
+
+        public void ReturnToDefault() => value = defaultValue;
     }
 }

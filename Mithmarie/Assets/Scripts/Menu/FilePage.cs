@@ -11,7 +11,6 @@ namespace Mithmarie
         private string SavePathPath => Application.persistentDataPath + "/lastsave.txt";
         
         public event Action OnDone;
-        
         [SerializeField] private Button newButton = default;
         [SerializeField] private Button saveButton = default;
         [SerializeField] private Button saveAsButton = default;

@@ -46,7 +46,7 @@ namespace Mithmarie
 
         public void ReturnToDefault()
         {
-            persistent.MakeDefault();
+            persistent.ReturnToDefault();
             field.text = persistent.ToString();
         }
 

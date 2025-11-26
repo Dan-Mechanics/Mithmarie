@@ -35,7 +35,7 @@ namespace Mithmarie
 
         public void ReturnToDefault()
         {
-            persistent.value = persistent.defaultValue;
+            persistent.ReturnToDefault();
             toggle.isOn = persistent.value;
         }
 
