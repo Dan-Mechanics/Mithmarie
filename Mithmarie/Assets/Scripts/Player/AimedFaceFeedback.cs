@@ -41,12 +41,11 @@ namespace Mithmarie
 
         private void OutlineFace(object blockPos)
         {
-            faceOutline.gameObject.SetActive(blockPos == null);
+            faceOutline.gameObject.SetActive(blockPos != null);
             if (!faceOutline.gameObject.activeSelf)
                 return;
 
             faceOutline.position = (Vector3Int)blockPos;
-            OnAim?.Invoke(blockPos);
         }
 
         private void OnDestroy()
