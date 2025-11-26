@@ -10,13 +10,11 @@ namespace Mithmarie
         [SerializeField] private TMP_Text placeholder = default;
         [SerializeField] private Button defaultButton = default;
         [SerializeField] private PersistentFloat persistent = default;
-        [SerializeField] private float minValue = default;
-        [SerializeField] private float maxValue = default;
 
         private void Start()
         {
             gameObject.name = persistent.name;
-            placeholder.text = $"{minValue} to {maxValue}";
+            placeholder.text = $"{persistent.minValue} to {persistent.maxValue}";
             print($"{gameObject.name} {placeholder.text}");
         }
 
@@ -24,7 +22,7 @@ namespace Mithmarie
         {
             base.Enter();
             persistent.Load();
-            Edit(persistent.value.ToString());
+            Edit(persistent.ToString());
             defaultButton.onClick.AddListener(ReturnToDefault);
             field.onEndEdit.AddListener(Edit);
         }
@@ -39,18 +37,17 @@ namespace Mithmarie
 
         private void Edit(string str)
         {
-            if (!float.TryParse(str, out float newValue))
-                newValue = persistent.value;
+            if (!float.TryParse(str, out float value))
+                value = persistent.Value;
 
-            newValue = Mathf.Clamp(newValue, minValue, maxValue);
-            persistent.value = newValue;
-            field.text = newValue.ToString();
+            persistent.Set(value);
+            field.text = persistent.ToString();
         }
 
         public void ReturnToDefault()
         {
-            persistent.value = persistent.defaultValue;
-            field.text = persistent.value.ToString();
+            persistent.MakeDefault();
+            field.text = persistent.ToString();
         }
 
         private void OnApplicationQuit() => persistent.Save();

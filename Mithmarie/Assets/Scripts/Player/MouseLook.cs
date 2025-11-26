@@ -27,7 +27,7 @@ namespace Mithmarie
             mouseInput.y = Input.GetAxisRaw("Mouse X");
             mouseInput.x = -Input.GetAxisRaw("Mouse Y");
 
-            rotation += sens.value * mouseInput;
+            rotation += sens.Value * mouseInput;
             rotation.x = Mathf.Clamp(rotation.x, -MAX_CAM_ANGLE, MAX_CAM_ANGLE);
 
             eyes.localRotation = Quaternion.AngleAxis(rotation.x, Vector3.right);

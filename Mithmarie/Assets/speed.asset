@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6540ddde55acff14599b05f712c2613c, type: 3}
   m_Name: speed
   m_EditorClassIdentifier: 
-  value: 0
   defaultValue: 12.5
+  minValue: 1
+  maxValue: 50

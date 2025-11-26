@@ -9,8 +9,13 @@ namespace Mithmarie
     [CreateAssetMenu(menuName = "ScriptableObject/" + nameof(PersistentFloat), fileName = "New " + nameof(PersistentFloat))]
     public class PersistentFloat : ScriptableObject
     {
-        [HideInInspector] public float value;
+        public float Value => value;
+        
         public float defaultValue;
+        public float minValue;
+        public float maxValue;
+
+        private float value;
 
         public void Save()
         {
@@ -34,16 +39,40 @@ namespace Mithmarie
             try
             {
                 string path = $"{Application.persistentDataPath}/{name}.txt";
-                if (File.Exists(path) && float.TryParse(File.ReadAllText(path), out value))
+                if (File.Exists(path) && float.TryParse(File.ReadAllText(path), out float newValue))
+                {
+                    Set(newValue);
                     return;
+                }
 
-                value = defaultValue;
+                MakeDefault();
             }
             catch (Exception exception)
             {
                 ServiceLocator<IMessageService>.Locate()?.Send(exception.Message, Color.red);
-                Debug.LogError(exception.Message);
             }
+        }
+
+
+        public void Set(float newValue)
+        {
+            newValue = Mathf.Clamp(newValue, minValue, maxValue);
+            value = newValue;
+        }
+
+        public override string ToString() => value.ToString();
+        public void MakeDefault() => Set(defaultValue);
+
+        private void OnValidate()
+        {
+            if (minValue > maxValue)
+                Debug.LogWarning($"minValue > maxValue {name}.");
+
+            if (defaultValue > maxValue)
+                Debug.LogWarning($"defaultValue > maxValue {name}.");
+
+            if (defaultValue < minValue)
+                Debug.LogWarning($"defaultValue < minValue {name}.");
         }
     }
 }
