@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Mithmarie
 {
-    public class FilePage : StateBehaviour
+    public class FileScreen : Screen
     {
         private string SavePathPath => Application.persistentDataPath + "/lastsave.txt";
         

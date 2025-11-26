@@ -1,16 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Mithmarie
 {
-    public class Menu : StateBehaviour
+    public class MenuState : StateBehaviour
     {
-        [SerializeField] private Button fileButton = default;
-        [SerializeField] private Button settingsButton = default;
-
-        [SerializeField] private FilePage fileScreen = default;
-        [SerializeField] private SettingsPage settingsScreen = default;
+        [SerializeField] private FileScreen fileScreen = default;
+        [SerializeField] private SettingsScreen settingsScreen = default;
+        [SerializeField] private Screen[] screens = default;
         [Space(15)]
         [SerializeField] private Button closeButton = default;
         [SerializeField] private Button quitButton = default;
@@ -18,7 +17,7 @@ namespace Mithmarie
         private IMessageService message;
         private bool wantsToClose;
         private readonly FSM fsm = new FSM();
-        private IState currentHover;
+        private IState desiredScreen;
 
         private void Start()
         {
@@ -62,14 +61,15 @@ namespace Mithmarie
             quitButton.onClick.AddListener(Application.Quit);
             closeButton.onClick.AddListener(Close);
 
-            fileButton.onClick.AddListener(() => { currentHover = fileScreen; });
-            settingsButton.onClick.AddListener(() => { currentHover = settingsScreen; });
             fileScreen.OnDone += Close;
             fsm.Open(fileScreen);
-            currentHover = fileScreen;
+            desiredScreen = fileScreen;
+
+            fileScreen.Button.onClick.AddListener(() => { desiredScreen = fileScreen; });
+            settingsScreen.Button.onClick.AddListener(() => { desiredScreen = settingsScreen; });
         }
 
-        private bool WantsNextPage() => currentHover != fsm.Current;
+        private bool WantsNextPage() => desiredScreen != fsm.Current;
 
         public override void Exit()
         {
@@ -81,9 +81,9 @@ namespace Mithmarie
             quitButton.onClick.RemoveListener(Application.Quit);
             closeButton.onClick.RemoveListener(Close);
             fileScreen.OnDone -= Close;
-            fileButton.onClick.RemoveListener(() => { currentHover = fileScreen; });
-            settingsButton.onClick.RemoveListener(() => { currentHover = settingsScreen; });
-        }
 
+            fileScreen.Button.onClick.RemoveListener(() => { desiredScreen = fileScreen; });
+            settingsScreen.Button.onClick.RemoveListener(() => { desiredScreen = settingsScreen; });
+        }
     }
 }

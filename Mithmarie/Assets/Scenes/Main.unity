@@ -721,7 +721,7 @@ GameObject:
   - component: {fileID: 523968468}
   - component: {fileID: 523968470}
   m_Layer: 5
-  m_Name: menu
+  m_Name: menu_state
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -802,10 +802,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36c528cfbe4ae0f47b26e7fc117468de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileButton: {fileID: 1627056246}
-  settingsButton: {fileID: 2015850751}
   fileScreen: {fileID: 571241512}
   settingsScreen: {fileID: 1126528187}
+  screens:
+  - {fileID: 571241512}
+  - {fileID: 1126528187}
   closeButton: {fileID: 1084102325}
   quitButton: {fileID: 1244550824}
 --- !u!1001 &554613770
@@ -1016,6 +1017,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4089726e915d25048b8c69df40729b24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 1627056246}
   newButton: {fileID: 1872801775}
   saveButton: {fileID: 733667898}
   saveAsButton: {fileID: 976573896}
@@ -2008,7 +2010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8621021f9eabbcb4eb20bf7b6189a140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openPageButton: {fileID: 0}
+  button: {fileID: 2015850751}
   defaultAllButton: {fileID: 2098015875}
 --- !u!1 &1162151954
 GameObject:

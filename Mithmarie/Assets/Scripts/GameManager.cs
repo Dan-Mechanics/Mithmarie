@@ -20,7 +20,7 @@ namespace Mithmarie
             WorldHistory history = FindAnyObjectByType<WorldHistory>();
             KeyboardShortcuts shortcuts = FindAnyObjectByType<KeyboardShortcuts>();
 
-            shortcuts.OnSave += FindAnyObjectByType<FilePage>().Save;
+            shortcuts.OnSave += FindAnyObjectByType<FileScreen>().Save;
             shortcuts.OnUndo += history.Undo;
             shortcuts.OnRedo += history.Redo;
 
@@ -36,7 +36,7 @@ namespace Mithmarie
             world.Flush();
 
             Player playerState = FindAnyObjectByType<Player>();
-            Menu menuState = FindAnyObjectByType<Menu>();
+            MenuState menuState = FindAnyObjectByType<MenuState>();
 
             fsm.AddState(playerState);
             fsm.AddState(menuState);

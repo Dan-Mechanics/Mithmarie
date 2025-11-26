@@ -5,10 +5,7 @@ using UnityEngine.UI;
 
 namespace Mithmarie
 {
-    /// <summary>
-    /// Behaviour conglomeration.
-    /// </summary>
-    public class SettingsPage : StateBehaviour
+    public class SettingsScreen : Screen
     {
         [SerializeField] private Button defaultAllButton = default;
 
@@ -19,7 +16,7 @@ namespace Mithmarie
         public void Setup(IMessageService message)
         {
             List<StateBehaviour> list = GetComponentsInChildren<StateBehaviour>().ToList();
-            list.RemoveAt(list.FindIndex(x => x is SettingsPage));
+            list.RemoveAt(list.FindIndex(x => x is SettingsScreen));
             behaviours = list.ToArray();
 
             gameObject.SetActive(false);
@@ -30,7 +27,6 @@ namespace Mithmarie
         public override void Enter()
         {
             base.Enter();
-            button.interactable = false;
             gameObject.SetActive(true);
 
             defaultAllButton.onClick.AddListener(DefaultAll);
@@ -43,7 +39,6 @@ namespace Mithmarie
         public override void Exit()
         {
             base.Exit();
-            button.interactable = true;
             gameObject.SetActive(false);
 
             defaultAllButton.onClick.RemoveListener(DefaultAll);
