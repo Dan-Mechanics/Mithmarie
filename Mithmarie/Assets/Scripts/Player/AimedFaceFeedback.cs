@@ -51,8 +51,9 @@ namespace Mithmarie
             faceOutline.position = (Vector3Int)blockPos;
         }
 
-        private void OnDestroy()
+        public override void OnDestroy()
         {
+            base.OnDestroy();
             OnAim -= OutlineFace;
         }
     }

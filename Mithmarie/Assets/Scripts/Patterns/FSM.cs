@@ -46,7 +46,7 @@ namespace Mithmarie
             current.Enter();
             current.OnYield += Yield;
 
-            Debug.Log(current.ToString());
+            Debug.Log(current.ToString().ToUpperInvariant());
         }
 
         private void Yield(IState from)

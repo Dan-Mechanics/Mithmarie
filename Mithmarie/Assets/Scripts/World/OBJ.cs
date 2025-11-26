@@ -21,7 +21,7 @@ namespace Mithmarie
             }
             catch (Exception exception)
             {
-                Debug.LogError(exception.Message);
+                //Debug.LogError(exception.Message);
                 message.Send(exception.Message, Color.red);
             }
         }
