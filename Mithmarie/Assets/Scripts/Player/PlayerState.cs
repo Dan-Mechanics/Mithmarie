@@ -22,10 +22,8 @@ namespace Mithmarie
             world = FindAnyObjectByType<World>();
             playerHUD = FindAnyObjectByType<PlayerHUD>();
 
-            // !FIX 
-            List<StateBehaviour> list = GetComponents<StateBehaviour>().ToList();
+            List<StateBehaviour> list = GetComponentsInChildren<StateBehaviour>().ToList();
             list.Remove(this);
-            //list.RemoveAt(list.FindIndex(x => x is PlayerState));
             behaviour = list.ToArray();
         }
         
