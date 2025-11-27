@@ -50,7 +50,7 @@ namespace Mithmarie
             if (!gameObject.activeSelf)
                 return;
 
-            // THIS IS PASS-BY-REFERENCE.
+            // NOTE: THIS IS PASS-BY-REFERENCE.
             this.allChunks = allChunks;
 
             /*List<Vector3> verts = new List<Vector3>();

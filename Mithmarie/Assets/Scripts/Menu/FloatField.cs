@@ -66,7 +66,7 @@ namespace Mithmarie
 
         private void OnApplicationQuit()
         {
-            if (!asChanged)
+            if (!hasChanged)
                 return;
 
             persistent.Save();
