@@ -10,7 +10,6 @@ namespace Mithmarie
     {
         private string SavePathPath => Application.persistentDataPath + "/lastsave.txt";
         
-        public event Action OnDoneWithTask;
         [SerializeField] private Button newButton = default;
         [SerializeField] private Button saveButton = default;
         [SerializeField] private Button saveAsButton = default;
@@ -45,7 +44,7 @@ namespace Mithmarie
                 return;
             }
 
-            message.Send("Saving ...", Color.green, 0.5f);
+            message.Send("Saving ...", Color.green, 1f);
             FileStream stream = File.OpenWrite(savePath);
             BinaryWriter writer = new BinaryWriter(stream);
 
@@ -55,7 +54,7 @@ namespace Mithmarie
             writer.Flush();
             writer.Close();
 
-            OnDoneWithTask?.Invoke();
+            FullyClose();
         }
 
         private void SaveAs()
@@ -74,10 +73,10 @@ namespace Mithmarie
         {
             savePath = string.Empty;
 
+            //message.Send("Cleared.", Color.gray, 1f);
             world.Clear();
             world.Flush();
-            message.Send("Cleared.", Color.gray, 1f);
-            OnDoneWithTask?.Invoke();
+            FullyClose();
         }
 
         private void Load()
@@ -95,6 +94,7 @@ namespace Mithmarie
             if (!Utils.IsStringValid(path) || !File.Exists(path))
                 return;
 
+            message.Send(path, Color.gray, 1f);
             FileStream stream = File.OpenRead(path);
             BinaryReader reader = new BinaryReader(stream);
 
@@ -107,8 +107,8 @@ namespace Mithmarie
 
             world.ClearCaches();
             world.Flush();
-            message.Send(path, Color.gray, 1f);
-            OnDoneWithTask?.Invoke();
+
+            FullyClose();
         }
 
         private void StartExporting()
@@ -119,9 +119,9 @@ namespace Mithmarie
             if (!Utils.IsStringValid(path))
                 return;
 
+            message.Send("Exporting ...", Color.black, 1f);
             world.Flush();
             exportPath = path;
-            message.Send("Exporting ...", Color.black, 1f);
 
             CancelInvoke(nameof(Export));
             Invoke(nameof(Export), 0.1f);
@@ -132,7 +132,7 @@ namespace Mithmarie
             Mesh mesh = meshing.GenerateMesh(world.GetAllBlocks());
             filetype.Export(exportPath, mesh, message);
 
-            OnDoneWithTask?.Invoke();
+            FullyClose();
         }
 
         public override void Enter()

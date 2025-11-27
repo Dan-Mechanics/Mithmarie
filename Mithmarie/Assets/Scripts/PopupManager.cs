@@ -29,10 +29,6 @@ namespace Mithmarie
 
         public void Send(string str, Color color, float duration = 0f)
         {
-            // !DUBMCODE
-            if (image.color == Color.red)
-                return;
-            
             if (!Utils.IsStringValid(str))
             {
                 group.alpha = 0f;
@@ -50,9 +46,6 @@ namespace Mithmarie
             color.a = 1f;
             clear.a = 0f;
             image.color = Color.Lerp(color, clear, backdropVisibility);
-
-            if (color == Color.red)
-                Debug.LogError(str);
         }
     }
 }

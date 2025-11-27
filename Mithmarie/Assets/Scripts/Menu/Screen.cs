@@ -1,10 +1,13 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
+using System;
 
 namespace Mithmarie
 {
     public class Screen : StateBehaviour
     {
+        public event Action OnDoneWithTask;
+
         public Button Button => button;
         [SerializeField] private Button button = default;
 
@@ -19,5 +22,7 @@ namespace Mithmarie
             base.Enter();
             button.interactable = true;
         }
+
+        protected void FullyClose() => OnDoneWithTask?.Invoke();
     }
 }

@@ -8,7 +8,6 @@ namespace Mithmarie
 {
     public class SettingsScreen : Screen, IDefaultable
     {
-        public event Action OnDoneWithTask;
         [SerializeField] private Button defaultAllButton = default;
         [SerializeField] private Button doneButton = default;
 
@@ -34,7 +33,7 @@ namespace Mithmarie
         {
             base.Enter();
             gameObject.SetActive(true);
-            doneButton.onClick.AddListener(Done);
+            doneButton.onClick.AddListener(FullyClose);
 
             defaultAllButton.onClick.AddListener(ReturnToDefault);
             for (int i = 0; i < behaviours.Length; i++)
@@ -47,7 +46,7 @@ namespace Mithmarie
         {
             base.Exit();
             gameObject.SetActive(false);
-            doneButton.onClick.RemoveListener(Done);
+            doneButton.onClick.RemoveListener(FullyClose);
 
             defaultAllButton.onClick.RemoveListener(ReturnToDefault);
             for (int i = 0; i < behaviours.Length; i++)
@@ -55,8 +54,6 @@ namespace Mithmarie
                 behaviours[i].Exit();
             }
         }
-
-        private void Done() => OnDoneWithTask?.Invoke();
 
         public void ReturnToDefault()
         {
