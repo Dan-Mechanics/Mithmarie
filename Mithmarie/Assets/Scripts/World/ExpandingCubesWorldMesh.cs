@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Mithmarie
 {
-    public class InflateWorldMesh : IWorldMeshStrategy
+    public class ExpandingCubesWorldMesh : IWorldMeshStrategy
     {
         public Mesh GenerateMesh(HashSet<Vector3Int> blocks)
         {
@@ -13,7 +13,7 @@ namespace Mithmarie
             List<Vector2> uvs = new List<Vector2>();
             Mesh mesh = new Mesh();
 
-            MeshUtils.GenerateInflateMesh(blocks, verts, tris, uvs);
+            MeshUtils.GenerateExpandingCubesMesh(blocks, verts, tris, uvs);
 
             mesh.vertices = verts.ToArray();
             mesh.triangles = tris.ToArray();

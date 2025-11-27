@@ -110,31 +110,33 @@ namespace Mithmarie
         /// https://github.com/VictorGordan/opengl-tutorials/blob/main/YoutubeOpenGL%209%20-%20Lighting/Main.cpp
         /// https://pastebin.com/DXKEmvap
         /// </summary>
-        public static void GenerateInflateMesh(HashSet<Vector3Int> blocks, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
+        public static void GenerateExpandingCubesMesh(HashSet<Vector3Int> blocks, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
         {
-            List<InflatableCubeMesh> inflatableCubes = ExtractInflatableCubes(blocks.ToList());
-            inflatableCubes.ForEach(x => x.AddSelfToMesh(blocks, verts, tris, uvs));
+            List<ExpandingCubeMesh> expandingCubes = ExtractExpandingCubes(blocks.ToList());
+            for (int i = 0; i < expandingCubes.Count; i++)
+            {
+                expandingCubes[i].AddSelfToMesh(blocks, verts, tris, uvs);
+            }
         }
 
-        private static List<InflatableCubeMesh> ExtractInflatableCubes(List<Vector3Int> blocksLeft)
+        private static List<ExpandingCubeMesh> ExtractExpandingCubes(List<Vector3Int> blocksLeft)
         {
-            List<InflatableCubeMesh> result = new List<InflatableCubeMesh>();
-
+            List<ExpandingCubeMesh> result = new List<ExpandingCubeMesh>();
             while (blocksLeft.Count > 0)
             {
-                InflatableCubeMesh cube = new InflatableCubeMesh(blocksLeft[0]);
+                ExpandingCubeMesh expandingCube = new ExpandingCubeMesh(blocksLeft[0]);
                 blocksLeft.RemoveAt(0);
 
-                cube.ExpandUp(blocksLeft);
-                cube.ExpandDown(blocksLeft);
+                expandingCube.ExpandUp(blocksLeft);
+                expandingCube.ExpandDown(blocksLeft);
 
-                cube.ExandRight(blocksLeft);
-                cube.ExpandLeft(blocksLeft);
+                expandingCube.ExandRight(blocksLeft);
+                expandingCube.ExpandLeft(blocksLeft);
 
-                cube.ExpandForward(blocksLeft);
-                cube.ExpandBack(blocksLeft);
+                expandingCube.ExpandForward(blocksLeft);
+                expandingCube.ExpandBack(blocksLeft);
 
-                result.Add(cube);
+                result.Add(expandingCube);
             }
 
             return result;
@@ -143,7 +145,7 @@ namespace Mithmarie
         /// <summary>
         /// Here be dragons.
         /// </summary>
-        private class InflatableCubeMesh
+        private class ExpandingCubeMesh
         {
             private int minX;
             private int maxX;
@@ -152,11 +154,161 @@ namespace Mithmarie
             private int minZ;
             private int maxZ;
 
-            public InflatableCubeMesh(Vector3Int center)
+            public ExpandingCubeMesh(Vector3Int center)
             {
                 minX = maxX = center.x;
                 minY = maxY = center.y;
                 minZ = maxZ = center.z;
+            }
+
+            public void AddSelfToMesh(HashSet<Vector3Int> blocks, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
+            {
+                maxX++;
+                maxY++;
+                maxZ++;
+
+                int width = Mathf.Abs(maxX - minX);
+                int depth = Mathf.Abs(maxZ - minZ);
+                int height = Mathf.Abs(maxY - minY);
+
+                int faceCount = 0;
+                int vertIndexOffset = verts.Count;
+
+                var xSlice = blocks.Where(block => block.y >= minY && block.y < maxY).Where(block => block.z >= minZ && block.z < maxZ);
+                var ySlice = blocks.Where(block => block.x >= minX && block.x < maxX).Where(block => block.z >= minZ && block.z < maxZ);
+                var zSlice = blocks.Where(block => block.x >= minX && block.x < maxX).Where(block => block.y >= minY && block.y < maxY);
+
+                // Y =======================
+
+                int blocksAbove = ySlice.Where(block => block.y == maxY).Count();
+                if (blocksAbove < width * depth)
+                {
+                    verts.Add(new Vector3(minX, maxY, minZ));
+                    verts.Add(new Vector3(minX, maxY, maxZ));
+                    verts.Add(new Vector3(maxX, maxY, maxZ));
+                    verts.Add(new Vector3(maxX, maxY, minZ));
+
+                    uvs.AddRange(new Vector2[]
+                    {
+                        new Vector2(0, 0),
+                        new Vector2(0, depth),
+                        new Vector2(width, depth),
+                        new Vector2(width, 0)
+                    });
+
+                    faceCount++;
+                }
+
+                int blocksBelow = ySlice.Where(block => block.y == minY - 1).Count();
+                if (blocksBelow < width * depth)
+                {
+                    verts.Add(new Vector3(minX, minY, minZ));
+                    verts.Add(new Vector3(maxX, minY, minZ));
+                    verts.Add(new Vector3(maxX, minY, maxZ));
+                    verts.Add(new Vector3(minX, minY, maxZ));
+
+                    uvs.AddRange(new Vector2[]
+                    {
+                        new Vector2(0, 0),
+                        new Vector2(0, width),
+                        new Vector2(depth, width),
+                        new Vector2(depth, 0)
+                    });
+
+                    faceCount++;
+                }
+
+                // Z =======================
+
+                int blocksInFront = zSlice.Where(block => block.z == maxZ).Count();
+                if (blocksInFront < width * height)
+                {
+                    verts.Add(new Vector3(maxX, minY, maxZ));
+                    verts.Add(new Vector3(maxX, maxY, maxZ));
+                    verts.Add(new Vector3(minX, maxY, maxZ));
+                    verts.Add(new Vector3(minX, minY, maxZ));
+
+                    uvs.AddRange(new Vector2[]
+                    {
+                        new Vector2(0, 0),
+                        new Vector2(0, height),
+                        new Vector2(width, height),
+                        new Vector2(width, 0)
+                    });
+
+                    faceCount++;
+                }
+
+                int blockBehind = zSlice.Where(block => block.z == minZ - 1).Count();
+                if (blockBehind < width * height)
+                {
+                    verts.Add(new Vector3(minX, minY, minZ));
+                    verts.Add(new Vector3(minX, maxY, minZ));
+                    verts.Add(new Vector3(maxX, maxY, minZ));
+                    verts.Add(new Vector3(maxX, minY, minZ));
+
+                    uvs.AddRange(new Vector2[]
+                    {
+                        new Vector2(0, 0),
+                        new Vector2(0, height),
+                        new Vector2(width, height),
+                        new Vector2(width, 0)
+                    });
+
+                    faceCount++;
+                }
+
+                // X =======================
+
+                int blocksRight = xSlice.Where(block => block.x == maxX).Count();
+                if (blocksRight < depth * height)
+                {
+                    verts.Add(new Vector3(maxX, minY, minZ));
+                    verts.Add(new Vector3(maxX, maxY, minZ));
+                    verts.Add(new Vector3(maxX, maxY, maxZ));
+                    verts.Add(new Vector3(maxX, minY, maxZ));
+
+                    uvs.AddRange(new Vector2[]
+                    {
+                        new Vector2(0, 0),
+                        new Vector2(0, height),
+                        new Vector2(depth, height),
+                        new Vector2(depth, 0)
+                    });
+
+                    faceCount++;
+                }
+
+                int blockLeft = xSlice.Where(block => block.x == minX - 1).Count();
+                if (blockLeft < depth * height)
+                {
+                    verts.Add(new Vector3(minX, minY, maxZ));
+                    verts.Add(new Vector3(minX, maxY, maxZ));
+                    verts.Add(new Vector3(minX, maxY, minZ));
+                    verts.Add(new Vector3(minX, minY, minZ));
+
+                    faceCount++;
+                    uvs.AddRange(new Vector2[]
+                    {
+                        new Vector2(0, 0),
+                        new Vector2(0, height),
+                        new Vector2(depth, height),
+                        new Vector2(depth, 0)
+                    });
+
+                }
+
+                // =======================
+
+                for (int i = 0; i < faceCount; i++)
+                {
+                    tris.Add(vertIndexOffset + i * 4);
+                    tris.Add(vertIndexOffset + i * 4 + 1);
+                    tris.Add(vertIndexOffset + i * 4 + 2);
+                    tris.Add(vertIndexOffset + i * 4);
+                    tris.Add(vertIndexOffset + i * 4 + 2);
+                    tris.Add(vertIndexOffset + i * 4 + 3);
+                }
             }
 
             public void ExpandUp(List<Vector3Int> blocksLeft)
@@ -331,160 +483,6 @@ namespace Mithmarie
 
                 minZ = current.z;
                 ExpandBack(blocksLeft);
-            }
-
-            public void AddSelfToMesh(HashSet<Vector3Int> blocks, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
-            {
-                maxX++;
-                maxY++;
-                maxZ++;
-
-                int width = Mathf.Abs(maxX - minX);
-                int depth = Mathf.Abs(maxZ - minZ);
-                int height = Mathf.Abs(maxY - minY);
-
-                int[] tempTris = new int[6];
-                int faceCount = 0;
-                int offset = verts.Count;
-
-                var xSlice = blocks.Where(block => block.y >= minY && block.y < maxY).Where(block => block.z >= minZ && block.z < maxZ);
-                var ySlice = blocks.Where(block => block.x >= minX && block.x < maxX).Where(block => block.z >= minZ && block.z < maxZ);
-                var zSlice = blocks.Where(block => block.x >= minX && block.x < maxX).Where(block => block.y >= minY && block.y < maxY);
-
-                // Y =======================
-
-                int blocksAbove = ySlice.Where(block => block.y == maxY).Count();
-                if (blocksAbove < width * depth)
-                {
-                    verts.Add(new Vector3(minX, maxY, minZ));
-                    verts.Add(new Vector3(minX, maxY, maxZ));
-                    verts.Add(new Vector3(maxX, maxY, maxZ));
-                    verts.Add(new Vector3(maxX, maxY, minZ));
-
-                    uvs.AddRange(new Vector2[]
-                    {
-                    new Vector2(0, 0),
-                    new Vector2(0, depth),
-                    new Vector2(width, depth),
-                    new Vector2(width, 0)
-                    });
-
-                    faceCount++;
-                }
-
-                int blocksBelow = ySlice.Where(block => block.y == minY - 1).Count();
-                if (blocksBelow < width * depth)
-                {
-                    verts.Add(new Vector3(minX, minY, minZ));
-                    verts.Add(new Vector3(maxX, minY, minZ));
-                    verts.Add(new Vector3(maxX, minY, maxZ));
-                    verts.Add(new Vector3(minX, minY, maxZ));
-
-                    uvs.AddRange(new Vector2[]
-                    {
-                    new Vector2(0, 0),
-                    new Vector2(0, width),
-                    new Vector2(depth, width),
-                    new Vector2(depth, 0)
-                    });
-
-                    faceCount++;
-                }
-
-                // Z =======================
-
-                int blocksInFront = zSlice.Where(block => block.z == maxZ).Count();
-                if (blocksInFront < width * height)
-                {
-                    verts.Add(new Vector3(maxX, minY, maxZ));
-                    verts.Add(new Vector3(maxX, maxY, maxZ));
-                    verts.Add(new Vector3(minX, maxY, maxZ));
-                    verts.Add(new Vector3(minX, minY, maxZ));
-
-                    uvs.AddRange(new Vector2[]
-                    {
-                    new Vector2(0, 0),
-                    new Vector2(0, height),
-                    new Vector2(width, height),
-                    new Vector2(width, 0)
-                    });
-
-                    faceCount++;
-                }
-
-                int blockBehind = zSlice.Where(block => block.z == minZ - 1).Count();
-                if (blockBehind < width * height)
-                {
-                    verts.Add(new Vector3(minX, minY, minZ));
-                    verts.Add(new Vector3(minX, maxY, minZ));
-                    verts.Add(new Vector3(maxX, maxY, minZ));
-                    verts.Add(new Vector3(maxX, minY, minZ));
-
-                    uvs.AddRange(new Vector2[]
-                    {
-                    new Vector2(0, 0),
-                    new Vector2(0, height),
-                    new Vector2(width, height),
-                    new Vector2(width, 0)
-                    });
-
-                    faceCount++;
-                }
-
-                // X =======================
-
-                int blocksRight = xSlice.Where(block => block.x == maxX).Count();
-                if (blocksRight < depth * height)
-                {
-                    verts.Add(new Vector3(maxX, minY, minZ));
-                    verts.Add(new Vector3(maxX, maxY, minZ));
-                    verts.Add(new Vector3(maxX, maxY, maxZ));
-                    verts.Add(new Vector3(maxX, minY, maxZ));
-
-                    uvs.AddRange(new Vector2[]
-                    {
-                new Vector2(0, 0),
-                new Vector2(0, height),
-                new Vector2(depth, height),
-                new Vector2(depth, 0)
-                    });
-
-                    faceCount++;
-                }
-
-                int blockLeft = xSlice.Where(block => block.x == minX - 1).Count();
-                if (blockLeft < depth * height)
-                {
-                    verts.Add(new Vector3(minX, minY, maxZ));
-                    verts.Add(new Vector3(minX, maxY, maxZ));
-                    verts.Add(new Vector3(minX, maxY, minZ));
-                    verts.Add(new Vector3(minX, minY, minZ));
-
-                    faceCount++;
-                    uvs.AddRange(new Vector2[]
-                    {
-                    new Vector2(0, 0),
-                    new Vector2(0, height),
-                    new Vector2(depth, height),
-                    new Vector2(depth, 0)
-                    });
-
-                }
-
-                // =======================
-
-                for (int i = 0; i < faceCount; i++)
-                {
-                    tempTris[0] = offset + i * 4;
-                    tempTris[1] = offset + i * 4 + 1;
-                    tempTris[2] = offset + i * 4 + 2;
-
-                    tempTris[3] = offset + i * 4;
-                    tempTris[4] = offset + i * 4 + 2;
-                    tempTris[5] = offset + i * 4 + 3;
-
-                    tris.AddRange(tempTris);
-                }
             }
         }
     }
