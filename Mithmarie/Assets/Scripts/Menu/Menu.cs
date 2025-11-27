@@ -54,6 +54,7 @@ namespace Mithmarie
             closeButton.onClick.AddListener(Close);
 
             fileScreen.OnDoneWithTask += Close;
+            settingsScreen.OnDoneWithTask += Close;
             fsm.Open(fileScreen);
 
             fileScreen.Button.onClick.AddListener(() => { fsm.Open(fileScreen); });
@@ -69,6 +70,7 @@ namespace Mithmarie
             quitButton.onClick.RemoveListener(Application.Quit);
             closeButton.onClick.RemoveListener(Close);
             fileScreen.OnDoneWithTask -= Close;
+            settingsScreen.OnDoneWithTask -= Close;
 
             fileScreen.Button.onClick.RemoveListener(() => { fsm.Open(fileScreen); });
             settingsScreen.Button.onClick.RemoveListener(() => { fsm.Open(settingsScreen); });

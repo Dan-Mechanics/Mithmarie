@@ -6,6 +6,8 @@ namespace Mithmarie
 {
     public class FloatField : StateBehaviour, IDefaultable
     {
+        private const int MAX_STRING_LENGTH = 25;
+        
         [SerializeField] private TMP_InputField field = default;
         [SerializeField] private TMP_Text placeholder = default;
         [SerializeField] private Button defaultButton = default;
@@ -37,6 +39,10 @@ namespace Mithmarie
 
         private void Edit(string str)
         {
+            if (str.Length > MAX_STRING_LENGTH || !Utils.IsStringValid(str))
+                return;
+
+            str = str.Replace(',', '.');
             if (!float.TryParse(str, out float value))
                 value = persistent.Value;
 

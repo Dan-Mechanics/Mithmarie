@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,7 +8,9 @@ namespace Mithmarie
 {
     public class SettingsScreen : Screen, IDefaultable
     {
+        public event Action OnDoneWithTask;
         [SerializeField] private Button defaultAllButton = default;
+        [SerializeField] private Button doneButton = default;
 
         private StateBehaviour[] behaviours;
         private IDefaultable[] defaultables;
@@ -31,6 +34,7 @@ namespace Mithmarie
         {
             base.Enter();
             gameObject.SetActive(true);
+            doneButton.onClick.AddListener(Done);
 
             defaultAllButton.onClick.AddListener(ReturnToDefault);
             for (int i = 0; i < behaviours.Length; i++)
@@ -43,6 +47,7 @@ namespace Mithmarie
         {
             base.Exit();
             gameObject.SetActive(false);
+            doneButton.onClick.RemoveListener(Done);
 
             defaultAllButton.onClick.RemoveListener(ReturnToDefault);
             for (int i = 0; i < behaviours.Length; i++)
@@ -50,6 +55,8 @@ namespace Mithmarie
                 behaviours[i].Exit();
             }
         }
+
+        private void Done() => OnDoneWithTask?.Invoke();
 
         public void ReturnToDefault()
         {

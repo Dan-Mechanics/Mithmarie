@@ -46,12 +46,14 @@ namespace Mithmarie
             }
 
             message.Send("Saving ...", Color.green, 0.5f);
-
             FileStream stream = File.OpenWrite(savePath);
             BinaryWriter writer = new BinaryWriter(stream);
 
             world.Flush();
             world.Serialize(writer);
+
+            writer.Flush();
+            writer.Close();
 
             OnDoneWithTask?.Invoke();
         }
@@ -74,7 +76,7 @@ namespace Mithmarie
 
             world.Clear();
             world.Flush();
-            message.Send("Cleared.", Color.gray, 0.25f);
+            message.Send("Cleared.", Color.gray, 1f);
             OnDoneWithTask?.Invoke();
         }
 
@@ -100,6 +102,9 @@ namespace Mithmarie
 
             world.Clear();
             world.Deserialize(reader);
+
+            reader.Close();
+
             world.ClearCaches();
             world.Flush();
             message.Send(path, Color.gray, 1f);

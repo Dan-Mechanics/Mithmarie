@@ -786,8 +786,6 @@ MonoBehaviour:
   placeholder: {fileID: 2759927430692798981}
   defaultButton: {fileID: 3146922514027470653}
   persistent: {fileID: 11400000, guid: ea9148efa7b98f64bbb6cd03974db853, type: 2}
-  minValue: 0.1
-  maxValue: 5
 --- !u!1 &7138602842797232991
 GameObject:
   m_ObjectHideFlags: 0
