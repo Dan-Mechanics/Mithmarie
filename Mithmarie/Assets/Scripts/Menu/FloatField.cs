@@ -41,6 +41,9 @@ namespace Mithmarie
             field.onEndEdit.RemoveListener(Edit);
         }
 
+        /// <summary>
+        /// Sanitizes string.
+        /// </summary>
         private void Edit(string str)
         {
             if (str.Length > MAX_STRING_LENGTH || !Utils.IsStringValid(str))

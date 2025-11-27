@@ -24,7 +24,7 @@ namespace Mithmarie
             world.OnClear += history.Clear;
             world.OnFlush += history.LogImplicitWorldChange;
 
-            world.OnDrawChunk += FindAnyObjectByType<ChunkManager>().DrawChunk;
+            world.OnDrawChunk += FindAnyObjectByType<ChunkVisualizationManager>().DrawChunk;
 
             world.Add(Vector3Int.zero);
             world.ClearCaches();

@@ -10,9 +10,9 @@ namespace Mithmarie
         [SerializeField, Min(0f)] private float maxViewingRange = default;
         [SerializeField] private MeshColliderCookingOptions cookingOptions = default;
 
-        /*private static readonly List<Vector3> verts = new List<Vector3>();
+        private static readonly List<Vector3> verts = new List<Vector3>();
         private static readonly List<int> tris = new List<int>();
-        private static readonly List<Vector2> uvs = new List<Vector2>();*/
+        private static readonly List<Vector2> uvs = new List<Vector2>();
 
         private Dictionary<Vector3Int, HashSet<Vector3Int>> allChunks;
         private Transform eyes;
@@ -53,9 +53,9 @@ namespace Mithmarie
             // THIS IS PASS-BY-REFERENCE.
             this.allChunks = allChunks;
 
-            List<Vector3> verts = new List<Vector3>();
+            /*List<Vector3> verts = new List<Vector3>();
             List<int> tris = new List<int>();
-            List<Vector2> uvs = new List<Vector2>();
+            List<Vector2> uvs = new List<Vector2>();*/
 
             MeshUtils.GenerateCulledMesh(blocks, IsBlockInChunks, verts, tris, uvs);
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Mithmarie
 {
-    public class ChunkManager : MonoBehaviour
+    public class ChunkVisualizationManager : MonoBehaviour
     {
         [SerializeField] private GameObject chunkPrefab = default;
         private readonly Dictionary<Vector3Int, IChunkMeshable> chunkMeshes = new Dictionary<Vector3Int, IChunkMeshable>();
@@ -14,9 +14,9 @@ namespace Mithmarie
             eyes = GameObject.FindWithTag("MainCamera").transform;
         }
 
-        public void DrawChunk(Vector3Int chunkPos, Dictionary<Vector3Int, HashSet<Vector3Int>> allChunks)
+        public void DrawChunk(Vector3Int chunkPos, Dictionary<Vector3Int, HashSet<Vector3Int>> chunks)
         {
-            if (!allChunks.ContainsKey(chunkPos) || allChunks[chunkPos] == null || allChunks[chunkPos].Count <= 0)
+            if (!chunks.ContainsKey(chunkPos) || chunks[chunkPos] == null || chunks[chunkPos].Count <= 0)
             {
                 if (chunkMeshes.ContainsKey(chunkPos) && chunkMeshes[chunkPos] != null)
                 {
@@ -31,7 +31,7 @@ namespace Mithmarie
             if (!chunkMeshes.ContainsKey(chunkPos))
                 AddChunk(chunkPos);
 
-            chunkMeshes[chunkPos].GenerateMesh(allChunks[chunkPos], allChunks);
+            chunkMeshes[chunkPos].GenerateMesh(chunks[chunkPos], chunks);
         }
 
         private void FixedUpdate()
