@@ -194,7 +194,7 @@ namespace Mithmarie
             ExpandBack(blocksLeft);
         }
 
-        public void AddSelfToMesh(List<Vector3> verts, List<int> tris, List<Vector2> uvs, HashSet<Vector3Int> blocks)
+        public void AddSelfToMesh(HashSet<Vector3Int> blocks, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
         {
             maxX++;
             maxY++;

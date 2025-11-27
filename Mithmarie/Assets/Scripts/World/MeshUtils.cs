@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Mithmarie
@@ -104,6 +105,34 @@ namespace Mithmarie
             }
         }
 
+        public static void GenerateInflateMesh(HashSet<Vector3Int> blocks, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
+        {
+            List<InflatableCube> cubes = ExtractCubes(blocks.ToList());
+            cubes.ForEach(x => x.AddSelfToMesh(blocks, verts, tris, uvs));
+        }
 
+        private static List<InflatableCube> ExtractCubes(List<Vector3Int> blocksLeft)
+        {
+            List<InflatableCube> result = new List<InflatableCube>();
+
+            while (blocksLeft.Count > 0)
+            {
+                InflatableCube cube = new InflatableCube(blocksLeft[0]);
+                blocksLeft.RemoveAt(0);
+
+                cube.ExpandUp(blocksLeft);
+                cube.ExpandDown(blocksLeft);
+
+                cube.ExandRight(blocksLeft);
+                cube.ExpandLeft(blocksLeft);
+
+                cube.ExpandForward(blocksLeft);
+                cube.ExpandBack(blocksLeft);
+
+                result.Add(cube);
+            }
+
+            return result;
+        }
     }
 }
