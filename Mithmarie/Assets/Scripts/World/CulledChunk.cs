@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Mithmarie
 {
-    public class CulledChunk : MonoBehaviour, IChunk
+    public class CulledChunk : MonoBehaviour, IChunkMeshable
     {
         [SerializeField] private MeshFilter filter = default;
         [SerializeField] private MeshCollider coll = default;
@@ -52,7 +52,6 @@ namespace Mithmarie
 
             // THIS IS PASS-BY-REFERENCE.
             this.allChunks = allChunks;
-
             MeshUtils.GenerateCulledMesh(blocks, IsBlockInChunks, verts, tris, uvs);
 
             mesh.Clear();

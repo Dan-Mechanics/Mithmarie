@@ -8,7 +8,7 @@ namespace Mithmarie
     /// very many cubes are spawned one by one.
     /// Alternatively, you could implement a more optimized GreedyChunk.cs here.
     /// </summary>
-    public interface IChunk
+    public interface IChunkMeshable
     {
         public void Setup(Vector3Int chunkPos, Transform eyes);
         public void Tick();

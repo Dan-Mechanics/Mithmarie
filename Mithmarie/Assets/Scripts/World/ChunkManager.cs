@@ -6,7 +6,7 @@ namespace Mithmarie
     public class ChunkManager : MonoBehaviour
     {
         [SerializeField] private GameObject chunkPrefab = default;
-        private readonly Dictionary<Vector3Int, IChunk> meshes = new Dictionary<Vector3Int, IChunk>();
+        private readonly Dictionary<Vector3Int, IChunkMeshable> chunkMeshes = new Dictionary<Vector3Int, IChunkMeshable>();
         private Transform eyes;
 
         private void Awake()
@@ -18,25 +18,25 @@ namespace Mithmarie
         {
             if (!allChunks.ContainsKey(chunkPos) || allChunks[chunkPos] == null || allChunks[chunkPos].Count <= 0)
             {
-                if (meshes.ContainsKey(chunkPos) && meshes[chunkPos] != null)
+                if (chunkMeshes.ContainsKey(chunkPos) && chunkMeshes[chunkPos] != null)
                 {
-                    meshes[chunkPos].Dispose();
-                    meshes[chunkPos] = null;
+                    chunkMeshes[chunkPos].Dispose();
+                    chunkMeshes[chunkPos] = null;
                 }
 
-                meshes.Remove(chunkPos);
+                chunkMeshes.Remove(chunkPos);
                 return;
             }
 
-            if (!meshes.ContainsKey(chunkPos))
+            if (!chunkMeshes.ContainsKey(chunkPos))
                 AddChunk(chunkPos);
 
-            meshes[chunkPos].GenerateMesh(allChunks[chunkPos], allChunks);
+            chunkMeshes[chunkPos].GenerateMesh(allChunks[chunkPos], allChunks);
         }
 
         private void FixedUpdate()
         {
-            foreach (KeyValuePair<Vector3Int, IChunk> chunkMesh in meshes)
+            foreach (KeyValuePair<Vector3Int, IChunkMeshable> chunkMesh in chunkMeshes)
             {
                 chunkMesh.Value.Tick();
             }
@@ -44,11 +44,11 @@ namespace Mithmarie
 
         private void AddChunk(Vector3Int chunkPos)
         {
-            IChunk chunk = Instantiate(chunkPrefab, transform.position,
-                Quaternion.identity).GetComponent<IChunk>();
+            IChunkMeshable chunk = Instantiate(chunkPrefab, transform.position,
+                Quaternion.identity).GetComponent<IChunkMeshable>();
 
-            meshes.Add(chunkPos, chunk);
-            meshes[chunkPos].Setup(chunkPos, eyes);
+            chunkMeshes.Add(chunkPos, chunk);
+            chunkMeshes[chunkPos].Setup(chunkPos, eyes);
         }
     }
 }
