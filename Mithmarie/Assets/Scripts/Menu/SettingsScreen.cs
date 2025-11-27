@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Mithmarie
 {
-    public class SettingsScreen : Screen
+    public class SettingsScreen : Screen, IDefaultable
     {
         [SerializeField] private Button defaultAllButton = default;
 
@@ -15,12 +15,15 @@ namespace Mithmarie
 
         public void Setup(IMessageService message)
         {
-            List<StateBehaviour> list = GetComponentsInChildren<StateBehaviour>().ToList();
-            list.Remove(this);
-            behaviours = list.ToArray();
+            List<StateBehaviour> behaviourList = GetComponentsInChildren<StateBehaviour>().ToList();
+            behaviourList.Remove(this);
+            behaviours = behaviourList.ToArray();
+
+            List<IDefaultable> defaultablesList = GetComponentsInChildren<IDefaultable>().ToList();
+            defaultablesList.Remove(this);
+            defaultables = defaultablesList.ToArray();  
 
             gameObject.SetActive(false);
-            defaultables = GetComponentsInChildren<IDefaultable>();
             this.message = message;
         }
 
@@ -29,7 +32,7 @@ namespace Mithmarie
             base.Enter();
             gameObject.SetActive(true);
 
-            defaultAllButton.onClick.AddListener(DefaultAll);
+            defaultAllButton.onClick.AddListener(ReturnToDefault);
             for (int i = 0; i < behaviours.Length; i++)
             {
                 behaviours[i].Enter();
@@ -41,14 +44,14 @@ namespace Mithmarie
             base.Exit();
             gameObject.SetActive(false);
 
-            defaultAllButton.onClick.RemoveListener(DefaultAll);
+            defaultAllButton.onClick.RemoveListener(ReturnToDefault);
             for (int i = 0; i < behaviours.Length; i++)
             {
                 behaviours[i].Exit();
             }
         }
 
-        private void DefaultAll()
+        public void ReturnToDefault()
         {
             for (int i = 0; i < defaultables.Length; i++)
             {

@@ -11,7 +11,7 @@ namespace Mithmarie
         [SerializeField] private Terraformer removeTerraform = default;
         [SerializeField] private SelectionPreview addSelectionPreview = default;
         [SerializeField] private SelectionPreview removeSelectionPreview = default;
-        [SerializeField] private AimedFaceFeedback faceFeedback = default;
+        [SerializeField] private AimedFaceFeedback aimedFaceFeedback = default;
 
         private StateBehaviour[] behaviour;
         private PlayerHUD playerHUD;
@@ -43,7 +43,7 @@ namespace Mithmarie
             addTerraform.OnShowPreview += addSelectionPreview.UpdatePreview;
             removeTerraform.OnShowPreview += removeSelectionPreview.UpdatePreview;
 
-            faceFeedback.OnAim += playerHUD.SetCenterText;
+            aimedFaceFeedback.OnAim += playerHUD.SetCenterText;
 
             addTerraform.OnEditSelection += world.AddSelection;
             removeTerraform.OnEditSelection += world.RemoveSelection;
@@ -63,7 +63,7 @@ namespace Mithmarie
             addTerraform.OnShowPreview -= addSelectionPreview.UpdatePreview;
             removeTerraform.OnShowPreview -= removeSelectionPreview.UpdatePreview;
 
-            faceFeedback.OnAim -= playerHUD.SetCenterText;
+            aimedFaceFeedback.OnAim -= playerHUD.SetCenterText;
 
             addTerraform.OnEditSelection -= world.AddSelection;
             removeTerraform.OnEditSelection -= world.RemoveSelection;

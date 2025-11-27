@@ -57,7 +57,7 @@ MonoBehaviour:
   removeTerraform: {fileID: 6277602641836883055}
   addSelectionPreview: {fileID: 1271512375170221928}
   removeSelectionPreview: {fileID: 2515062756933341086}
-  faceFeedback: {fileID: 4141907983917415685}
+  aimedFaceFeedback: {fileID: 4141907983917415685}
 --- !u!114 &3481532798549250696
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -106,7 +106,7 @@ namespace Mithmarie
             OnDoneWithTask?.Invoke();
         }
 
-        private void BeginExport()
+        private void StartExporting()
         {
             ExtensionFilter[] extensionList = new[] { new ExtensionFilter("Wavefront", "obj") };
 
@@ -138,7 +138,7 @@ namespace Mithmarie
             saveAsButton.onClick.AddListener(SaveAs);
             saveButton.onClick.AddListener(Save);
             loadButton.onClick.AddListener(Load);
-            exportButton.onClick.AddListener(BeginExport);
+            exportButton.onClick.AddListener(StartExporting);
             newButton.onClick.AddListener(New);
         }
 
@@ -151,7 +151,7 @@ namespace Mithmarie
             saveButton.onClick.RemoveListener(Save);
             loadButton.onClick.RemoveListener(Load);
             newButton.onClick.RemoveListener(New);
-            exportButton.onClick.RemoveListener(BeginExport);
+            exportButton.onClick.RemoveListener(StartExporting);
         }
 
         private void OnApplicationQuit()

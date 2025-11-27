@@ -14,6 +14,9 @@ namespace Mithmarie
             if (state == null || states.Contains(state))
                 return;
 
+            // !TODO, CONSIDER CALLING EXIT STATE WHEN 
+            // YOU ADD THIS.
+            Debug.LogWarning("NOTE HERE");
             states.Add(state);
         }
 
