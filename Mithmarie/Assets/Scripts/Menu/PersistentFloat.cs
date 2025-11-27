@@ -16,21 +16,14 @@ namespace Mithmarie
         public float maxValue;
 
         private float value;
-        private bool hasSet;
 
         public void Save()
         {
-            if (hasSet)
-                return;
-            
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             try
             {
                 string path = $"{Application.persistentDataPath}/{name}.txt";
-                if (!hasSet)
-                    ReturnToDefault();
-
                 File.WriteAllText(path, value.ToString());
             }
             catch (Exception exception)
@@ -64,7 +57,6 @@ namespace Mithmarie
         {
             newValue = Mathf.Clamp(newValue, minValue, maxValue);
             value = newValue;
-            hasSet = true;
         }
 
         public override string ToString() => value.ToString();
@@ -73,13 +65,13 @@ namespace Mithmarie
         private void OnValidate()
         {
             if (minValue > maxValue)
-                Debug.LogWarning($"minValue > maxValue {name}.");
+                Debug.LogWarning($"minValue > maxValue | {name}.");
 
             if (defaultValue > maxValue)
-                Debug.LogWarning($"defaultValue > maxValue {name}.");
+                Debug.LogWarning($"defaultValue > maxValue | {name}.");
 
             if (defaultValue < minValue)
-                Debug.LogWarning($"defaultValue < minValue {name}.");
+                Debug.LogWarning($"defaultValue < minValue | {name}.");
         }
     }
 }

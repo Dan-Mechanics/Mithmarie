@@ -16,9 +16,9 @@ namespace Mithmarie
 
         private void Start()
         {
-            gameObject.name = persistent.name;
+          //  gameObject.name = persistent.name;
             placeholder.text = $"{persistent.minValue} to {persistent.maxValue}";
-            print($"{gameObject.name} {placeholder.text}");
+           // print($"{gameObject.name} {placeholder.text}");
         }
 
         public override void Enter()
@@ -64,6 +64,12 @@ namespace Mithmarie
             field.text = persistent.ToString();
         }
 
-        private void OnApplicationQuit() => persistent.Save();
+        private void OnApplicationQuit()
+        {
+            if (!asChanged)
+                return;
+
+            persistent.Save();
+        }
     }
 }

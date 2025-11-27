@@ -10,10 +10,10 @@ namespace Mithmarie
         [SerializeField] private PersistentBool persistent = default;
         private bool hasChanged;
 
-        private void Start()
+        /*private void Start()
         {
             gameObject.name = persistent.name;
-        }
+        }*/
 
         public override void Enter()
         {
@@ -47,6 +47,12 @@ namespace Mithmarie
             toggle.isOn = persistent.value;
         }
 
-        private void OnApplicationQuit() => persistent.Save();
+        private void OnApplicationQuit()
+        {
+            if (!hasChanged)
+                return;
+
+            persistent.Save();
+        }
     }
 }
