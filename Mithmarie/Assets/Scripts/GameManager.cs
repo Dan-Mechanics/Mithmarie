@@ -31,17 +31,17 @@ namespace Mithmarie
             world.ClearCaches();
             world.Flush();
 
-            Player playerState = FindAnyObjectByType<Player>();
-            Menu menuState = FindAnyObjectByType<Menu>();
+            Player player = FindAnyObjectByType<Player>();
+            Menu menu = FindAnyObjectByType<Menu>();
 
-            fsm.AddState(playerState);
-            fsm.AddState(menuState);
-            fsm.AddTransition(new Transition(playerState, menuState));
-            fsm.AddTransition(new Transition(menuState, playerState));
+            fsm.AddState(player);
+            fsm.AddState(menu);
+            fsm.AddTransition(new Transition(player, menu));
+            fsm.AddTransition(new Transition(menu, player));
 
-            menuState.Exit();
+            //menuState.Exit();
             // NOTE: THIS MIGHT BE AN ORDERING PROBLEM SOON
-            fsm.Open(playerState);
+            fsm.Open(player);
         }
 
         private void Update() => fsm.Update();
