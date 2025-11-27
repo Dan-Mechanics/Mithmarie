@@ -16,8 +16,8 @@ namespace Mithmarie
 
         private Dictionary<Vector3Int, HashSet<Vector3Int>> allChunks;
         private Transform eyes;
-        private Mesh mesh;
         private Vector3 center;
+        private Mesh mesh;
 
         public void Setup(Vector3Int chunkPos, Transform eyes)
         {
@@ -49,6 +49,10 @@ namespace Mithmarie
         {
             if (!gameObject.activeSelf)
                 return;
+
+            /*List<Vector3> verts = new List<Vector3>();
+            List<int> tris = new List<int>();
+            List<Vector2> uvs = new List<Vector2>();*/
 
             // THIS IS PASS-BY-REFERENCE.
             this.allChunks = allChunks;

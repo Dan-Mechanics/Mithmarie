@@ -27,7 +27,6 @@ namespace Mithmarie
         /// </summary>
         public static void GenerateCulledMesh(HashSet<Vector3Int> blocks, Predicate<Vector3Int> hasBlock, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
         {
-            // MAKE SURE EVERYTHING IS CLEARED.
             verts.Clear();
             tris.Clear();
             uvs.Clear();
@@ -112,6 +111,10 @@ namespace Mithmarie
         /// </summary>
         public static void GenerateExpandingCubesMesh(HashSet<Vector3Int> blocks, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
         {
+            verts.Clear();
+            tris.Clear();
+            uvs.Clear();
+
             List<ExpandingCubeMesh> expandingCubes = ExtractExpandingCubes(blocks.ToList());
             for (int i = 0; i < expandingCubes.Count; i++)
             {
