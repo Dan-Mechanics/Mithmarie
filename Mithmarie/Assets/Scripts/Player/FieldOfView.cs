@@ -13,11 +13,5 @@ namespace Mithmarie
             fov.Load();
             cam.fieldOfView = fov.Value;
         }
-
-        public override void Exit()
-        { 
-            base.Exit();
-            fov.Save();
-        }
     }
 }
