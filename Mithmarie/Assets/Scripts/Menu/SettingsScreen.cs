@@ -25,7 +25,6 @@ namespace Mithmarie
             defaultablesList.Remove(this);
             defaultables = defaultablesList.ToArray();  
 
-            gameObject.SetActive(false);
             this.message = message;
         }
 

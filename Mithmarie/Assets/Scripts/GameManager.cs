@@ -16,14 +16,14 @@ namespace Mithmarie
             WorldHistory history = FindAnyObjectByType<WorldHistory>();
             KeyboardShortcuts shortcuts = FindAnyObjectByType<KeyboardShortcuts>();
 
-            /*shortcuts.OnSave += FindAnyObjectByType<FileScreen>().Save;
+            shortcuts.OnSave += FindAnyObjectByType<FileScreen>().Save;
             shortcuts.OnUndo += history.Undo;
             shortcuts.OnRedo += history.Redo;
 
             world.OnAdd += history.InscribeAddCommand;
             world.OnRemove += history.InscribeRemoveCommand;
 
-            world.OnClear += history.Clear;*/
+            world.OnClear += history.Clear;
 
             world.OnDrawChunk += FindAnyObjectByType<WorldVisualizer>().DrawChunk;
 
@@ -34,13 +34,13 @@ namespace Mithmarie
             Player player = FindAnyObjectByType<Player>();
             Menu menu = FindAnyObjectByType<Menu>();
 
+            menu.Setup();
+
             fsm.AddState(player);
             fsm.AddState(menu);
             fsm.AddTransition(new Transition(player, menu));
             fsm.AddTransition(new Transition(menu, player));
 
-            //menuState.Exit();
-            // NOTE: THIS MIGHT BE AN ORDERING PROBLEM SOON
             fsm.Open(player);
         }
 

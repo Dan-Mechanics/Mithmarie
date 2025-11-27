@@ -12,14 +12,21 @@ namespace Mithmarie
         [SerializeField] private Button closeButton = default;
         [SerializeField] private Button quitButton = default;
 
+        private Screen[] screens;
         private IMessageService message;
         private readonly FSM fsm = new FSM();
 
-        private void Start()
+        /// <summary>
+        /// You could possiblely make it so GameManager injects the dependencies to the other states here.
+        /// This might make it too unreadable thought.
+        /// </summary>
+        public void Setup()
         {
             message = ServiceLocator<IMessageService>.Locate();
             fileScreen.Setup(FindAnyObjectByType<World>(), new OBJ(), new GreedyMeshGenerator(), message);
             settingsScreen.Setup(message);
+
+            screens = GetComponentsInChildren<Screen>(true);
 
             fsm.AddState(fileScreen);
             fsm.AddState(settingsScreen);
@@ -53,12 +60,13 @@ namespace Mithmarie
             quitButton.onClick.AddListener(Application.Quit);
             closeButton.onClick.AddListener(Close);
 
-            fileScreen.OnDoneWithTask += Close;
-            settingsScreen.OnDoneWithTask += Close;
             fsm.Open(fileScreen);
 
-            fileScreen.Button.onClick.AddListener(() => { fsm.Open(fileScreen); });
-            settingsScreen.Button.onClick.AddListener(() => { fsm.Open(settingsScreen); });
+            foreach (Screen screen in screens)
+            {
+                screen.Button.onClick.AddListener(() => { fsm.Open(screen); });
+                screen.OnDoneWithTask += Close;
+            }
         }
 
         public override void Exit()
@@ -69,11 +77,12 @@ namespace Mithmarie
             fsm.Close();
             quitButton.onClick.RemoveListener(Application.Quit);
             closeButton.onClick.RemoveListener(Close);
-            fileScreen.OnDoneWithTask -= Close;
-            settingsScreen.OnDoneWithTask -= Close;
 
-            fileScreen.Button.onClick.RemoveListener(() => { fsm.Open(fileScreen); });
-            settingsScreen.Button.onClick.RemoveListener(() => { fsm.Open(settingsScreen); });
+            foreach (Screen screen in screens)
+            {
+                screen.Button.onClick.RemoveListener(() => { fsm.Open(screen); });
+                screen.OnDoneWithTask -= Close;
+            }
         }
     }
 }

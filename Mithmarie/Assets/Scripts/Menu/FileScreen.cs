@@ -72,8 +72,6 @@ namespace Mithmarie
         private void New()
         {
             savePath = string.Empty;
-
-            //message.Send("Cleared.", Color.gray, 1f);
             world.Clear();
             world.Flush();
             FullyClose();
