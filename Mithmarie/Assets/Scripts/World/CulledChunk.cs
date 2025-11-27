@@ -50,10 +50,6 @@ namespace Mithmarie
             if (!gameObject.activeSelf)
                 return;
 
-            /*List<Vector3> verts = new List<Vector3>();
-            List<int> tris = new List<int>();
-            List<Vector2> uvs = new List<Vector2>();*/
-
             // THIS IS PASS-BY-REFERENCE.
             this.allChunks = allChunks;
             MeshUtils.GenerateCulledMesh(blocks, IsBlockInChunks, verts, tris, uvs);
