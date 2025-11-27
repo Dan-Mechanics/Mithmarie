@@ -16,14 +16,14 @@ namespace Mithmarie
             WorldHistory history = FindAnyObjectByType<WorldHistory>();
             KeyboardShortcuts shortcuts = FindAnyObjectByType<KeyboardShortcuts>();
 
-            shortcuts.OnSave += FindAnyObjectByType<FileScreen>().Save;
+            /*shortcuts.OnSave += FindAnyObjectByType<FileScreen>().Save;
             shortcuts.OnUndo += history.Undo;
             shortcuts.OnRedo += history.Redo;
 
             world.OnAdd += history.InscribeAddCommand;
             world.OnRemove += history.InscribeRemoveCommand;
 
-            world.OnClear += history.Clear;
+            world.OnClear += history.Clear;*/
 
             world.OnDrawChunk += FindAnyObjectByType<WorldVisualizer>().DrawChunk;
 
@@ -46,5 +46,11 @@ namespace Mithmarie
 
         private void Update() => fsm.Update();
         private void FixedUpdate() => fsm.FixedUpdate();
+
+        // DO THE INVERSE OF EVERYTHING ON DESTROY ???
+        private void OnDestroy()
+        {
+            // ...
+        }
     }
 }
