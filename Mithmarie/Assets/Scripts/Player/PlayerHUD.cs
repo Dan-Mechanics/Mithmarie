@@ -13,27 +13,20 @@ namespace Mithmarie
 
         private void Awake()
         {
-            keyHighlights = transform.GetComponentsInChildren<KeyHighlight>();
+            keyHighlights = GetComponentsInChildren<KeyHighlight>();
         }
 
         private void Update()
         {
             for (int i = 0; i < keyHighlights.Length; i++)
             {
-                keyHighlights[i].Draw(colorA, colorB); ;
+                keyHighlights[i].Draw(colorA, colorB);
             }
         }
 
         public void SetCenterText(object obj) 
         {
-            if(obj != null)
-            {
-                centerText.text = obj.ToString();
-            }
-            else
-            {
-                centerText.text = string.Empty;
-            }
+            centerText.text = obj != null ? obj.ToString() : string.Empty;
         }
 
         public void Show() => gameObject.SetActive(true);
