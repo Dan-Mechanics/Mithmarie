@@ -8,6 +8,7 @@ namespace Mithmarie
         [SerializeField] private Toggle toggle = default;
         [SerializeField] private Button defaultButton = default;
         [SerializeField] private PersistentBool persistent = default;
+        private bool hasChanged;
 
         private void Start()
         {
@@ -26,12 +27,19 @@ namespace Mithmarie
         public override void Exit()
         {
             base.Exit();
-            persistent.Save();
+            if (hasChanged)
+                persistent.Save();
+
+            hasChanged = false;
             defaultButton.onClick.RemoveListener(ReturnToDefault);
             toggle.onValueChanged.RemoveListener(Edit);
         }
 
-        private void Edit(bool value) => persistent.value = value;
+        private void Edit(bool value)
+        {
+            persistent.value = value;
+            hasChanged = true;
+        }
 
         public void ReturnToDefault()
         {

@@ -12,6 +12,7 @@ namespace Mithmarie
         [SerializeField] private TMP_Text placeholder = default;
         [SerializeField] private Button defaultButton = default;
         [SerializeField] private PersistentFloat persistent = default;
+        private bool hasChanged;
 
         private void Start()
         {
@@ -32,7 +33,10 @@ namespace Mithmarie
         public override void Exit()
         {
             base.Exit();
-            persistent.Save();
+            if (hasChanged)
+                persistent.Save();
+
+            hasChanged = false;
             defaultButton.onClick.RemoveListener(ReturnToDefault);
             field.onEndEdit.RemoveListener(Edit);
         }
@@ -46,6 +50,7 @@ namespace Mithmarie
             if (!float.TryParse(str, out float value))
                 value = persistent.Value;
 
+            hasChanged = true;
             persistent.Set(value);
             field.text = persistent.ToString();
         }
