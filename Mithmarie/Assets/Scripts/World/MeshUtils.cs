@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Mithmarie
 {
-    public static class MeshingUtils
+    public static class MeshUtils
     {
         private static readonly Vector3 upForward = new Vector3(0f, 1f, 1f);
         private static readonly Vector3 upRight = new Vector3(1f, 1f, 0f);
@@ -20,6 +20,10 @@ namespace Mithmarie
 
         // TODO: ADD PROPER GREEDY MESHER.
 
+        /// <summary>
+        /// /// <summary>
+        /// https://github.com/samhogan/Minecraft-Unity3D/blob/master/Assets/Scripts/TerrainChunk.cs
+        /// </summary>
         public static void GenerateCulledMesh(HashSet<Vector3Int> blocks, Predicate<Vector3Int> hasBlock, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
         {
             // MAKE SURE EVERYTHING IS CLEARED.

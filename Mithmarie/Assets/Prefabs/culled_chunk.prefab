@@ -125,4 +125,4 @@ MonoBehaviour:
   filter: {fileID: 4308757009957946029}
   coll: {fileID: 5494077106719623881}
   maxViewingRange: 75
-  cookingOptions: 16
+  cookingOptions: 0
