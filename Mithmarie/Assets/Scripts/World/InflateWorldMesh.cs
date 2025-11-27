@@ -9,36 +9,33 @@ namespace Mithmarie
     /// https://github.com/VictorGordan/opengl-tutorials/blob/main/YoutubeOpenGL%209%20-%20Lighting/Main.cpp
     /// https://pastebin.com/DXKEmvap
     /// </summary>
-    public class ExpandingMesher : IMeshingStrategy
+    public class InflateWorldMesh : IWorldMeshStrategy
     {
         public Mesh GenerateMesh(HashSet<Vector3Int> blocks)
         {
-            List<ExpandingCubeMesh> cubes = ExtractCubes(blocks.ToList());
-
             List<Vector3> verts = new List<Vector3>();
             List<int> tris = new List<int>();
             List<Vector2> uvs = new List<Vector2>();
+            Mesh mesh = new Mesh();
 
+            List<InflatableCube> cubes = ExtractCubes(blocks.ToList());
             cubes.ForEach(x => x.AddSelfToMesh(verts, tris, uvs, blocks));
 
-            Mesh mesh = new Mesh
-            {
-                vertices = verts.ToArray(),
-                triangles = tris.ToArray(),
-                uv = uvs.ToArray()
-            };
-
+            mesh.vertices = verts.ToArray();
+            mesh.triangles = tris.ToArray();
+            mesh.uv = uvs.ToArray();
             mesh.RecalculateNormals();
+
             return mesh;
         }
 
-        private List<ExpandingCubeMesh> ExtractCubes(List<Vector3Int> blocksLeft)
+        private List<InflatableCube> ExtractCubes(List<Vector3Int> blocksLeft)
         {
-            List<ExpandingCubeMesh> result = new List<ExpandingCubeMesh>();
+            List<InflatableCube> result = new List<InflatableCube>();
 
             while(blocksLeft.Count > 0)
             { 
-                ExpandingCubeMesh cube = new ExpandingCubeMesh(blocksLeft[0]);
+                InflatableCube cube = new InflatableCube(blocksLeft[0]);
                 blocksLeft.RemoveAt(0);
 
                 cube.ExpandUp(blocksLeft);

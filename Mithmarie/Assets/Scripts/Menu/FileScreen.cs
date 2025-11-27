@@ -19,15 +19,15 @@ namespace Mithmarie
         private World world;
         private IMessageService message;
         private IExportStrategy filetype;
-        private IMeshingStrategy meshing;
+        private IWorldMeshStrategy worldMesh;
         private string savePath;
         private string exportPath;
 
-        public void Setup(World world, IExportStrategy filetype, IMeshingStrategy meshing, IMessageService message)
+        public void Setup(World world, IExportStrategy filetype, IWorldMeshStrategy worldMesh, IMessageService message)
         {
             this.world = world;
             this.filetype = filetype;
-            this.meshing = meshing;
+            this.worldMesh = worldMesh;
             this.message = message;
 
             if (File.Exists(SavePathPath))
@@ -129,7 +129,7 @@ namespace Mithmarie
         private void Export()
         {
             world.Flush();
-            Mesh mesh = meshing.GenerateMesh(world.GetAllBlocks());
+            Mesh mesh = worldMesh.GenerateMesh(world.GetAllBlocks());
             filetype.Export(exportPath, mesh, message);
 
             CloseCompletely();

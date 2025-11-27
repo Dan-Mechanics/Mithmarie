@@ -21,7 +21,6 @@ namespace Mithmarie
             }
             catch (Exception exception)
             {
-                //Debug.LogError(exception.Message);
                 message.Send(exception.Message, Color.red);
             }
         }
@@ -37,7 +36,6 @@ namespace Mithmarie
                 builder.Append(string.Format("v {0} {1} {2}\n", writeV.x, writeV.y, writeV.z));
             }
 
-            // Also export UV's
             foreach (Vector3 v in mesh.uv)
             {
                 builder.Append(string.Format("vt {0} {1} {2}\n", v.x, v.y, v.z));

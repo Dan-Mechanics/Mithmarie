@@ -4,10 +4,7 @@ using UnityEngine;
 
 namespace Mithmarie
 {
-    /// <summary>
-    /// This class belong to GreedyMeshGenerator.cs
-    /// </summary>
-    public class ExpandingCubeMesh
+    public class InflatableCube
     {
         public int minX;
         public int maxX;
@@ -16,7 +13,7 @@ namespace Mithmarie
         public int minZ;
         public int maxZ;
 
-        public ExpandingCubeMesh(Vector3Int center)
+        public InflatableCube(Vector3Int center)
         {
             minX = maxX = center.x;
             minY = maxY = center.y;

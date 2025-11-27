@@ -36,7 +36,7 @@ namespace Mithmarie
             gameObject.SetActive(Vector3.Distance(eyes.position, center) <= maxViewingRange);
         }
 
-        private bool Has(Vector3Int blockPos)
+        private bool HasInChunks(Vector3Int blockPos)
         {
             Vector3Int chunkPos = Utils.GetChunkPos(blockPos, World.CHUNK_SIZE);
             if (!allChunks.ContainsKey(chunkPos))
@@ -51,7 +51,7 @@ namespace Mithmarie
                 return;
 
             this.allChunks = allChunks;
-            MeshUtils.GenerateCulledMesh(blocks, Has, verts, tris, uvs);
+            MeshUtils.GenerateCulledMesh(blocks, HasInChunks, verts, tris, uvs);
 
             mesh.Clear();
             mesh.vertices = verts.ToArray();

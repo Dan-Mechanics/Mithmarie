@@ -3,6 +3,11 @@ using UnityEngine;
 
 namespace Mithmarie
 {
+    /// <summary>
+    /// You could for example implement a DemoChunk.cs whereby 
+    /// very many cubes are spawned one by one.
+    /// Alternatively, you could implement a more optimized GreedyChunk.cs here.
+    /// </summary>
     public interface IChunk
     {
         public void Setup(Vector3Int chunkPos, Transform eyes);
