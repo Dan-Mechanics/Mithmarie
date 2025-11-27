@@ -8,7 +8,7 @@ namespace Mithmarie
     public class FileScreen : Screen
     {
         private string SavePathPath => Application.persistentDataPath + "/lastsave.txt";
-        private const float STANDARD_MESSAGE_DURATION = 0.5f;
+        private const float MESSAGE_DURATION = 1f;
 
         [SerializeField] private Button newButton = default;
         [SerializeField] private Button saveButton = default;
@@ -44,7 +44,7 @@ namespace Mithmarie
                 return;
             }
 
-            message.Send("Saving ...", Color.green, STANDARD_MESSAGE_DURATION);
+            message.Send("Saving ...", (Color.green + Color.gray + Color.gray) / 3f, MESSAGE_DURATION);
             FileStream stream = File.OpenWrite(savePath);
             BinaryWriter writer = new BinaryWriter(stream);
 
@@ -94,7 +94,7 @@ namespace Mithmarie
             if (!Utils.IsStringValid(path) || !File.Exists(path))
                 return;
 
-            message.Send(path, Color.gray, STANDARD_MESSAGE_DURATION);
+            message.Send(path, Color.gray, MESSAGE_DURATION);
             FileStream stream = File.OpenRead(path);
             BinaryReader reader = new BinaryReader(stream);
 
@@ -111,7 +111,7 @@ namespace Mithmarie
             CloseCompletely();
         }
 
-        private void StartExporting()
+        private void StartExport()
         {
             ExtensionFilter[] extensionList = new[] { new ExtensionFilter("Wavefront", "obj") };
 
@@ -119,7 +119,7 @@ namespace Mithmarie
             if (!Utils.IsStringValid(path))
                 return;
 
-            message.Send("Exporting ...", Color.black, STANDARD_MESSAGE_DURATION);
+            message.Send("Exporting ...", Color.gray, MESSAGE_DURATION);
             exportPath = path;
 
             CancelInvoke(nameof(Export));
@@ -143,7 +143,7 @@ namespace Mithmarie
             saveAsButton.onClick.AddListener(SaveAs);
             saveButton.onClick.AddListener(Save);
             loadButton.onClick.AddListener(Load);
-            exportButton.onClick.AddListener(StartExporting);
+            exportButton.onClick.AddListener(StartExport);
             newButton.onClick.AddListener(New);
         }
 
@@ -156,7 +156,7 @@ namespace Mithmarie
             saveButton.onClick.RemoveListener(Save);
             loadButton.onClick.RemoveListener(Load);
             newButton.onClick.RemoveListener(New);
-            exportButton.onClick.RemoveListener(StartExporting);
+            exportButton.onClick.RemoveListener(StartExport);
         }
 
         private void OnApplicationQuit()
