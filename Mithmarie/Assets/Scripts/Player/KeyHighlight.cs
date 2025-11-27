@@ -14,8 +14,7 @@ namespace Mithmarie
 
         private void Start()
         {
-            text.text = key.ToString().ToUpperInvariant().
-                Replace("LEFT", string.Empty).Replace("RIGHT", string.Empty); ;
+            text.text = key.ToString().ToUpperInvariant().Replace("LEFT", string.Empty);
         }
 
         public void Draw(Color colorA, Color colorB)

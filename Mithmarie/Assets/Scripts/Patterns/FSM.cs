@@ -14,7 +14,7 @@ namespace Mithmarie
             if (state == null || states.Contains(state))
                 return;
 
-            //state.Exit();
+            state.Exit();
             states.Add(state);
         }
 
