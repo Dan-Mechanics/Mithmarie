@@ -22,8 +22,8 @@ namespace Mithmarie
         // TODO: ADD PROPER GREEDY MESHER.
 
         /// <summary>
-        /// /// <summary>
         /// https://github.com/samhogan/Minecraft-Unity3D/blob/master/Assets/Scripts/TerrainChunk.cs
+        /// Is this hasBlocks smart ??
         /// </summary>
         public static void GenerateCulledMesh(HashSet<Vector3Int> blocks, Predicate<Vector3Int> hasBlock, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
         {
