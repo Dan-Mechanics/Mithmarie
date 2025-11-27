@@ -23,6 +23,6 @@ namespace Mithmarie
             button.interactable = true;
         }
 
-        protected void FullyClose() => OnDoneWithTask?.Invoke();
+        protected void CloseCompletely() => OnDoneWithTask?.Invoke();
     }
 }

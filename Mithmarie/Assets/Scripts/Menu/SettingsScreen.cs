@@ -32,7 +32,7 @@ namespace Mithmarie
         {
             base.Enter();
             gameObject.SetActive(true);
-            doneButton.onClick.AddListener(FullyClose);
+            doneButton.onClick.AddListener(CloseCompletely);
 
             defaultAllButton.onClick.AddListener(ReturnToDefault);
             for (int i = 0; i < behaviours.Length; i++)
@@ -45,7 +45,7 @@ namespace Mithmarie
         {
             base.Exit();
             gameObject.SetActive(false);
-            doneButton.onClick.RemoveListener(FullyClose);
+            doneButton.onClick.RemoveListener(CloseCompletely);
 
             defaultAllButton.onClick.RemoveListener(ReturnToDefault);
             for (int i = 0; i < behaviours.Length; i++)

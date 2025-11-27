@@ -15,9 +15,9 @@ namespace Mithmarie
             eyes = GameObject.FindWithTag("MainCamera").transform;
         }
 
-        public void DrawChunk(Vector3Int chunkPos, Dictionary<Vector3Int, HashSet<Vector3Int>> chunks)
+        public void DrawChunk(Vector3Int chunkPos, Dictionary<Vector3Int, HashSet<Vector3Int>> allChunks)
         {
-            if (!chunks.ContainsKey(chunkPos) || chunks[chunkPos] == null || chunks[chunkPos].Count <= 0)
+            if (!allChunks.ContainsKey(chunkPos) || allChunks[chunkPos] == null || allChunks[chunkPos].Count <= 0)
             {
                 if (meshes.ContainsKey(chunkPos) && meshes[chunkPos] != null)
                 {
@@ -32,7 +32,7 @@ namespace Mithmarie
             if (!meshes.ContainsKey(chunkPos))
                 AddChunk(chunkPos);
 
-            meshes[chunkPos].GenerateMesh(chunks[chunkPos], chunks);
+            meshes[chunkPos].GenerateMesh(allChunks[chunkPos], allChunks);
         }
 
         private void FixedUpdate()

@@ -23,7 +23,7 @@ namespace Mithmarie
         public void Setup()
         {
             message = ServiceLocator<IMessageService>.Locate();
-            fileScreen.Setup(FindAnyObjectByType<World>(), new OBJ(), new GreedyMeshGenerator(), message);
+            fileScreen.Setup(FindAnyObjectByType<World>(), new OBJ(), new ExpandingMesher(), message);
             settingsScreen.Setup(message);
 
             screens = GetComponentsInChildren<Screen>(true);

@@ -13,6 +13,7 @@ namespace Mithmarie
             message.Send("[WASD] for movement and [MOUSE] for looking.\nUse [RMB] to place blocks, [LMB] to destroy.", Color.black, 4f);
 
             World world = FindAnyObjectByType<World>();
+            world.Setup(message);
             WorldHistory history = FindAnyObjectByType<WorldHistory>();
             KeyboardShortcuts shortcuts = FindAnyObjectByType<KeyboardShortcuts>();
 
@@ -20,10 +21,8 @@ namespace Mithmarie
             shortcuts.OnUndo += history.Undo;
             shortcuts.OnRedo += history.Redo;
 
-            world.OnAdd += history.InscribeAddCommand;
-            world.OnRemove += history.InscribeRemoveCommand;
-
             world.OnClear += history.Clear;
+            world.OnFlush += history.LogImplicitWorldChange;
 
             world.OnDrawChunk += FindAnyObjectByType<WorldVisualizer>().DrawChunk;
 

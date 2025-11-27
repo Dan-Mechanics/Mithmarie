@@ -6,7 +6,7 @@ namespace Mithmarie
     public class WorldHistory : MonoBehaviour
     {
         [SerializeField, Min(0)] private int maxHistoryCount = default;
-        private readonly List<IWorldCommand> history = new List<IWorldCommand>();
+        private readonly List<ImplicitWorldChange> history = new List<ImplicitWorldChange>();
         private int index;
         private World world;
 
@@ -15,13 +15,10 @@ namespace Mithmarie
             world = FindAnyObjectByType<World>();
         }
 
-        public void InscribeAddCommand(HashSet<Vector3Int> blocks) => InscribeCommand(new AddCommand(blocks));
-        public void InscribeRemoveCommand(HashSet<Vector3Int> blocks) => InscribeCommand(new RemoveCommand(blocks));
-
-        private void InscribeCommand(IWorldCommand command)
+        public void LogImplicitWorldChange(HashSet<Vector3Int> added, HashSet<Vector3Int> removed)
         {
-            history.Add(command);
-            while(history.Count > maxHistoryCount)
+            history.Add(new ImplicitWorldChange(added, removed));
+            while (history.Count > maxHistoryCount)
             {
                 history.RemoveAt(0);
             }
@@ -37,10 +34,7 @@ namespace Mithmarie
 
         public void Undo()
         {
-            if (index >= history.Count)
-                return;
-
-            if (index < 0)
+            if (index < 0 || index >= history.Count)
                 return;
 
             history[index].Undo(world);
@@ -52,13 +46,10 @@ namespace Mithmarie
 
         public void Redo()
         {
-            if (index >= history.Count - 1)
+            if (index < 0 || index >= history.Count)
                 return;
 
-            if (index < 0)
-                return;
-
-            history[index].Execute(world);
+            history[index].Redo(world);
             index++;
 
             world.ClearCaches();

@@ -33,7 +33,7 @@ namespace Mithmarie
             if (File.Exists(SavePathPath))
                 savePath = File.ReadAllText(SavePathPath);
 
-            Load(savePath);
+            LoadPath(savePath);
         }
 
         public void Save()
@@ -54,7 +54,7 @@ namespace Mithmarie
             writer.Flush();
             writer.Close();
 
-            FullyClose();
+            CloseCompletely();
         }
 
         private void SaveAs()
@@ -72,9 +72,12 @@ namespace Mithmarie
         private void New()
         {
             savePath = string.Empty;
+
             world.Clear();
+            world.ClearCaches();
             world.Flush();
-            FullyClose();
+
+            CloseCompletely();
         }
 
         private void Load()
@@ -83,11 +86,10 @@ namespace Mithmarie
             if (paths.Length <= 0)
                 return;
 
-            string path = paths[0];
-            Load(path);
+            LoadPath(paths[0]);
         }
 
-        private void Load(string path)
+        private void LoadPath(string path)
         {
             if (!Utils.IsStringValid(path) || !File.Exists(path))
                 return;
@@ -106,7 +108,7 @@ namespace Mithmarie
             world.ClearCaches();
             world.Flush();
 
-            FullyClose();
+            CloseCompletely();
         }
 
         private void StartExporting()
@@ -118,7 +120,6 @@ namespace Mithmarie
                 return;
 
             message.Send("Exporting ...", Color.black, STANDARD_MESSAGE_DURATION);
-            world.Flush();
             exportPath = path;
 
             CancelInvoke(nameof(Export));
@@ -127,10 +128,11 @@ namespace Mithmarie
 
         private void Export()
         {
+            world.Flush();
             Mesh mesh = meshing.GenerateMesh(world.GetAllBlocks());
             filetype.Export(exportPath, mesh, message);
 
-            FullyClose();
+            CloseCompletely();
         }
 
         public override void Enter()

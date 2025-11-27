@@ -10,17 +10,14 @@ namespace Mithmarie
     /// </summary>
     public class World : MonoBehaviour, IBinarySerializable
     {
-        public event Action<Vector3Int, Dictionary<Vector3Int, HashSet<Vector3Int>>> OnDrawChunk;
-        public event Action OnClear;
-        public event Action<HashSet<Vector3Int>> OnAdd;
-        public event Action<HashSet<Vector3Int>> OnRemove;
-        
         public const int CHUNK_SIZE = 8;
+
+        public event Action<Vector3Int, Dictionary<Vector3Int, HashSet<Vector3Int>>> OnDrawChunk;
+        public event Action<HashSet<Vector3Int>, HashSet<Vector3Int>> OnFlush;
+        public event Action OnClear;
         
         private readonly Dictionary<Vector3Int, HashSet<Vector3Int>> chunks = new Dictionary<Vector3Int, HashSet<Vector3Int>>();
         private readonly HashSet<Vector3Int> changedChunkPositions = new HashSet<Vector3Int>();
-        
-   //     private WorldVisualizer chunksVisualizer;
         private IMessageService message;
 
         private delegate void EditBlock(Vector3Int blockPos);
@@ -29,10 +26,7 @@ namespace Mithmarie
         private readonly HashSet<Vector3Int> addedBlocksCache = new HashSet<Vector3Int>();
         private readonly HashSet<Vector3Int> removedBlocksCache = new HashSet<Vector3Int>();
 
-        private void Start()
-        {
-            message = ServiceLocator<IMessageService>.Locate();
-        }
+        public void Setup(IMessageService message) => this.message = message;
 
         public void AddSelection(Vector3Int a, Vector3Int b)
         {
@@ -87,6 +81,10 @@ namespace Mithmarie
             OnClear?.Invoke();
         }
 
+        /// <summary>
+        /// If you call this then all the work done 
+        /// since the previous Flush() cannot be undone.
+        /// </summary>
         public void ClearCaches()
         {
             addedBlocksCache.Clear();
@@ -100,21 +98,14 @@ namespace Mithmarie
                 if (!chunks.ContainsKey(chunkPos) || chunks[chunkPos] == null || chunks[chunkPos].Count <= 0)
                     chunks.Remove(chunkPos);
 
-               // chunksVisualizer.DrawChunk(chunkPos, chunks);
                 OnDrawChunk?.Invoke(chunkPos, chunks);
             }
 
-            if (addedBlocksCache.Count > 0)
-            {
-                OnAdd?.Invoke(addedBlocksCache);
-                addedBlocksCache.Clear();
-            }
+            if (addedBlocksCache.Count <= 0 && removedBlocksCache.Count <= 0)
+                return;
 
-            if (removedBlocksCache.Count > 0)
-            {
-                OnRemove?.Invoke(removedBlocksCache);
-                removedBlocksCache.Clear();
-            }
+            OnFlush?.Invoke(addedBlocksCache, removedBlocksCache);
+            ClearCaches();
         }
 
         private void EditSelection(Vector3Int a, Vector3Int b)
@@ -196,7 +187,6 @@ namespace Mithmarie
             }
             catch (Exception exception)
             {
-                //Debug.LogError(exception.Message);
                 message.Send(exception.Message, Color.red);
             }
         }
