@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb68333a46c41e45ae1b66cb2fb09aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprintSpeedMult: 2.5
+  sprintSpeedMult: 2
   sprintKey: 51
   downKey: 53
   speed: {fileID: 11400000, guid: 5d089e7e052fa3c499c293d13a7b1227, type: 2}
