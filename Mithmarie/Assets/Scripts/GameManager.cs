@@ -20,8 +20,8 @@ namespace Mithmarie
             shortcuts.OnUndo += history.Undo;
             shortcuts.OnRedo += history.Redo;
 
-            world.OnAdd += history.EnscribeAddCommand;
-            world.OnRemove += history.EnscribeRemoveCommand;
+            world.OnAdd += history.InscribeAddCommand;
+            world.OnRemove += history.InscribeRemoveCommand;
 
             world.OnClear += history.Clear;
 
@@ -31,8 +31,8 @@ namespace Mithmarie
             world.ClearCaches();
             world.Flush();
 
-            PlayerState playerState = FindAnyObjectByType<PlayerState>();
-            MenuState menuState = FindAnyObjectByType<MenuState>();
+            Player playerState = FindAnyObjectByType<Player>();
+            Menu menuState = FindAnyObjectByType<Menu>();
 
             fsm.AddState(playerState);
             fsm.AddState(menuState);

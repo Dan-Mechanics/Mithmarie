@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace Mithmarie
 {
-    public class PlayerState : StateBehaviour
+    public class Player : StateBehaviour
     {   
         [SerializeField] private Terraformer addTerraform = default;
         [SerializeField] private Terraformer removeTerraform = default;

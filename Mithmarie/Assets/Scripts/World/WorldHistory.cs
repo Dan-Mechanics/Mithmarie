@@ -15,10 +15,10 @@ namespace Mithmarie
             world = FindAnyObjectByType<World>();
         }
 
-        public void EnscribeAddCommand(HashSet<Vector3Int> blocks) => EnscribeCommand(new AddCommand(blocks));
-        public void EnscribeRemoveCommand(HashSet<Vector3Int> blocks) => EnscribeCommand(new RemoveCommand(blocks));
+        public void InscribeAddCommand(HashSet<Vector3Int> blocks) => InscribeCommand(new AddCommand(blocks));
+        public void InscribeRemoveCommand(HashSet<Vector3Int> blocks) => InscribeCommand(new RemoveCommand(blocks));
 
-        private void EnscribeCommand(IWorldCommand command)
+        private void InscribeCommand(IWorldCommand command)
         {
             history.Add(command);
             while(history.Count > maxHistoryCount)

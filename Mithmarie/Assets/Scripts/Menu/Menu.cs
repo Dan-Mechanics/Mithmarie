@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Mithmarie
 {
-    public class MenuState : StateBehaviour
+    public class Menu : StateBehaviour
     {
         [SerializeField] private FileScreen fileScreen = default;
         [SerializeField] private SettingsScreen settingsScreen = default;
