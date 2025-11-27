@@ -12,6 +12,12 @@ namespace Mithmarie
         [SerializeField] private Image icon = default;
         [SerializeField] private TMP_Text text = default;
 
+        private void Start()
+        {
+            text.text = key.ToString().ToUpperInvariant().
+                Replace("LEFT", string.Empty).Replace("RIGHT", string.Empty); ;
+        }
+
         public void Draw(Color colorA, Color colorB)
         {
             image.color = Keyboard.current[key].isPressed ? colorB : colorA;
