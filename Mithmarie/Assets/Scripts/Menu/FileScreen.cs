@@ -1,5 +1,4 @@
 using SFB;
-using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +8,8 @@ namespace Mithmarie
     public class FileScreen : Screen
     {
         private string SavePathPath => Application.persistentDataPath + "/lastsave.txt";
-        
+        private const float STANDARD_MESSAGE_DURATION = 0.5f;
+
         [SerializeField] private Button newButton = default;
         [SerializeField] private Button saveButton = default;
         [SerializeField] private Button saveAsButton = default;
@@ -44,7 +44,7 @@ namespace Mithmarie
                 return;
             }
 
-            message.Send("Saving ...", Color.green, 1f);
+            message.Send("Saving ...", Color.green, STANDARD_MESSAGE_DURATION);
             FileStream stream = File.OpenWrite(savePath);
             BinaryWriter writer = new BinaryWriter(stream);
 
@@ -92,7 +92,7 @@ namespace Mithmarie
             if (!Utils.IsStringValid(path) || !File.Exists(path))
                 return;
 
-            message.Send(path, Color.gray, 1f);
+            message.Send(path, Color.gray, STANDARD_MESSAGE_DURATION);
             FileStream stream = File.OpenRead(path);
             BinaryReader reader = new BinaryReader(stream);
 
@@ -117,7 +117,7 @@ namespace Mithmarie
             if (!Utils.IsStringValid(path))
                 return;
 
-            message.Send("Exporting ...", Color.black, 1f);
+            message.Send("Exporting ...", Color.black, STANDARD_MESSAGE_DURATION);
             world.Flush();
             exportPath = path;
 

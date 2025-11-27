@@ -16,14 +16,21 @@ namespace Mithmarie
         public float maxValue;
 
         private float value;
+        private bool hasSet;
 
         public void Save()
         {
+            if (hasSet)
+                return;
+            
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             try
             {
                 string path = $"{Application.persistentDataPath}/{name}.txt";
+                if (!hasSet)
+                    ReturnToDefault();
+
                 File.WriteAllText(path, value.ToString());
             }
             catch (Exception exception)
@@ -53,11 +60,11 @@ namespace Mithmarie
             }
         }
 
-
         public void Set(float newValue)
         {
             newValue = Mathf.Clamp(newValue, minValue, maxValue);
             value = newValue;
+            hasSet = true;
         }
 
         public override string ToString() => value.ToString();

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6540ddde55acff14599b05f712c2613c, type: 3}
   m_Name: fov
   m_EditorClassIdentifier: 
-  defaultValue: 90
+  defaultValue: 103
   minValue: 30
   maxValue: 130
