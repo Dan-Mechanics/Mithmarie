@@ -6,7 +6,7 @@ namespace Mithmarie
     /// <summary>
     /// https://github.com/samhogan/Minecraft-Unity3D/blob/master/Assets/Scripts/TerrainChunk.cs
     /// </summary>
-    public class ChunkMesh : MonoBehaviour
+    public class CulledChunk : MonoBehaviour
     {
         [SerializeField] private MeshFilter filter = default;
         [SerializeField] private MeshCollider coll = default;

@@ -3,11 +3,10 @@ using UnityEngine;
 
 namespace Mithmarie
 {
-    public class WorldVisualizer : MonoBehaviour
+    public class ChunkManager : MonoBehaviour
     {
         [SerializeField] private GameObject chunkPrefab = default;
-        private readonly Dictionary<Vector3Int, ChunkMesh> meshes = new Dictionary<Vector3Int, ChunkMesh>();
-
+        private readonly Dictionary<Vector3Int, IChunk> meshes = new Dictionary<Vector3Int, IChunk>();
         private Transform eyes;
 
         private void Awake()
@@ -37,7 +36,7 @@ namespace Mithmarie
 
         private void FixedUpdate()
         {
-            foreach (KeyValuePair<Vector3Int, ChunkMesh> chunkMesh in meshes)
+            foreach (KeyValuePair<Vector3Int, IChunk> chunkMesh in meshes)
             {
                 chunkMesh.Value.Tick();
             }
@@ -45,8 +44,8 @@ namespace Mithmarie
 
         private void AddChunk(Vector3Int chunkPos)
         {
-            ChunkMesh chunk = Instantiate(chunkPrefab, transform.position,
-                Quaternion.identity).GetComponent<ChunkMesh>();
+            IChunk chunk = Instantiate(chunkPrefab, transform.position,
+                Quaternion.identity).GetComponent<IChunk>();
 
             meshes.Add(chunkPos, chunk);
             meshes[chunkPos].Setup(chunkPos, eyes);

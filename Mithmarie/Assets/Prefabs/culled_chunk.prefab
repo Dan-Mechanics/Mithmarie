@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5494077106719623881}
   - component: {fileID: 4987414649123420653}
   m_Layer: 0
-  m_Name: chunk
+  m_Name: culled_chunk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
