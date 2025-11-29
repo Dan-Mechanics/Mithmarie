@@ -22,12 +22,12 @@ namespace Mithmarie
             shortcuts.OnRedo += history.Redo;
 
             world.OnClear += history.Clear;
-            world.OnFlush += history.LogImplicitWorldChange;
+            world.OnChange += history.LogImplicitWorldChange;
 
             world.OnDrawChunk += FindAnyObjectByType<ChunkVisualizationManager>().DrawChunk;
 
             world.Add(Vector3Int.zero);
-            world.ClearCaches();
+            world.ForgetRecentChanges();
             world.Flush();
 
             Player player = FindAnyObjectByType<Player>();

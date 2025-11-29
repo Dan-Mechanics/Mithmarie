@@ -41,6 +41,12 @@ namespace Mithmarie
             ResetToDefault();
         }
 
+        public override void Enter()
+        {
+            base.Enter();
+            swapMouseButtons.Load();
+        }
+
         public override void OnTick()
         {
             base.OnTick();

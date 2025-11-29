@@ -13,7 +13,7 @@ namespace Mithmarie
         public const int CHUNK_SIZE = 8;
 
         public event Action<Vector3Int, Dictionary<Vector3Int, HashSet<Vector3Int>>> OnDrawChunk;
-        public event Action<HashSet<Vector3Int>, HashSet<Vector3Int>> OnFlush;
+        public event Action<HashSet<Vector3Int>, HashSet<Vector3Int>> OnChange;
         public event Action OnClear;
         
         private readonly Dictionary<Vector3Int, HashSet<Vector3Int>> chunks = new Dictionary<Vector3Int, HashSet<Vector3Int>>();
@@ -82,10 +82,10 @@ namespace Mithmarie
         }
 
         /// <summary>
-        /// If you call this then all the work done 
+        /// If you call this, all the work done 
         /// since the previous Flush() cannot be undone.
         /// </summary>
-        public void ClearCaches()
+        public void ForgetRecentChanges()
         {
             addedBlocksCache.Clear();
             removedBlocksCache.Clear();
@@ -104,8 +104,8 @@ namespace Mithmarie
             if (addedBlocksCache.Count <= 0 && removedBlocksCache.Count <= 0)
                 return;
 
-            OnFlush?.Invoke(addedBlocksCache, removedBlocksCache);
-            ClearCaches();
+            OnChange?.Invoke(addedBlocksCache, removedBlocksCache);
+            ForgetRecentChanges();
         }
 
         private void EditSelection(Vector3Int a, Vector3Int b)
@@ -190,7 +190,7 @@ namespace Mithmarie
                 message.Send(exception.Message, Color.red);
             }
         }
-
+         
         public void Deserialize(BinaryReader reader)
         {
             try

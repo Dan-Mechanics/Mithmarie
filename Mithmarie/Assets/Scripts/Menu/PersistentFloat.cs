@@ -56,7 +56,6 @@ namespace Mithmarie
         public void Set(float newValue)
         {
             newValue = Mathf.Clamp(newValue, minValue, maxValue);
-            Debug.LogWarning($"VALUE {name} set to {newValue} !!!!!!!!!!!!!!!!!");
             value = newValue;
         }
 

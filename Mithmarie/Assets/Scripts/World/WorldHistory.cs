@@ -34,13 +34,15 @@ namespace Mithmarie
 
         public void Undo()
         {
+            Debug.Log("hello");
+            Debug.Log(history.Count);
             if (index < 0 || index >= history.Count)
                 return;
 
             history[index].Undo(world);
             index--;
 
-            world.ClearCaches();
+            world.ForgetRecentChanges();
             world.Flush();
         }
 
@@ -52,7 +54,7 @@ namespace Mithmarie
             history[index].Redo(world);
             index++;
 
-            world.ClearCaches();
+            world.ForgetRecentChanges();
             world.Flush();
         }
     }

@@ -74,7 +74,7 @@ namespace Mithmarie
             savePath = string.Empty;
 
             world.Clear();
-            world.ClearCaches();
+            world.ForgetRecentChanges();
             world.Flush();
 
             CloseCompletely();
@@ -105,7 +105,7 @@ namespace Mithmarie
 
             reader.Close();
 
-            world.ClearCaches();
+            world.ForgetRecentChanges();
             world.Flush();
 
             CloseCompletely();
