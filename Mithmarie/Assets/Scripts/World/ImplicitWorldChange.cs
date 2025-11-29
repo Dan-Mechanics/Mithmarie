@@ -10,8 +10,8 @@ namespace Mithmarie
 
         public ImplicitWorldChange(HashSet<Vector3Int> added, HashSet<Vector3Int> removed)
         {
-            this.added = added;
-            this.removed = removed;
+            this.added = new HashSet<Vector3Int>(added);
+            this.removed = new HashSet<Vector3Int>(removed);
         }
 
         public void Undo(World world)

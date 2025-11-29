@@ -17,6 +17,11 @@ namespace Mithmarie
 
         public void LogImplicitWorldChange(HashSet<Vector3Int> added, HashSet<Vector3Int> removed)
         {
+            for (int i = history.Count - 1; i > index; i--)
+            {
+                history.RemoveAt(i);
+            }
+
             history.Add(new ImplicitWorldChange(added, removed));
             while (history.Count > maxHistoryCount)
             {
@@ -34,8 +39,6 @@ namespace Mithmarie
 
         public void Undo()
         {
-            Debug.Log("hello");
-            Debug.Log(history.Count);
             if (index < 0 || index >= history.Count)
                 return;
 
@@ -48,11 +51,11 @@ namespace Mithmarie
 
         public void Redo()
         {
+            index++;
             if (index < 0 || index >= history.Count)
                 return;
 
             history[index].Redo(world);
-            index++;
 
             world.ForgetRecentChanges();
             world.Flush();

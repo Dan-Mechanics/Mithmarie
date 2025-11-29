@@ -7,6 +7,9 @@ namespace Mithmarie
 {
     /// <summary>
     /// This class does too much, something has to go.
+    /// You could make this perform better by removing
+    /// the delegate of EditBlock and also have seperate methods
+    /// for SilentAdd and Add.
     /// </summary>
     public class World : MonoBehaviour, IBinarySerializable
     {
