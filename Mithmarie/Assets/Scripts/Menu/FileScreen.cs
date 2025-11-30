@@ -49,7 +49,7 @@ namespace Mithmarie
             BinaryWriter writer = new BinaryWriter(stream);
 
             world.Flush();
-            world.Serialize(writer);
+            world.Serialize(writer, message);
 
             writer.Flush();
             writer.Close();
@@ -101,7 +101,7 @@ namespace Mithmarie
             savePath = path;
 
             world.Clear();
-            world.Deserialize(reader);
+            world.Deserialize(reader, message);
 
             reader.Close();
 

@@ -4,7 +4,7 @@ namespace Mithmarie
 {
     public interface IBinarySerializable 
     {
-        void Serialize(BinaryWriter writer);
-        void Deserialize(BinaryReader reader);
+        void Serialize(BinaryWriter writer, IMessageService message);
+        void Deserialize(BinaryReader reader, IMessageService message);
     }
 }

@@ -47,8 +47,8 @@ namespace Mithmarie
 
         public void GenerateMesh(HashSet<Vector3Int> blocks, Dictionary<Vector3Int, HashSet<Vector3Int>> allChunks)
         {
-            if (!gameObject.activeSelf)
-                return;
+            /*if (!gameObject.activeSelf)
+                return;*/
 
             // NOTE: THIS IS PASS-BY-REFERENCE.
             this.allChunks = allChunks;

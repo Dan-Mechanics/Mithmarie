@@ -21,15 +21,12 @@ namespace Mithmarie
         
         private readonly Dictionary<Vector3Int, HashSet<Vector3Int>> chunks = new Dictionary<Vector3Int, HashSet<Vector3Int>>();
         private readonly HashSet<Vector3Int> changedChunkPositions = new HashSet<Vector3Int>();
-        private IMessageService message;
 
         private delegate void EditBlock(Vector3Int blockPos);
         private EditBlock editBlock;
 
         private readonly HashSet<Vector3Int> addedBlocksCache = new HashSet<Vector3Int>();
         private readonly HashSet<Vector3Int> removedBlocksCache = new HashSet<Vector3Int>();
-
-        public void Setup(IMessageService message) => this.message = message;
 
         public void AddSelection(Vector3Int a, Vector3Int b)
         {
@@ -56,6 +53,15 @@ namespace Mithmarie
             NotifyChunkChange(chunkPos);
 
             addedBlocksCache.Add(blockPos);
+        }
+
+        private void FastAdd(Vector3Int blockPos)
+        {
+            Vector3Int chunkPos = Utils.GetChunkPos(blockPos, CHUNK_SIZE);
+            if (!chunks.ContainsKey(chunkPos))
+                chunks.Add(chunkPos, new HashSet<Vector3Int>());
+
+            chunks[chunkPos].Add(blockPos);
         }
 
         public void Remove(Vector3Int blockPos)
@@ -166,7 +172,7 @@ namespace Mithmarie
             changedChunkPositions.Add(chunkPos + Vector3Int.right);
         }
         
-        public void Serialize(BinaryWriter writer)
+        public void Serialize(BinaryWriter writer, IMessageService message)
         {
             int blockCount = 0;
             foreach (KeyValuePair<Vector3Int, HashSet<Vector3Int>> chunk in chunks)
@@ -193,8 +199,8 @@ namespace Mithmarie
                 message.Send(exception.Message, Color.red);
             }
         }
-         
-        public void Deserialize(BinaryReader reader)
+        
+        public void Deserialize(BinaryReader reader, IMessageService message)
         {
             try
             {
@@ -227,8 +233,6 @@ namespace Mithmarie
 
                     axisCounter++;
                 }
-
-                //ClearCaches();
             }
             catch (Exception exception)
             {
