@@ -13,7 +13,7 @@ namespace Mithmarie
         [SerializeField, Min(0.1f)] private float standardDuration = default;
         private float duration;
 
-        private void Awake()
+        public void Setup()
         {
             duration = standardDuration;
             group.alpha = 0f;

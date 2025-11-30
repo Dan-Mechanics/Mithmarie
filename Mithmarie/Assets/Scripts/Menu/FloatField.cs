@@ -16,9 +16,7 @@ namespace Mithmarie
 
         private void Start()
         {
-          //  gameObject.name = persistent.name;
             placeholder.text = $"{persistent.minValue} to {persistent.maxValue}";
-           // print($"{gameObject.name} {placeholder.text}");
         }
 
         public override void Enter()

@@ -8,7 +8,7 @@ namespace Mithmarie
         [SerializeField, Min(1f)] private float scale = default;
         private GameObject preview;
 
-        private void Awake()
+        public void Setup()
         {
             preview = Instantiate(previewPrefab, Vector3.zero, Quaternion.identity);
         }

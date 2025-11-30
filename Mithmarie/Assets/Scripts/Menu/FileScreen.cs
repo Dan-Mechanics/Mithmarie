@@ -18,17 +18,17 @@ namespace Mithmarie
 
         private World world;
         private IMessageService message;
-        private IExportStrategy filetype;
-        private IWorldMeshStrategy worldMesh;
+        private IExportStrategy exportStrat;
+        private IWorldMeshStrategy worldMeshStrat;
         private string savePath;
         private string exportPath;
 
-        public void Setup(World world, IExportStrategy filetype, IWorldMeshStrategy worldMesh, IMessageService message)
+        public void Setup(World world, IExportStrategy exportStrat, IWorldMeshStrategy worldMeshStrat)
         {
             this.world = world;
-            this.filetype = filetype;
-            this.worldMesh = worldMesh;
-            this.message = message;
+            this.exportStrat = exportStrat;
+            this.worldMeshStrat = worldMeshStrat;
+            message = ServiceLocator<IMessageService>.Locate();
 
             if (File.Exists(SavePathPath))
                 savePath = File.ReadAllText(SavePathPath);
@@ -129,8 +129,8 @@ namespace Mithmarie
         private void Export()
         {
             world.Flush();
-            Mesh mesh = worldMesh.GenerateMesh(world.GetAllBlocks());
-            filetype.Export(exportPath, mesh, message);
+            Mesh mesh = worldMeshStrat.GenerateMesh(world.GetAllBlocks());
+            exportStrat.Export(exportPath, mesh, message);
 
             CloseCompletely();
         }

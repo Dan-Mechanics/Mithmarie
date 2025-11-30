@@ -17,14 +17,21 @@ namespace Mithmarie
         private PlayerHUD playerHUD;
         private World world;
 
-        private void Awake()
+        public void Setup(World world, PlayerHUD playerHUD)
         {
-            world = FindAnyObjectByType<World>();
-            playerHUD = FindAnyObjectByType<PlayerHUD>();
+            this.world = world;
+            this.playerHUD = playerHUD;
 
             List<StateBehaviour> list = GetComponentsInChildren<StateBehaviour>().ToList();
             list.Remove(this);
             behaviour = list.ToArray();
+
+            addSelectionPreview.Setup();
+            removeSelectionPreview.Setup();
+
+            addTerraform.Setup(world);
+            removeTerraform.Setup(world);
+            aimedFaceFeedback.Setup();
         }
         
         public override void Enter()

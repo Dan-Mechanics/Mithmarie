@@ -11,23 +11,17 @@ namespace Mithmarie
         [SerializeField] private GameObject faceOutlinePrefab = default;
         [SerializeField, Min(0f)] private float scale = default;
 
-        private IRaycastProvider provider;
         private Transform faceOutline;
         private RaycastSettings raycast;
         private RaycastHit hit;
 
-        private void Awake()
+        public void Setup()
         {
             faceOutline = Instantiate(faceOutlinePrefab, Vector3.zero, Quaternion.identity).transform;
             faceOutline.localScale = Vector3.one * scale;
             faceOutline.gameObject.SetActive(false);
 
-            provider = GetComponent<IRaycastProvider>();
-        }
-
-        private void Start()
-        {
-            raycast = provider.GetSettings();
+            raycast = GetComponent<IRaycastProvider>().GetSettings();
             OnAim += OutlineFace;
         }
 

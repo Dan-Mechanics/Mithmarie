@@ -5,9 +5,7 @@ namespace Mithmarie
 {
     public class Telemetry : MonoBehaviour
     {
-        private TMP_Text text;
-
-        private void Awake() => text = GetComponent<TMP_Text>();
+        [SerializeField] private TMP_Text text = default;
 
         private void Update()
         {

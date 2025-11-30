@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Mithmarie
 {
@@ -12,8 +11,11 @@ namespace Mithmarie
         private WorldHistory history;
         private FileScreen fileScreen;
         private ChunkVisualizationManager chunkVisualizationManager;
+        private PopupManager popupManager;
         private Player player;
+        private PlayerHUD playerHUD;
         private Menu menu;
+        private Transform eyes;
 
         private void Awake()
         {
@@ -23,13 +25,17 @@ namespace Mithmarie
             fileScreen = FindAnyObjectByType<FileScreen>();
             chunkVisualizationManager = FindAnyObjectByType<ChunkVisualizationManager>();
             player = FindAnyObjectByType<Player>();
+            playerHUD = FindAnyObjectByType<PlayerHUD>();
             menu = FindAnyObjectByType<Menu>();
+
+            eyes = GameObject.FindWithTag("MainCamera").transform;
+            popupManager = FindAnyObjectByType<PopupManager>();
         }
         
         private void Start()
         {
-            IMessageService message = ServiceLocator<IMessageService>.Locate();
-            message.Send("[WASD] for movement and [MOUSE] for looking.\nUse [RMB] to place blocks, [LMB] to destroy.", Color.black, 4f);
+            popupManager.Setup();
+            playerHUD.Setup();
 
             shortcuts.OnSave += fileScreen.Save;
             shortcuts.OnUndo += history.Undo;
@@ -38,12 +44,15 @@ namespace Mithmarie
             world.OnClear += history.Clear;
             world.OnChange += history.LogImplicitWorldChange;
 
+            chunkVisualizationManager.Setup(eyes);
             world.OnDrawChunk += chunkVisualizationManager.DrawChunk;
+            history.Setup(world);
 
             world.Add(Vector3Int.zero);
             world.ForgetRecentChanges();
             world.Flush();
 
+            player.Setup(world, playerHUD);
             menu.Setup();
 
             fsm.AddState(player);
@@ -52,15 +61,19 @@ namespace Mithmarie
             fsm.AddTransition(new Transition(menu, player));
 
             fsm.Open(player);
+
+            // ===
+
+            ServiceLocator<IMessageService>.Locate().Send("[WASD] for movement and [MOUSE] for looking.\n" +
+                "Use [RMB] to place blocks, [LMB] to destroy.", Color.black, 4f);
         }
 
         private void Update() => fsm.Update();
         private void FixedUpdate() => fsm.FixedUpdate();
 
-        // DO THE INVERSE OF EVERYTHING ON DESTROY ???
         private void OnDestroy()
         {
-            // ...
+            // !TODO --> DO THE INVERSE OF EVERYTHING ON DESTROY.
         }
     }
 }

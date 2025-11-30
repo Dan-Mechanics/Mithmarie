@@ -9,10 +9,7 @@ namespace Mithmarie
         private readonly Dictionary<Vector3Int, IChunkMeshable> chunkMeshes = new Dictionary<Vector3Int, IChunkMeshable>();
         private Transform eyes;
 
-        private void Awake()
-        {
-            eyes = GameObject.FindWithTag("MainCamera").transform;
-        }
+        public void Setup(Transform eyes) => this.eyes = eyes;
 
         public void DrawChunk(Vector3Int chunkPos, Dictionary<Vector3Int, HashSet<Vector3Int>> chunks)
         {

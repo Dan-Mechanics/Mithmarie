@@ -55,15 +55,6 @@ namespace Mithmarie
             addedBlocksCache.Add(blockPos);
         }
 
-        private void FastAdd(Vector3Int blockPos)
-        {
-            Vector3Int chunkPos = Utils.GetChunkPos(blockPos, CHUNK_SIZE);
-            if (!chunks.ContainsKey(chunkPos))
-                chunks.Add(chunkPos, new HashSet<Vector3Int>());
-
-            chunks[chunkPos].Add(blockPos);
-        }
-
         public void Remove(Vector3Int blockPos)
         {
             Vector3Int chunkPos = Utils.GetChunkPos(blockPos, CHUNK_SIZE);

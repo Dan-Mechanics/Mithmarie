@@ -10,10 +10,7 @@ namespace Mithmarie
         private int index;
         private World world;
 
-        private void Awake()
-        {
-            world = FindAnyObjectByType<World>();
-        }
+        public void Setup(World world) => this.world = world;
 
         public void LogImplicitWorldChange(HashSet<Vector3Int> added, HashSet<Vector3Int> removed)
         {

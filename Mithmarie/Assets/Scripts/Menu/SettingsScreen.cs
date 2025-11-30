@@ -15,7 +15,7 @@ namespace Mithmarie
         private IDefaultable[] defaultables;
         private IMessageService message;
 
-        public void Setup(IMessageService message)
+        public void Setup()
         {
             List<StateBehaviour> behaviourList = GetComponentsInChildren<StateBehaviour>().ToList();
             behaviourList.Remove(this);
@@ -25,7 +25,7 @@ namespace Mithmarie
             defaultablesList.Remove(this);
             defaultables = defaultablesList.ToArray();  
 
-            this.message = message;
+            message = ServiceLocator<IMessageService>.Locate();
         }
 
         public override void Enter()

@@ -19,6 +19,12 @@ namespace Mithmarie
         private Vector3Int? secondPos;
         private World world;
 
+        public void Setup(World world)
+        {
+            this.world = world;
+            ResetToDefault();
+        }
+
         private bool ButtonPressed()
         {
             if (!swapMouseButtons.value)
@@ -33,12 +39,6 @@ namespace Mithmarie
                 return leftMouseButton ? Mouse.current.leftButton.wasReleasedThisFrame : Mouse.current.rightButton.wasReleasedThisFrame;
 
             return !leftMouseButton ? Mouse.current.leftButton.wasReleasedThisFrame : Mouse.current.rightButton.wasReleasedThisFrame;
-        }
-
-        private void Start()
-        {
-            world = FindAnyObjectByType<World>();
-            ResetToDefault();
         }
 
         public override void Enter()

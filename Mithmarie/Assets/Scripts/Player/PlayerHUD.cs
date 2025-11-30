@@ -11,7 +11,7 @@ namespace Mithmarie
 
         private KeyHighlight[] keyHighlights;
 
-        private void Awake()
+        public void Setup()
         {
             keyHighlights = GetComponentsInChildren<KeyHighlight>();
         }
