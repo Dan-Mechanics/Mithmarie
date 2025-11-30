@@ -9,8 +9,9 @@ namespace Mithmarie
 
         [SerializeField] private Transform eyes = default;
         [SerializeField] private GameObject faceOutlinePrefab = default;
-        [SerializeField, Min(0f)] private float scale = default; 
+        [SerializeField, Min(0f)] private float scale = default;
 
+        private IRaycastProvider provider;
         private Transform faceOutline;
         private RaycastSettings raycast;
         private RaycastHit hit;
@@ -20,11 +21,13 @@ namespace Mithmarie
             faceOutline = Instantiate(faceOutlinePrefab, Vector3.zero, Quaternion.identity).transform;
             faceOutline.localScale = Vector3.one * scale;
             faceOutline.gameObject.SetActive(false);
+
+            provider = GetComponent<IRaycastProvider>();
         }
 
         private void Start()
         {
-            raycast = GetComponent<IRaycastProvider>().GetSettings();
+            raycast = provider.GetSettings();
             OnAim += OutlineFace;
         }
 
@@ -34,7 +37,7 @@ namespace Mithmarie
             if (raycast.Cast(eyes, out hit))
             {
                 faceOutline.forward = hit.normal;
-                OnAim?.Invoke(Utils.ConvertToBlockPos(hit.point));
+                OnAim?.Invoke(Utils.GetBlockPos(hit.point));
             }
             else
             {

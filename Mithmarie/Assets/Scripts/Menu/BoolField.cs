@@ -10,11 +10,6 @@ namespace Mithmarie
         [SerializeField] private PersistentBool persistent = default;
         private bool hasChanged;
 
-        /*private void Start()
-        {
-            gameObject.name = persistent.name;
-        }*/
-
         public override void Enter()
         {
             base.Enter();

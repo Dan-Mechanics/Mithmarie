@@ -51,7 +51,7 @@ namespace Mithmarie
         {
             base.OnTick();
             if(firstPos != null && raycast.Cast(eyes, out hit))
-                secondPos = Utils.ConvertToBlockPos(hit.point);
+                secondPos = Utils.GetBlockPos(hit.point);
 
             OnShowPreview?.Invoke(firstPos, secondPos);
         }
@@ -63,14 +63,14 @@ namespace Mithmarie
             {
                 ResetToDefault();
                 if(raycast.Cast(eyes, out hit))
-                    firstPos = Utils.ConvertToBlockPos(hit.point);
+                    firstPos = Utils.GetBlockPos(hit.point);
             }
 
             if (firstPos != null && ButtonReleased())
             {
                 if (raycast.Cast(eyes, out hit))
                 {
-                    secondPos = Utils.ConvertToBlockPos(hit.point);
+                    secondPos = Utils.GetBlockPos(hit.point);
                     OnEditSelection?.Invoke((Vector3Int)firstPos, (Vector3Int)secondPos);
                     world.Flush();
                 }
