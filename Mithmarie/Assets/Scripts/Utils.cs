@@ -17,5 +17,10 @@ namespace Mithmarie
                 Mathf.FloorToInt(blockPos.z / (float)chunkSize)
                 );
         }
+
+        // possibly add things like:
+        // snap to grid or round to decimal or like string formatting for unity debug color
+        // or like array to 3D space with the width of the plane as index type beat
+        // or useful memes like that.
     }
 }
