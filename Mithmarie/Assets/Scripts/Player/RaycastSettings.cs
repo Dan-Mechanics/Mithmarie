@@ -9,6 +9,7 @@ namespace Mithmarie
         [Min(0.1f)] public float range;
         public LayerMask mask;
         public float normalOffset;
+        public float airPlacementDistance;
         public QueryTriggerInteraction interaction;
 
         public bool Cast(Transform arrow, out RaycastHit hit)
