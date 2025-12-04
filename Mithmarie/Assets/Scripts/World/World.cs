@@ -5,12 +5,18 @@ using UnityEngine;
 
 namespace Mithmarie
 {
+    /// <summary>
+    /// This class does too much, something has to go.
+    /// You could make this perform better by removing
+    /// the delegate of EditBlock and also have seperate methods
+    /// for SilentAdd and Add.
+    /// </summary>
     public class World : MonoBehaviour, IBinarySerializable
     {
         public const int CHUNK_SIZE = 8;
 
         public event Action<Vector3Int, Dictionary<Vector3Int, HashSet<Vector3Int>>> OnDrawChunk;
-        public event Action<HashSet<Vector3Int>, HashSet<Vector3Int>> OnNewChanges;
+        public event Action<HashSet<Vector3Int>, HashSet<Vector3Int>> OnChange;
         public event Action OnClear;
         
         private readonly Dictionary<Vector3Int, HashSet<Vector3Int>> chunks = new Dictionary<Vector3Int, HashSet<Vector3Int>>();
@@ -98,7 +104,7 @@ namespace Mithmarie
             if (addedBlocksCache.Count <= 0 && removedBlocksCache.Count <= 0)
                 return;
 
-            OnNewChanges?.Invoke(addedBlocksCache, removedBlocksCache);
+            OnChange?.Invoke(addedBlocksCache, removedBlocksCache);
             ForgetRecentChanges();
         }
 

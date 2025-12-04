@@ -110,7 +110,6 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 1
     normalOffset: -0.4
-    airPlacementDistance: 5
     interaction: 1
 --- !u!114 &4304039197132537368
 MonoBehaviour:
@@ -133,7 +132,6 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 1
     normalOffset: 0.4
-    airPlacementDistance: 5
     interaction: 1
 --- !u!114 &4141907983917415685
 MonoBehaviour:
