@@ -105,7 +105,7 @@ MonoBehaviour:
   leftMouseButton: 1
   swapMouseButtons: {fileID: 11400000, guid: 728d7cc42f69d9845aa4cea8bf604f1b, type: 2}
   raycast:
-    range: 75
+    range: 25
     mask:
       serializedVersion: 2
       m_Bits: 1
@@ -128,7 +128,7 @@ MonoBehaviour:
   leftMouseButton: 0
   swapMouseButtons: {fileID: 11400000, guid: 728d7cc42f69d9845aa4cea8bf604f1b, type: 2}
   raycast:
-    range: 75
+    range: 25
     mask:
       serializedVersion: 2
       m_Bits: 1
