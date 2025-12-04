@@ -35,7 +35,8 @@ namespace Mithmarie
             }
             else
             {
-                OnAim?.Invoke(null);
+                faceOutline.forward = -eyes.forward;
+                OnAim?.Invoke(Utils.GetBlockPos(eyes.position + (eyes.forward * raycast.airPlacementDistance)));
             }
         }
 
