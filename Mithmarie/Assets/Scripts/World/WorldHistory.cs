@@ -7,8 +7,8 @@ namespace Mithmarie
     {
         [SerializeField, Min(0)] private int maxHistoryCount = default;
         private readonly List<ImplicitWorldChange> history = new List<ImplicitWorldChange>();
-        private int index;
         private World world;
+        private int index;
 
         public void Setup(World world) => this.world = world;
 
