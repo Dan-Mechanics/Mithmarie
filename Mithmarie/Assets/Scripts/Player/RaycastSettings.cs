@@ -12,15 +12,17 @@ namespace Mithmarie
         public float airPlacementDistance;
         public QueryTriggerInteraction interaction;
 
-        public bool Cast(Transform arrow, out RaycastHit hit)
+        public bool Cast(Transform eyes, out RaycastHit hit)
         {
-            if(Physics.Raycast(arrow.position, arrow.forward, out hit, maxRange, mask, interaction))
+            if(Physics.Raycast(eyes.position, eyes.forward, out hit, maxRange, mask, interaction))
             {
                 hit.point += hit.normal * normalOffset;
                 return true;
             }
 
-            return false;
+            hit.point = eyes.position + (eyes.forward * airPlacementDistance);
+            hit.normal = -eyes.forward;
+            return true;
         }
     }
 }
