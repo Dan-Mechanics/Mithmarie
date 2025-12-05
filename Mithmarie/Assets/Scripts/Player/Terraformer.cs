@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace Mithmarie
 {
-    public class Terraformer : StateBehaviour, IRaycastProvider
+    public class Terraformer : StateBehaviour
     {
         public event Action<Vector3Int?, Vector3Int?> OnShowPreview;
         public event Action<Vector3Int, Vector3Int> OnEditSelection;
@@ -12,19 +12,19 @@ namespace Mithmarie
         [SerializeField] private Transform eyes = default;
         [SerializeField] private bool leftMouseButton = default;
         [SerializeField] private PersistentBool swapMouseButtons;
-        [SerializeField] private RaycastSettings raycast = default;
+        [SerializeField] private TerraformRaycast raycast = default;
 
         private RaycastHit hit;
         private Vector3Int? firstPos;
         private Vector3Int? secondPos;
         private World world;
 
-        public class FillPreview
+        /*public class FillPreview
         {
             public Vector3Int a;
             public Vector3Int b;
             public bool add;
-        }
+        }*/
 
         public void Setup(World world)
         {
@@ -57,8 +57,11 @@ namespace Mithmarie
         public override void OnTick()
         {
             base.OnTick();
-            if (firstPos != null && raycast.Cast(eyes, out hit))
-                secondPos = Utils.GetBlockPos(hit.point);
+            if (firstPos == null)
+                return;
+
+            raycast.Cast(eyes, out hit);
+            secondPos = Utils.GetBlockPos(hit.point);
 
             OnShowPreview?.Invoke(firstPos, secondPos);
         }
@@ -69,14 +72,14 @@ namespace Mithmarie
             if (ButtonPressed())
             {
                 ResetToDefault();
-                if (raycast.Cast(eyes, out hit))
-                    firstPos = Utils.GetBlockPos(hit.point);
+                raycast.Cast(eyes, out hit);
+                firstPos = Utils.GetBlockPos(hit.point);
             }
 
             if (firstPos != null && ButtonReleased())
             {
-                if (raycast.Cast(eyes, out hit))
-                    secondPos = Utils.GetBlockPos(hit.point);
+                raycast.Cast(eyes, out hit);
+                secondPos = Utils.GetBlockPos(hit.point);
 
                 OnEditSelection?.Invoke((Vector3Int)firstPos, (Vector3Int)secondPos);
                 world.Flush();
@@ -89,7 +92,5 @@ namespace Mithmarie
             firstPos = null;
             secondPos = null;
         }
-
-        public RaycastSettings GetSettings() => raycast;
     }
 }
