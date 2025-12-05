@@ -8,6 +8,7 @@ namespace Mithmarie
     public class World : MonoBehaviour, IBinarySerializable
     {
         public const int CHUNK_SIZE = 8;
+        public const int MAX_CACHE_COUNT = 1000;
 
         public event Action<Vector3Int, Dictionary<Vector3Int, HashSet<Vector3Int>>> OnDrawChunk;
         public event Action<HashSet<Vector3Int>, HashSet<Vector3Int>> OnNewChanges;
@@ -46,7 +47,8 @@ namespace Mithmarie
             chunks[chunkPos].Add(blockPos);
             NotifyChunkChange(chunkPos);
 
-            addedBlocksCache.Add(blockPos);
+            if (addedBlocksCache.Count < MAX_CACHE_COUNT)
+                addedBlocksCache.Add(blockPos);
         }
 
         public void Remove(Vector3Int blockPos)
@@ -61,7 +63,8 @@ namespace Mithmarie
             chunks[chunkPos].Remove(blockPos);
             NotifyChunkChange(chunkPos);
 
-            removedBlocksCache.Add(blockPos);
+            if (removedBlocksCache.Count < MAX_CACHE_COUNT)
+                removedBlocksCache.Add(blockPos);
         }
 
         public void Clear()
