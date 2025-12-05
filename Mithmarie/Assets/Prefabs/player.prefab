@@ -14,11 +14,10 @@ GameObject:
   - component: {fileID: 771546152580428926}
   - component: {fileID: 6277602641836883055}
   - component: {fileID: 4304039197132537368}
+  - component: {fileID: 4141907983917415685}
   - component: {fileID: 1271512375170221928}
   - component: {fileID: 2515062756933341086}
   - component: {fileID: 2326464578914296636}
-  - component: {fileID: 6589870188708193214}
-  - component: {fileID: 5298456910469795310}
   m_Layer: 3
   m_Name: player
   m_TagString: Player
@@ -58,8 +57,7 @@ MonoBehaviour:
   removeTerraform: {fileID: 6277602641836883055}
   addSelectionPreview: {fileID: 1271512375170221928}
   removeSelectionPreview: {fileID: 2515062756933341086}
-  hoverHighlight: {fileID: 6589870188708193214}
-  hoverPreview: {fileID: 5298456910469795310}
+  aimedFaceFeedback: {fileID: 4141907983917415685}
 --- !u!114 &3481532798549250696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,7 +104,14 @@ MonoBehaviour:
   eyes: {fileID: 3062100453456221858}
   leftMouseButton: 1
   swapMouseButtons: {fileID: 11400000, guid: 728d7cc42f69d9845aa4cea8bf604f1b, type: 2}
-  raycast: {fileID: 11400000, guid: d647d0b8f418c2f42a32cccf53d2d0ea, type: 2}
+  raycast:
+    maxRange: 25
+    mask:
+      serializedVersion: 2
+      m_Bits: 1
+    normalOffset: -0.4
+    airPlacementDistance: 5
+    interaction: 1
 --- !u!114 &4304039197132537368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,7 +127,29 @@ MonoBehaviour:
   eyes: {fileID: 3062100453456221858}
   leftMouseButton: 0
   swapMouseButtons: {fileID: 11400000, guid: 728d7cc42f69d9845aa4cea8bf604f1b, type: 2}
-  raycast: {fileID: 11400000, guid: 8534705af78bba34aaf8b46b71ad1974, type: 2}
+  raycast:
+    maxRange: 25
+    mask:
+      serializedVersion: 2
+      m_Bits: 1
+    normalOffset: 0.4
+    airPlacementDistance: 5
+    interaction: 1
+--- !u!114 &4141907983917415685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293393832251157704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3ee4844e5b10a845a83204a944ea7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eyes: {fileID: 3062100453456221858}
+  faceOutlinePrefab: {fileID: 711197107212623808, guid: 17c67fcb40aa33c47896e7651b02027d, type: 3}
+  scale: 1.1
 --- !u!114 &1271512375170221928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,35 +190,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b5892ae3eefb3b49b628ad207bd714b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6589870188708193214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293393832251157704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28913e64c4964794da2b574e173685c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eyes: {fileID: 3062100453456221858}
-  raycast: {fileID: 11400000, guid: d647d0b8f418c2f42a32cccf53d2d0ea, type: 2}
---- !u!114 &5298456910469795310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293393832251157704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f148f2777a0094468c330e7f299d32b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  facePreviewPrefab: {fileID: 711197107212623808, guid: 17c67fcb40aa33c47896e7651b02027d, type: 3}
-  cubePreviewPrefab: {fileID: 711197107212623808, guid: 7e035f9d82618c845b33bfd33c75b79d, type: 3}
-  scale: 1.1
 --- !u!1 &3889645060876896680
 GameObject:
   m_ObjectHideFlags: 0

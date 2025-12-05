@@ -11,8 +11,7 @@ namespace Mithmarie
         [SerializeField] private Terraformer removeTerraform = default;
         [SerializeField] private SelectionPreview addSelectionPreview = default;
         [SerializeField] private SelectionPreview removeSelectionPreview = default;
-        [SerializeField] private HoverHighlight hoverHighlight = default;
-        [SerializeField] private HoverPreview hoverPreview = default;
+        [SerializeField] private AimedFaceFeedback aimedFaceFeedback = default;
 
         private StateBehaviour[] behaviour;
         private PlayerHUD playerHUD;
@@ -32,8 +31,7 @@ namespace Mithmarie
 
             addTerraform.Setup(world);
             removeTerraform.Setup(world);
-
-            hoverPreview.Setup();
+            aimedFaceFeedback.Setup();
         }
         
         public override void Enter()
@@ -52,8 +50,7 @@ namespace Mithmarie
             addTerraform.OnShowPreview += addSelectionPreview.UpdatePreview;
             removeTerraform.OnShowPreview += removeSelectionPreview.UpdatePreview;
 
-            hoverHighlight.OnHover += hoverPreview.UpdatePreview;
-            hoverHighlight.OnHover += playerHUD.SetCenterText;
+            aimedFaceFeedback.OnAim += playerHUD.SetCenterText;
 
             addTerraform.OnEditSelection += world.AddSelection;
             removeTerraform.OnEditSelection += world.RemoveSelection;
@@ -73,8 +70,7 @@ namespace Mithmarie
             addTerraform.OnShowPreview -= addSelectionPreview.UpdatePreview;
             removeTerraform.OnShowPreview -= removeSelectionPreview.UpdatePreview;
 
-            hoverHighlight.OnHover -= hoverPreview.UpdatePreview;
-            hoverHighlight.OnHover -= playerHUD.SetCenterText;
+            aimedFaceFeedback.OnAim -= playerHUD.SetCenterText;
 
             addTerraform.OnEditSelection -= world.AddSelection;
             removeTerraform.OnEditSelection -= world.RemoveSelection;
