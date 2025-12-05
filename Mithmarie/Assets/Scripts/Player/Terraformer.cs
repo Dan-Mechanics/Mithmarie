@@ -19,6 +19,13 @@ namespace Mithmarie
         private Vector3Int? secondPos;
         private World world;
 
+        public class FillPreview
+        {
+            public Vector3Int a;
+            public Vector3Int b;
+            public bool add;
+        }
+
         public void Setup(World world)
         {
             this.world = world;
