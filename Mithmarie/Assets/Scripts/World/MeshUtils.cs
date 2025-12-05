@@ -21,7 +21,6 @@ namespace Mithmarie
 
         /// <summary>
         /// https://github.com/samhogan/Minecraft-Unity3D/blob/master/Assets/Scripts/TerrainChunk.cs
-        /// Is this hasBlocks smart ??
         /// </summary>
         public static void GenerateCulledMesh(HashSet<Vector3Int> blocks, Predicate<Vector3Int> hasBlock, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
         {
@@ -34,6 +33,7 @@ namespace Mithmarie
                 int faceCount = 0;
                 int vertIndexOffset = verts.Count;
 
+                // UP. ===
                 if (!hasBlock(pos + Vector3Int.up))
                 {
                     verts.Add(pos + Vector3Int.up);
@@ -43,6 +43,7 @@ namespace Mithmarie
                     faceCount++;
                 }
 
+                // DOWN. ===
                 if (!hasBlock(pos + Vector3Int.down))
                 {
                     verts.Add(pos + Vector3Int.zero);
@@ -52,6 +53,7 @@ namespace Mithmarie
                     faceCount++;
                 }
 
+                // FORWARD. ===
                 if (!hasBlock(pos + Vector3Int.forward))
                 {
                     verts.Add(pos + forwardRight);
@@ -61,6 +63,7 @@ namespace Mithmarie
                     faceCount++;
                 }
 
+                // RIGHT. ===
                 if (!hasBlock(pos + Vector3Int.right))
                 {
                     verts.Add(pos + Vector3Int.right);
@@ -70,6 +73,7 @@ namespace Mithmarie
                     faceCount++;
                 }
 
+                // BACK. ===
                 if (!hasBlock(pos + Vector3Int.back))
                 {
                     verts.Add(pos + Vector3Int.zero);
@@ -79,6 +83,7 @@ namespace Mithmarie
                     faceCount++;
                 }
 
+                // lEFT. ===
                 if (!hasBlock(pos + Vector3Int.left))
                 {
                     verts.Add(pos + Vector3Int.forward);
@@ -88,6 +93,7 @@ namespace Mithmarie
                     faceCount++;
                 }
 
+                // GENERATE TRIANGLES. ===
                 for (int i = 0; i < faceCount; i++)
                 {
                     tris.Add(vertIndexOffset + i * 4);
@@ -108,65 +114,72 @@ namespace Mithmarie
             tris.Clear();
             uvs.Clear();
 
-            Dictionary<int, HashSet<Vector2Int>> upFaces = new Dictionary<int, HashSet<Vector2Int>>();
-            Dictionary<int, HashSet<Vector2Int>> downFaces = new Dictionary<int, HashSet<Vector2Int>>();
-            Dictionary<int, HashSet<Vector2Int>> forwardFaces = new Dictionary<int, HashSet<Vector2Int>>();
-            Dictionary<int, HashSet<Vector2Int>> backFaces = new Dictionary<int, HashSet<Vector2Int>>();
-            Dictionary<int, HashSet<Vector2Int>> leftFaces = new Dictionary<int, HashSet<Vector2Int>>();
-            Dictionary<int, HashSet<Vector2Int>> rightFaces = new Dictionary<int, HashSet<Vector2Int>>();
+            // GET THE LAYERS OF THE MESH. ===
+
+            Dictionary<int, HashSet<Vector2Int>> upCulledFaces = new Dictionary<int, HashSet<Vector2Int>>();
+            Dictionary<int, HashSet<Vector2Int>> downCulledFaces = new Dictionary<int, HashSet<Vector2Int>>();
+            Dictionary<int, HashSet<Vector2Int>> forwardCulledFaces = new Dictionary<int, HashSet<Vector2Int>>();
+            Dictionary<int, HashSet<Vector2Int>> backCulledFaces = new Dictionary<int, HashSet<Vector2Int>>();
+            Dictionary<int, HashSet<Vector2Int>> leftCulledFaces = new Dictionary<int, HashSet<Vector2Int>>();
+            Dictionary<int, HashSet<Vector2Int>> rightCulledFaces = new Dictionary<int, HashSet<Vector2Int>>();
 
             foreach (Vector3Int pos in blocks)
             {
                 if (!hasBlock(pos + Vector3Int.up))
                 {
-                    if (upFaces[pos.y] == null)
-                        upFaces[pos.y] = new HashSet<Vector2Int>();
+                    if (upCulledFaces[pos.y] == null)
+                        upCulledFaces[pos.y] = new HashSet<Vector2Int>();
 
-                    upFaces[pos.y].Add(new Vector2Int(pos.x, pos.z));
+                    upCulledFaces[pos.y].Add(new Vector2Int(pos.x, pos.z));
                 }
 
                 if (!hasBlock(pos + Vector3Int.down))
                 {
-                    if (downFaces[pos.y] == null)
-                        downFaces[pos.y] = new HashSet<Vector2Int>();
+                    if (downCulledFaces[pos.y] == null)
+                        downCulledFaces[pos.y] = new HashSet<Vector2Int>();
 
-                    downFaces[pos.y].Add(new Vector2Int(pos.x, pos.z));
+                    downCulledFaces[pos.y].Add(new Vector2Int(pos.x, pos.z));
                 }
 
                 if (!hasBlock(pos + Vector3Int.forward))
                 {
-                    if (forwardFaces[pos.z] == null)
-                        forwardFaces[pos.z] = new HashSet<Vector2Int>();
+                    if (forwardCulledFaces[pos.z] == null)
+                        forwardCulledFaces[pos.z] = new HashSet<Vector2Int>();
 
-                    forwardFaces[pos.z].Add(new Vector2Int(pos.x, pos.y));
+                    forwardCulledFaces[pos.z].Add(new Vector2Int(pos.x, pos.y));
                 }
 
                 if (!hasBlock(pos + Vector3Int.right))
                 {
-                    if (rightFaces[pos.x] == null)
-                        rightFaces[pos.x] = new HashSet<Vector2Int>();
+                    if (rightCulledFaces[pos.x] == null)
+                        rightCulledFaces[pos.x] = new HashSet<Vector2Int>();
 
-                    rightFaces[pos.x].Add(new Vector2Int(pos.y, pos.z));
+                    rightCulledFaces[pos.x].Add(new Vector2Int(pos.y, pos.z));
                 }
 
                 if (!hasBlock(pos + Vector3Int.back))
                 {
-                    if (backFaces[pos.z] == null)
-                        backFaces[pos.z] = new HashSet<Vector2Int>();
+                    if (backCulledFaces[pos.z] == null)
+                        backCulledFaces[pos.z] = new HashSet<Vector2Int>();
 
-                    backFaces[pos.z].Add(new Vector2Int(pos.x, pos.y));
+                    backCulledFaces[pos.z].Add(new Vector2Int(pos.x, pos.y));
                 }
 
                 if (!hasBlock(pos + Vector3Int.left))
                 {
-                    if (leftFaces[pos.x] == null)
-                        leftFaces[pos.x] = new HashSet<Vector2Int>();
+                    if (leftCulledFaces[pos.x] == null)
+                        leftCulledFaces[pos.x] = new HashSet<Vector2Int>();
 
-                    leftFaces[pos.x].Add(new Vector2Int(pos.y, pos.z));
+                    leftCulledFaces[pos.x].Add(new Vector2Int(pos.y, pos.z));
                 }
             }
 
-            foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in upFaces)
+            // SUMMERIZE THE LAYERS OF THE MESH INTO FACES.
+
+            List<Face> upFaces = new List<Face>();
+
+            // CONGLOMERATE THE UPWARDS FACES. ===
+            foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in upCulledFaces)
             {
                 int y = slice.Key;
                 while (slice.Value.Count > 0)
@@ -180,6 +193,15 @@ namespace Mithmarie
                 }
             }
         }
+
+        private class Face
+        {
+            private Vector3 a;
+            private Vector3 b;
+            private Vector3 c;
+            private Vector3 d;
+        }
+
 
         /// <summary>
         /// https://www.reddit.com/r/VoxelGameDev/comments/cmwqwy/whats_the_simplest_greedy_meshing_example_with/
