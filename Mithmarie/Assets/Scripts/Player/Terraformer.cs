@@ -8,7 +8,7 @@ namespace Mithmarie
     {
         public event Action<Vector3Int?, Vector3Int?> OnShowPreview;
         public event Action<Vector3Int, Vector3Int> OnEditSelection;
-        
+
         [SerializeField] private Transform eyes = default;
         [SerializeField] private bool leftMouseButton = default;
         [SerializeField] private PersistentBool swapMouseButtons;
@@ -57,11 +57,11 @@ namespace Mithmarie
         public override void OnTick()
         {
             base.OnTick();
-            if (firstPos == null)
-                return;
-
-            raycast.Cast(eyes, out hit);
-            secondPos = Utils.GetBlockPos(hit.point);
+            if (firstPos != null)
+            {
+                raycast.Cast(eyes, out hit);
+                secondPos = Utils.GetBlockPos(hit.point);
+            }
 
             OnShowPreview?.Invoke(firstPos, secondPos);
         }
