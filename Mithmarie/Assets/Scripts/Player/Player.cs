@@ -49,8 +49,8 @@ namespace Mithmarie
 
             playerHUD.Show();
 
-            addTerraform.OnShowPreview += addSelectionPreview.UpdatePreview;
-            removeTerraform.OnShowPreview += removeSelectionPreview.UpdatePreview;
+            addTerraform.OnSelect += addSelectionPreview.UpdatePreview;
+            removeTerraform.OnSelect += removeSelectionPreview.UpdatePreview;
 
             hoverHighlight.OnHover += hoverPreview.UpdatePreview;
             hoverHighlight.OnHover += playerHUD.SetCenterText;
@@ -70,8 +70,8 @@ namespace Mithmarie
             if (playerHUD != null)
                 playerHUD.Hide();
 
-            addTerraform.OnShowPreview -= addSelectionPreview.UpdatePreview;
-            removeTerraform.OnShowPreview -= removeSelectionPreview.UpdatePreview;
+            addTerraform.OnSelect -= addSelectionPreview.UpdatePreview;
+            removeTerraform.OnSelect -= removeSelectionPreview.UpdatePreview;
 
             hoverHighlight.OnHover -= hoverPreview.UpdatePreview;
             hoverHighlight.OnHover -= playerHUD.SetCenterText;

@@ -6,7 +6,7 @@ namespace Mithmarie
 {
     public class Terraformer : StateBehaviour
     {
-        public event Action<Vector3Int?, Vector3Int?> OnShowPreview;
+        public event Action<SelectionInformation> OnSelect;
         public event Action<Vector3Int, Vector3Int> OnEditSelection;
 
         [SerializeField] private Transform eyes = default;
@@ -14,17 +14,11 @@ namespace Mithmarie
         [SerializeField] private PersistentBool swapMouseButtons;
         [SerializeField] private TerraformRaycast raycast = default;
 
-        private RaycastHit hit;
+        private readonly SelectionInformation selection = new SelectionInformation();
         private Vector3Int? firstPos;
-        private Vector3Int? secondPos;
+        private Vector3Int secondPos;
+        private RaycastHit hit;
         private World world;
-
-        /*public class FillPreview
-        {
-            public Vector3Int a;
-            public Vector3Int b;
-            public bool add;
-        }*/
 
         public void Setup(World world)
         {
@@ -63,7 +57,16 @@ namespace Mithmarie
                 secondPos = Utils.GetBlockPos(hit.point);
             }
 
-            OnShowPreview?.Invoke(firstPos, secondPos);
+            if(firstPos == null)
+            {
+                OnSelect?.Invoke(null);
+            }
+            else
+            {
+                selection.a = (Vector3Int)firstPos;
+                selection.b = secondPos;
+                OnSelect?.Invoke(selection);
+            }
         }
 
         public override void OnFrame()
@@ -81,16 +84,12 @@ namespace Mithmarie
                 raycast.Cast(eyes, out hit);
                 secondPos = Utils.GetBlockPos(hit.point);
 
-                OnEditSelection?.Invoke((Vector3Int)firstPos, (Vector3Int)secondPos);
+                OnEditSelection?.Invoke((Vector3Int)firstPos, secondPos);
                 world.Flush();
                 ResetToDefault();
             }
         }
 
-        private void ResetToDefault()
-        {
-            firstPos = null;
-            secondPos = null;
-        }
+        private void ResetToDefault() => firstPos = null;
     }
 }
