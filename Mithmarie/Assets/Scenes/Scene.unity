@@ -3892,7 +3892,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1830047142902223525, guid: f57ebd6712a0ca040a05e6d9f4d96050, type: 3}
       propertyPath: m_Name
-      value: default_all
+      value: back_to_default
       objectReference: {fileID: 0}
     - target: {fileID: 1830047142902223525, guid: f57ebd6712a0ca040a05e6d9f4d96050, type: 3}
       propertyPath: m_IsActive
@@ -3936,7 +3936,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5960359173949541903, guid: f57ebd6712a0ca040a05e6d9f4d96050, type: 3}
       propertyPath: m_text
-      value: Default All
+      value: Back to Default
       objectReference: {fileID: 0}
     - target: {fileID: 7823168416533342386, guid: f57ebd6712a0ca040a05e6d9f4d96050, type: 3}
       propertyPath: m_Pivot.x
