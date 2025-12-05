@@ -42,7 +42,7 @@ namespace Mithmarie
             shortcuts.OnRedo += history.Redo;
 
             world.OnClear += history.Clear;
-            world.OnChange += history.LogImplicitWorldChange;
+            world.OnNewChanges += history.LogImplicitWorldChange;
 
             chunkVisualizationManager.Setup(eyes);
             world.OnDrawChunk += chunkVisualizationManager.DrawChunk;
@@ -73,7 +73,7 @@ namespace Mithmarie
 
         private void OnDestroy()
         {
-            // !TODO --> DO THE INVERSE OF EVERYTHING ON DESTROY.
+            // ...
         }
     }
 }

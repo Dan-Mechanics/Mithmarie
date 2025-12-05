@@ -1208,7 +1208,7 @@ GameObject:
   - component: {fileID: 694336035}
   - component: {fileID: 694336034}
   m_Layer: 0
-  m_Name: chunk_manager
+  m_Name: chunk_visualization_manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

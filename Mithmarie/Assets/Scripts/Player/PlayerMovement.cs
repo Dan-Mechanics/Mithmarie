@@ -22,12 +22,8 @@ namespace Mithmarie
             movement = transform.TransformDirection(movement);
             movement.Normalize();
 
-            movement *= speed.Value;
-
-            if (Keyboard.current[sprintKey].isPressed)
-                movement *= sprintSpeedMult;
-
-            transform.Translate(movement * Time.deltaTime, Space.World);
+            float currentSpeed = Keyboard.current[sprintKey].isPressed ? speed.Value * sprintSpeedMult : speed.Value;
+            transform.Translate(currentSpeed * Time.deltaTime * movement, Space.World);
         }
 
         private Vector3 GetInputDirection() 

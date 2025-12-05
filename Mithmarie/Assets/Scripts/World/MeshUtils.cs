@@ -19,8 +19,6 @@ namespace Mithmarie
             new Vector2(1, 0)
         };
 
-        // TODO: ADD PROPER GREEDY MESHER.
-
         /// <summary>
         /// https://github.com/samhogan/Minecraft-Unity3D/blob/master/Assets/Scripts/TerrainChunk.cs
         /// Is this hasBlocks smart ??
@@ -100,6 +98,85 @@ namespace Mithmarie
                     tris.Add(vertIndexOffset + i * 4 + 3);
 
                     uvs.AddRange(faceUvs);
+                }
+            }
+        }
+
+        public static void GenerateGreedyMesh(HashSet<Vector3Int> blocks, Predicate<Vector3Int> hasBlock, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
+        {
+            verts.Clear();
+            tris.Clear();
+            uvs.Clear();
+
+            Dictionary<int, HashSet<Vector2Int>> upFaces = new Dictionary<int, HashSet<Vector2Int>>();
+            Dictionary<int, HashSet<Vector2Int>> downFaces = new Dictionary<int, HashSet<Vector2Int>>();
+            Dictionary<int, HashSet<Vector2Int>> forwardFaces = new Dictionary<int, HashSet<Vector2Int>>();
+            Dictionary<int, HashSet<Vector2Int>> backFaces = new Dictionary<int, HashSet<Vector2Int>>();
+            Dictionary<int, HashSet<Vector2Int>> leftFaces = new Dictionary<int, HashSet<Vector2Int>>();
+            Dictionary<int, HashSet<Vector2Int>> rightFaces = new Dictionary<int, HashSet<Vector2Int>>();
+
+            foreach (Vector3Int pos in blocks)
+            {
+                if (!hasBlock(pos + Vector3Int.up))
+                {
+                    if (upFaces[pos.y] == null)
+                        upFaces[pos.y] = new HashSet<Vector2Int>();
+
+                    upFaces[pos.y].Add(new Vector2Int(pos.x, pos.z));
+                }
+
+                if (!hasBlock(pos + Vector3Int.down))
+                {
+                    if (downFaces[pos.y] == null)
+                        downFaces[pos.y] = new HashSet<Vector2Int>();
+
+                    downFaces[pos.y].Add(new Vector2Int(pos.x, pos.z));
+                }
+
+                if (!hasBlock(pos + Vector3Int.forward))
+                {
+                    if (forwardFaces[pos.z] == null)
+                        forwardFaces[pos.z] = new HashSet<Vector2Int>();
+
+                    forwardFaces[pos.z].Add(new Vector2Int(pos.x, pos.y));
+                }
+
+                if (!hasBlock(pos + Vector3Int.right))
+                {
+                    if (rightFaces[pos.x] == null)
+                        rightFaces[pos.x] = new HashSet<Vector2Int>();
+
+                    rightFaces[pos.x].Add(new Vector2Int(pos.y, pos.z));
+                }
+
+                if (!hasBlock(pos + Vector3Int.back))
+                {
+                    if (backFaces[pos.z] == null)
+                        backFaces[pos.z] = new HashSet<Vector2Int>();
+
+                    backFaces[pos.z].Add(new Vector2Int(pos.x, pos.y));
+                }
+
+                if (!hasBlock(pos + Vector3Int.left))
+                {
+                    if (leftFaces[pos.x] == null)
+                        leftFaces[pos.x] = new HashSet<Vector2Int>();
+
+                    leftFaces[pos.x].Add(new Vector2Int(pos.y, pos.z));
+                }
+            }
+
+            foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in upFaces)
+            {
+                int y = slice.Key;
+                while (slice.Value.Count > 0)
+                {
+                    Vector2Int blah = slice.Value.First();
+                    // now we must expand this face outwards.
+                    if(slice.Value.Contains(blah + Vector2Int.right))
+                    {
+                        slice.Value.Remove(blah + Vector2Int.right);
+                    }
                 }
             }
         }
