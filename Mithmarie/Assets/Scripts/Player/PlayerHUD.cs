@@ -24,9 +24,15 @@ namespace Mithmarie
             }
         }
 
-        public void SetCenterText(object obj) 
+        public void SetCenterText(HoverInformation hover) 
         {
-            centerText.text = obj != null ? obj.ToString() : string.Empty;
+            if(hover == null)
+            {
+                centerText.text = string.Empty;
+                return;
+            }
+
+            centerText.text = hover.pos.ToString();
         }
 
         public void Show() => gameObject.SetActive(true);
