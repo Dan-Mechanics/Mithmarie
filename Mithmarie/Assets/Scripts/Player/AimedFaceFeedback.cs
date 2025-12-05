@@ -30,20 +30,20 @@ namespace Mithmarie
             base.OnFrame();
             if (raycast.Cast(eyes, out hit))
             {
+                // THIS IS WHERE WE NEED TO IMPLEMENT THE OPTION TO MAKE IT A BLOCK OR NOT
                 faceOutline.forward = hit.normal;
                 OnAim?.Invoke(Utils.GetBlockPos(hit.point));
             }
             else
             {
-                faceOutline.forward = -eyes.forward;
-                OnAim?.Invoke(Utils.GetBlockPos(eyes.position + (eyes.forward * raycast.airPlacementDistance)));
+                OnAim?.Invoke(null);
             }
         }
 
         private void OutlineFace(object blockPos)
         {
             faceOutline.gameObject.SetActive(blockPos != null);
-            if (!faceOutline.gameObject.activeSelf)
+            if (blockPos == null)
                 return;
 
             faceOutline.position = (Vector3Int)blockPos;

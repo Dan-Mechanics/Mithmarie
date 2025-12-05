@@ -6,7 +6,7 @@ namespace Mithmarie
     [Serializable]
     public struct RaycastSettings
     {
-        [Min(0.1f)] public float range;
+        [Min(0.1f)] public float maxRange;
         public LayerMask mask;
         public float normalOffset;
         public float airPlacementDistance;
@@ -14,7 +14,7 @@ namespace Mithmarie
 
         public bool Cast(Transform arrow, out RaycastHit hit)
         {
-            if(Physics.Raycast(arrow.position, arrow.forward, out hit, range, mask, interaction))
+            if(Physics.Raycast(arrow.position, arrow.forward, out hit, maxRange, mask, interaction))
             {
                 hit.point += hit.normal * normalOffset;
                 return true;
