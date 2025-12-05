@@ -54,7 +54,7 @@ namespace Mithmarie
             List<int> tris = new List<int>();
             List<Vector2> uvs = new List<Vector2>();*/
 
-            MeshUtils.GenerateCulledMesh(blocks, IsBlockInChunks, verts, tris, uvs);
+            MeshingUtils.GenerateCulledMesh(blocks, IsBlockInChunks, verts, tris, uvs);
 
             mesh.Clear();
             mesh.vertices = verts.ToArray();

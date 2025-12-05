@@ -8,7 +8,6 @@ namespace Mithmarie
         [Min(0f)] public float maxRange;
         public LayerMask mask;
         public float normalOffset;
-        public float airPlacementDistance;
 
         public bool Cast(Transform eyes, out RaycastHit hit)
         {
@@ -18,8 +17,8 @@ namespace Mithmarie
                 return true;
             }
 
-            hit.point = eyes.position + (eyes.forward * airPlacementDistance);
-            hit.normal = -eyes.forward; // INCORRECT.
+            hit.point = eyes.position + (eyes.forward * maxRange);
+            hit.normal = -eyes.forward; 
             return false;
         }
     }

@@ -12,7 +12,7 @@ namespace Mithmarie
             List<Vector2> uvs = new List<Vector2>();
             Mesh mesh = new Mesh();
 
-            MeshUtils.GenerateCulledMesh(blocks, blocks.Contains, verts, tris, uvs);
+            MeshingUtils.GenerateCulledMesh(blocks, blocks.Contains, verts, tris, uvs);
 
             mesh.vertices = verts.ToArray();
             mesh.triangles = tris.ToArray();
