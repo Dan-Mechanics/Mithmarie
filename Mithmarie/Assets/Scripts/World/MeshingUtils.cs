@@ -123,7 +123,7 @@ namespace Mithmarie
             Dictionary<int, HashSet<Vector2Int>> upFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> downFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> forwardFaces = new Dictionary<int, HashSet<Vector2Int>>();
-            Dictionary<int, HashSet<Vector2Int>> backwardFaces = new Dictionary<int, HashSet<Vector2Int>>();
+            Dictionary<int, HashSet<Vector2Int>> baclFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> leftFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> rightFaces = new Dictionary<int, HashSet<Vector2Int>>();
 
@@ -164,10 +164,10 @@ namespace Mithmarie
 
                 if (!hasBlock(blockPos + Vector3Int.back))
                 {
-                    if (!backwardFaces.ContainsKey(blockPos.z))
-                        backwardFaces.Add(blockPos.z, new HashSet<Vector2Int>());
+                    if (!baclFaces.ContainsKey(blockPos.z))
+                        baclFaces.Add(blockPos.z, new HashSet<Vector2Int>());
 
-                    backwardFaces[blockPos.z].Add(new Vector2Int(blockPos.x, blockPos.y));
+                    baclFaces[blockPos.z].Add(new Vector2Int(blockPos.x, blockPos.y));
                 }
 
                 if (!hasBlock(blockPos + Vector3Int.left))
@@ -220,8 +220,8 @@ namespace Mithmarie
                 }
             }
 
-            // BACKWARD. ===
-            foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in backwardFaces)
+            // BACK. ===
+            foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in baclFaces)
             {
                 float z = slice.Key;
                 while (slice.Value.Count > 0)
@@ -429,38 +429,6 @@ namespace Mithmarie
             for (int i = 0; i < verts.Count; i++)
             {
                 verts[i] += globalOffset;
-            }
-        }
-
-        public static void GenerateExpandingCubesMesh(HashSet<Vector3Int> blocks, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
-        {
-            verts.Clear();
-            tris.Clear();
-            uvs.Clear();
-
-            List<ExpandingCube> expandingCubes = new List<ExpandingCube>();
-
-            List<Vector3Int> blocksLeft = blocks.ToList();
-            while (blocksLeft.Count > 0)
-            {
-                ExpandingCube current = new ExpandingCube(blocksLeft[0]);
-                blocksLeft.RemoveAt(0);
-
-                current.ExpandUp(blocksLeft);
-                current.ExpandDown(blocksLeft);
-
-                current.ExandRight(blocksLeft);
-                current.ExpandLeft(blocksLeft);
-
-                current.ExpandForward(blocksLeft);
-                current.ExpandBack(blocksLeft);
-
-                expandingCubes.Add(current);
-            }
-
-            for (int i = 0; i < expandingCubes.Count; i++)
-            {
-                expandingCubes[i].AddSelfToMesh(blocks, verts, tris, uvs);
             }
         }
     }
