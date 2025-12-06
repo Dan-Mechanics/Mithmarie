@@ -42,7 +42,6 @@ namespace Mithmarie
             history[index].Undo(world);
             index--;
 
-            world.ForgetRecentChanges();
             world.Flush();
         }
 
@@ -53,8 +52,6 @@ namespace Mithmarie
                 return;
 
             history[index].Redo(world);
-
-            world.ForgetRecentChanges();
             world.Flush();
         }
     }

@@ -6,8 +6,8 @@ namespace Mithmarie
 {
     public class Terraformer : StateBehaviour
     {
-        public event Action<SelectionInformation> OnSelect;
-        public event Action<Vector3Int, Vector3Int> OnEditSelection;
+        public event Action<SelectionInformation> OnSelectionPreview;
+        public event Action<Vector3Int, Vector3Int> OnEdit;
 
         [SerializeField] private Transform eyes = default;
         [SerializeField] private bool leftMouseButton = default;
@@ -59,13 +59,13 @@ namespace Mithmarie
 
             if(firstPos == null)
             {
-                OnSelect?.Invoke(null);
+                OnSelectionPreview?.Invoke(null);
             }
             else
             {
                 selection.a = (Vector3Int)firstPos;
                 selection.b = secondPos;
-                OnSelect?.Invoke(selection);
+                OnSelectionPreview?.Invoke(selection);
             }
         }
 
@@ -84,8 +84,10 @@ namespace Mithmarie
                 raycast.Cast(eyes, out hit);
                 secondPos = Utils.GetBlockPos(hit.point);
 
-                OnEditSelection?.Invoke((Vector3Int)firstPos, secondPos);
+                world.RememberTheFollowing();
+                OnEdit?.Invoke((Vector3Int)firstPos, secondPos);
                 world.Flush();
+
                 ResetToDefault();
             }
         }

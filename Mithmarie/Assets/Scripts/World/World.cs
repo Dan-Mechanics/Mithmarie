@@ -8,7 +8,6 @@ namespace Mithmarie
     public class World : MonoBehaviour, IBinarySerializable
     {
         public const int CHUNK_SIZE = 8;
-        public const int MAX_CACHE_COUNT = 1000;
 
         public event Action<Vector3Int, Dictionary<Vector3Int, HashSet<Vector3Int>>> OnDrawChunk;
         public event Action<HashSet<Vector3Int>, HashSet<Vector3Int>> OnNewChanges;
@@ -22,6 +21,8 @@ namespace Mithmarie
 
         private readonly HashSet<Vector3Int> addedBlocksCache = new HashSet<Vector3Int>();
         private readonly HashSet<Vector3Int> removedBlocksCache = new HashSet<Vector3Int>();
+
+        private bool rememberTheFollowing;
 
         public void AddSelection(Vector3Int a, Vector3Int b)
         {
@@ -50,7 +51,7 @@ namespace Mithmarie
             blocks.Add(blockPos);
             NotifyChunkChange(chunkPos);
 
-            if (addedBlocksCache.Count < MAX_CACHE_COUNT)
+            if (rememberTheFollowing)
                 addedBlocksCache.Add(blockPos);
         }
 
@@ -66,7 +67,7 @@ namespace Mithmarie
             blocks.Remove(blockPos);
             NotifyChunkChange(chunkPos);
 
-            if (removedBlocksCache.Count < MAX_CACHE_COUNT)
+            if (rememberTheFollowing)
                 removedBlocksCache.Add(blockPos);
         }
 
@@ -85,11 +86,13 @@ namespace Mithmarie
         /// If you call this, all the work done 
         /// since the previous Flush() cannot be undone.
         /// </summary>
-        public void ForgetRecentChanges()
+        private void ForgetRecentChanges()
         {
             addedBlocksCache.Clear();
             removedBlocksCache.Clear();
         }
+
+        public void RememberTheFollowing() => rememberTheFollowing = true;
 
         public void Flush()
         {
@@ -101,6 +104,7 @@ namespace Mithmarie
                 OnDrawChunk?.Invoke(chunkPos, chunks);
             }
 
+            rememberTheFollowing = false;
             changedChunkPositions.Clear();
 
             if (addedBlocksCache.Count <= 0 && removedBlocksCache.Count <= 0)

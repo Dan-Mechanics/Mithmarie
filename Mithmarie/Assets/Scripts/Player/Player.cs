@@ -49,14 +49,14 @@ namespace Mithmarie
 
             playerHUD.Show();
 
-            addTerraform.OnSelect += addSelectionPreview.UpdatePreview;
-            removeTerraform.OnSelect += removeSelectionPreview.UpdatePreview;
+            addTerraform.OnSelectionPreview += addSelectionPreview.UpdatePreview;
+            removeTerraform.OnSelectionPreview += removeSelectionPreview.UpdatePreview;
 
             hoverHighlight.OnHover += hoverPreview.UpdatePreview;
             hoverHighlight.OnHover += playerHUD.SetCenterText;
 
-            addTerraform.OnEditSelection += world.AddSelection;
-            removeTerraform.OnEditSelection += world.RemoveSelection;
+            addTerraform.OnEdit += world.AddSelection;
+            removeTerraform.OnEdit += world.RemoveSelection;
         }
 
         public override void Exit()
@@ -70,14 +70,14 @@ namespace Mithmarie
             if (playerHUD != null)
                 playerHUD.Hide();
 
-            addTerraform.OnSelect -= addSelectionPreview.UpdatePreview;
-            removeTerraform.OnSelect -= removeSelectionPreview.UpdatePreview;
+            addTerraform.OnSelectionPreview -= addSelectionPreview.UpdatePreview;
+            removeTerraform.OnSelectionPreview -= removeSelectionPreview.UpdatePreview;
 
             hoverHighlight.OnHover -= hoverPreview.UpdatePreview;
             hoverHighlight.OnHover -= playerHUD.SetCenterText;
 
-            addTerraform.OnEditSelection -= world.AddSelection;
-            removeTerraform.OnEditSelection -= world.RemoveSelection;
+            addTerraform.OnEdit -= world.AddSelection;
+            removeTerraform.OnEdit -= world.RemoveSelection;
         }
 
         public override void OnFrame()

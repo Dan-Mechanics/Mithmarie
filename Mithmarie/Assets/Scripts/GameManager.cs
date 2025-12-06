@@ -49,7 +49,6 @@ namespace Mithmarie
             history.Setup(world);
 
             world.Add(Vector3Int.zero);
-            world.ForgetRecentChanges();
             world.Flush();
 
             player.Setup(world, playerHUD);
