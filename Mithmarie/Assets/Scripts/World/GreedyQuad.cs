@@ -96,7 +96,7 @@ namespace Mithmarie
         private bool ContainsRow(int y, HashSet<Vector2Int> facesLeft, Queue<Vector2Int> clipped)
         {
             Vector2Int head = new Vector2Int(0, y);
-            for (int x = minX; x <= maxX; x++)
+            for (int x = minX; x < maxX; x++)
             {
                 head.x = x;
                 clipped.Enqueue(head);

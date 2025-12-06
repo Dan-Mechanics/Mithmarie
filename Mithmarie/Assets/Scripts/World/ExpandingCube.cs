@@ -149,7 +149,6 @@ namespace Mithmarie
                 verts.Add(new Vector3(minX, maxY, minZ));
                 verts.Add(new Vector3(minX, minY, minZ));
     
-                faceCount++;
                 uvs.AddRange(new Vector2[]
                 {
                     new Vector2(0, 0),
@@ -157,6 +156,8 @@ namespace Mithmarie
                     new Vector2(depth, height),
                     new Vector2(depth, 0)
                 });
+
+                faceCount++;
     
             }
     

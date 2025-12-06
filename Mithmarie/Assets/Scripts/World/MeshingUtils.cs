@@ -114,13 +114,13 @@ namespace Mithmarie
             tris.Clear();
             uvs.Clear();
 
-            // GET THE FACES OF THE MESH IN LAYERS. ===
+            Vector3 globalOffset = new Vector3(0.5f, -0.5f, -0.5f);
 
-            // CONSIDER MAKING USE OF STATIC HERE ??
+            // GET THE FACES OF THE MESH IN LAYERS. ===
             Dictionary<int, HashSet<Vector2Int>> upFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> downFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> forwardFaces = new Dictionary<int, HashSet<Vector2Int>>();
-            Dictionary<int, HashSet<Vector2Int>> backFaces = new Dictionary<int, HashSet<Vector2Int>>();
+            Dictionary<int, HashSet<Vector2Int>> backwardFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> leftFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> rightFaces = new Dictionary<int, HashSet<Vector2Int>>();
 
@@ -128,61 +128,57 @@ namespace Mithmarie
             {
                 if (!hasBlock(blockPos + Vector3Int.up))
                 {
-                    if (upFaces[blockPos.y] == null)
-                        upFaces[blockPos.y] = new HashSet<Vector2Int>();
+                    if (!upFaces.ContainsKey(blockPos.y))
+                        upFaces.Add(blockPos.y, new HashSet<Vector2Int>());
 
                     upFaces[blockPos.y].Add(new Vector2Int(blockPos.x, blockPos.z));
                 }
 
                 if (!hasBlock(blockPos + Vector3Int.down))
                 {
-                    if (downFaces[blockPos.y] == null)
-                        downFaces[blockPos.y] = new HashSet<Vector2Int>();
+                    if (!downFaces.ContainsKey(blockPos.y))
+                        downFaces.Add(blockPos.y, new HashSet<Vector2Int>());
 
                     downFaces[blockPos.y].Add(new Vector2Int(blockPos.x, blockPos.z));
                 }
 
                 if (!hasBlock(blockPos + Vector3Int.forward))
                 {
-                    if (forwardFaces[blockPos.z] == null)
-                        forwardFaces[blockPos.z] = new HashSet<Vector2Int>();
+                    if (!forwardFaces.ContainsKey(blockPos.z))
+                        forwardFaces.Add(blockPos.z, new HashSet<Vector2Int>());
 
                     forwardFaces[blockPos.z].Add(new Vector2Int(blockPos.x, blockPos.y));
                 }
 
                 if (!hasBlock(blockPos + Vector3Int.right))
                 {
-                    if (rightFaces[blockPos.x] == null)
-                        rightFaces[blockPos.x] = new HashSet<Vector2Int>();
+                    if (!rightFaces.ContainsKey(blockPos.x))
+                        rightFaces.Add(blockPos.x, new HashSet<Vector2Int>());
 
                     rightFaces[blockPos.x].Add(new Vector2Int(blockPos.y, blockPos.z));
                 }
 
                 if (!hasBlock(blockPos + Vector3Int.back))
                 {
-                    if (backFaces[blockPos.z] == null)
-                        backFaces[blockPos.z] = new HashSet<Vector2Int>();
+                    if (!backwardFaces.ContainsKey(blockPos.z))
+                        backwardFaces.Add(blockPos.z, new HashSet<Vector2Int>());
 
-                    backFaces[blockPos.z].Add(new Vector2Int(blockPos.x, blockPos.y));
+                    backwardFaces[blockPos.z].Add(new Vector2Int(blockPos.x, blockPos.y));
                 }
 
                 if (!hasBlock(blockPos + Vector3Int.left))
                 {
-                    if (leftFaces[blockPos.x] == null)
-                        leftFaces[blockPos.x] = new HashSet<Vector2Int>();
+                    if (!leftFaces.ContainsKey(blockPos.x))
+                        leftFaces.Add(blockPos.x, new HashSet<Vector2Int>());
 
                     leftFaces[blockPos.x].Add(new Vector2Int(blockPos.y, blockPos.z));
                 }
             }
 
-            // CONGLOMERATE UP FACES INTO GREEDY QUADS. ===
-
-            // try to make this work first and then generalize.
-            // just see if above facing show up at all,
-            // it prolly still needs some tweaking but idk.
+            // FORWARD. ===
             foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in forwardFaces)
             {
-                int z = slice.Key; // THIS VALUE MIGHT NEED TO CHANGE.
+                float z = slice.Key + globalOffset.z + 1f;
                 while (slice.Value.Count > 0)
                 {
                     GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
@@ -194,10 +190,6 @@ namespace Mithmarie
                     int width = Mathf.Abs(quad.maxX - quad.minX);
                     int height = Mathf.Abs(quad.maxY - quad.minY);
 
-                    // i mean, you COULD implement this in the greedyQued itself, but this seems
-                    // more efficient.
-                    // in general, i think it better to make a 
-                    // function more like c++ style than use classes for "AddSelfToMesh"
                     int vertIndexOffset = verts.Count;
                     verts.Add(new Vector3(quad.maxX, quad.minY, z));
                     verts.Add(new Vector3(quad.maxX, quad.maxY, z));
@@ -217,6 +209,211 @@ namespace Mithmarie
                     tris.Add(vertIndexOffset + 1);
                     tris.Add(vertIndexOffset + 2);
                     
+                    // SECOND TRIANGLE.
+                    tris.Add(vertIndexOffset + 0);
+                    tris.Add(vertIndexOffset + 2);
+                    tris.Add(vertIndexOffset + 3);
+                }
+            }
+
+            // BACKWARD. ===
+            foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in backwardFaces)
+            {
+                float z = slice.Key + globalOffset.z;
+                while (slice.Value.Count > 0)
+                {
+                    GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
+                    quad.ExpandRight(slice.Value);
+                    quad.ExpandLeft(slice.Value);
+                    quad.ExpandUp(slice.Value);
+                    quad.ExpandDown(slice.Value);
+
+                    int width = Mathf.Abs(quad.maxX - quad.minX);
+                    int height = Mathf.Abs(quad.maxY - quad.minY);
+
+                    int vertIndexOffset = verts.Count;
+                    verts.Add(new Vector3(quad.minX, quad.minY, z));
+                    verts.Add(new Vector3(quad.minX, quad.maxY, z));
+                    verts.Add(new Vector3(quad.maxX, quad.maxY, z));
+                    verts.Add(new Vector3(quad.maxX, quad.minY, z));
+
+                    uvs.AddRange(new Vector2[]
+                    {
+                        new Vector2(0, 0),
+                        new Vector2(0, height),
+                        new Vector2(width, height),
+                        new Vector2(width, 0)
+                    });
+
+                    // FIRST TRIANGLE.
+                    tris.Add(vertIndexOffset + 0);
+                    tris.Add(vertIndexOffset + 1);
+                    tris.Add(vertIndexOffset + 2);
+
+                    // SECOND TRIANGLE.
+                    tris.Add(vertIndexOffset + 0);
+                    tris.Add(vertIndexOffset + 2);
+                    tris.Add(vertIndexOffset + 3);
+                }
+            }
+
+            // RIGHT. ===
+            foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in rightFaces)
+            {
+                float x = slice.Key + globalOffset.x + 1f;
+                while (slice.Value.Count > 0)
+                {
+                    GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
+                    quad.ExpandRight(slice.Value);
+                    quad.ExpandLeft(slice.Value);
+                    quad.ExpandUp(slice.Value);
+                    quad.ExpandDown(slice.Value);
+
+                    int width = Mathf.Abs(quad.maxX - quad.minX);
+                    int height = Mathf.Abs(quad.maxY - quad.minY);
+
+                    int vertIndexOffset = verts.Count;
+                    verts.Add(new Vector3(x, quad.minX, quad.minY));
+                    verts.Add(new Vector3(x, quad.maxX, quad.minY));
+                    verts.Add(new Vector3(x, quad.maxX, quad.maxY));
+                    verts.Add(new Vector3(x, quad.minX, quad.maxY));
+
+                    uvs.AddRange(new Vector2[]
+                    {
+                        new Vector2(0, 0),
+                        new Vector2(0, width),
+                        new Vector2(height, width),
+                        new Vector2(height, 0)
+                    });
+
+                    // FIRST TRIANGLE.
+                    tris.Add(vertIndexOffset + 0);
+                    tris.Add(vertIndexOffset + 1);
+                    tris.Add(vertIndexOffset + 2);
+
+                    // SECOND TRIANGLE.
+                    tris.Add(vertIndexOffset + 0);
+                    tris.Add(vertIndexOffset + 2);
+                    tris.Add(vertIndexOffset + 3);
+                }
+            }
+
+            // LEFT. ===
+            foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in leftFaces)
+            {
+                float x = slice.Key + globalOffset.x;
+                while (slice.Value.Count > 0)
+                {
+                    GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
+                    quad.ExpandRight(slice.Value);
+                    quad.ExpandLeft(slice.Value);
+                    quad.ExpandUp(slice.Value);
+                    quad.ExpandDown(slice.Value);
+
+                    int width = Mathf.Abs(quad.maxX - quad.minX);
+                    int height = Mathf.Abs(quad.maxY - quad.minY);
+
+                    int vertIndexOffset = verts.Count;
+                    verts.Add(new Vector3(x, quad.minX, quad.maxY));
+                    verts.Add(new Vector3(x, quad.maxX, quad.maxY));
+                    verts.Add(new Vector3(x, quad.maxX, quad.minY));
+                    verts.Add(new Vector3(x, quad.minX, quad.minY));
+
+                    uvs.AddRange(new Vector2[]
+                    {
+                        new Vector2(0, 0),
+                        new Vector2(0, width),
+                        new Vector2(height, width),
+                        new Vector2(height, 0)
+                    });
+
+                    // FIRST TRIANGLE.
+                    tris.Add(vertIndexOffset + 0);
+                    tris.Add(vertIndexOffset + 1);
+                    tris.Add(vertIndexOffset + 2);
+
+                    // SECOND TRIANGLE.
+                    tris.Add(vertIndexOffset + 0);
+                    tris.Add(vertIndexOffset + 2);
+                    tris.Add(vertIndexOffset + 3);
+                }
+            }
+
+            // UP. ===
+            foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in upFaces)
+            {
+                float y = slice.Key + globalOffset.y + 1f;
+                while (slice.Value.Count > 0)
+                {
+                    GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
+                    quad.ExpandRight(slice.Value);
+                    quad.ExpandLeft(slice.Value);
+                    quad.ExpandUp(slice.Value);
+                    quad.ExpandDown(slice.Value);
+
+                    int width = Mathf.Abs(quad.maxX - quad.minX);
+                    int height = Mathf.Abs(quad.maxY - quad.minY);
+
+                    int vertIndexOffset = verts.Count;
+                    verts.Add(new Vector3(quad.minX, y, quad.minY));
+                    verts.Add(new Vector3(quad.minX, y, quad.maxY));
+                    verts.Add(new Vector3(quad.maxX, y, quad.maxY));
+                    verts.Add(new Vector3(quad.maxX, y, quad.minY));
+
+                    uvs.AddRange(new Vector2[]
+                    {
+                        new Vector2(0, 0),
+                        new Vector2(0, height),
+                        new Vector2(width, height),
+                        new Vector2(width, 0)
+                    });
+
+                    // FIRST TRIANGLE.
+                    tris.Add(vertIndexOffset + 0);
+                    tris.Add(vertIndexOffset + 1);
+                    tris.Add(vertIndexOffset + 2);
+
+                    // SECOND TRIANGLE.
+                    tris.Add(vertIndexOffset + 0);
+                    tris.Add(vertIndexOffset + 2);
+                    tris.Add(vertIndexOffset + 3);
+                }
+            }
+
+            // DOWN. ===
+            foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in downFaces)
+            {
+                float y = slice.Key + globalOffset.y;
+                while (slice.Value.Count > 0)
+                {
+                    GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
+                    quad.ExpandRight(slice.Value);
+                    quad.ExpandLeft(slice.Value);
+                    quad.ExpandUp(slice.Value);
+                    quad.ExpandDown(slice.Value);
+
+                    int width = Mathf.Abs(quad.maxX - quad.minX);
+                    int height = Mathf.Abs(quad.maxY - quad.minY);
+
+                    int vertIndexOffset = verts.Count;
+                    verts.Add(new Vector3(quad.minX, y, quad.minY));
+                    verts.Add(new Vector3(quad.maxX, y, quad.minY));
+                    verts.Add(new Vector3(quad.maxX, y, quad.maxY));
+                    verts.Add(new Vector3(quad.minX, y, quad.maxY));
+
+                    uvs.AddRange(new Vector2[]
+                    {
+                        new Vector2(0, 0),
+                        new Vector2(0, width),
+                        new Vector2(height, width),
+                        new Vector2(height, 0)
+                    });
+
+                    // FIRST TRIANGLE.
+                    tris.Add(vertIndexOffset + 0);
+                    tris.Add(vertIndexOffset + 1);
+                    tris.Add(vertIndexOffset + 2);
+
                     // SECOND TRIANGLE.
                     tris.Add(vertIndexOffset + 0);
                     tris.Add(vertIndexOffset + 2);
