@@ -4136,6 +4136,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1126528183}
     m_Modifications:
+    - target: {fileID: 2854000740495452539, guid: 997c4cf1caf4eaf4aaf65120f9bfd203, type: 3}
+      propertyPath: m_IsOn
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5204027504810843817, guid: 997c4cf1caf4eaf4aaf65120f9bfd203, type: 3}
       propertyPath: m_Name
       value: swap_mouse_buttons
