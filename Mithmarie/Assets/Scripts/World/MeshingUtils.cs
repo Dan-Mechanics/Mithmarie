@@ -114,7 +114,7 @@ namespace Mithmarie
             tris.Clear();
             uvs.Clear();
 
-            Vector3 globalOffset = new Vector3(0.5f, -0.5f, -0.5f);
+            Vector3 globalOffset = new Vector3(-0.5f, 0f, -0.5f);
             Dictionary<int, HashSet<Vector2Int>> upFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> downFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> forwardFaces = new Dictionary<int, HashSet<Vector2Int>>();

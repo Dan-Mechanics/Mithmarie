@@ -37,7 +37,6 @@ namespace Mithmarie
             }
 
             this.duration = duration > 0 ? duration : standardDuration;
-            str = str.ToUpperInvariant();
 
             print(str);
             group.alpha = 1f;
