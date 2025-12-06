@@ -38,13 +38,16 @@ namespace Mithmarie
         public void Add(Vector3Int blockPos)
         {
             Vector3Int chunkPos = Utils.GetChunkPos(blockPos, CHUNK_SIZE);
-            if (!chunks.ContainsKey(chunkPos))
-                chunks.Add(chunkPos, new HashSet<Vector3Int>());
+            if (!chunks.TryGetValue(chunkPos, out HashSet<Vector3Int> blocks))
+            {
+                blocks = new HashSet<Vector3Int>();
+                chunks[chunkPos] = blocks;
+            }
 
-            if (chunks[chunkPos].Contains(blockPos))
+            if (blocks.Contains(blockPos))
                 return;
 
-            chunks[chunkPos].Add(blockPos);
+            blocks.Add(blockPos);
             NotifyChunkChange(chunkPos);
 
             if (addedBlocksCache.Count < MAX_CACHE_COUNT)
@@ -54,15 +57,13 @@ namespace Mithmarie
         public void Remove(Vector3Int blockPos)
         {
             Vector3Int chunkPos = Utils.GetChunkPos(blockPos, CHUNK_SIZE);
-            Debug.Log(chunks.Count);
-            if (!chunks.ContainsKey(chunkPos))
+            if (!chunks.TryGetValue(chunkPos, out HashSet<Vector3Int> blocks))
                 return;
 
-            Debug.LogWarning("blocks in chunk: " + chunks[chunkPos].Count);
-            if (!chunks[chunkPos].Contains(blockPos))
+            if (!blocks.Contains(blockPos))
                 return;
 
-            chunks[chunkPos].Remove(blockPos);
+            blocks.Remove(blockPos);
             NotifyChunkChange(chunkPos);
 
             if (removedBlocksCache.Count < MAX_CACHE_COUNT)
@@ -99,6 +100,8 @@ namespace Mithmarie
 
                 OnDrawChunk?.Invoke(chunkPos, chunks);
             }
+
+            changedChunkPositions.Clear();
 
             if (addedBlocksCache.Count <= 0 && removedBlocksCache.Count <= 0)
                 return;

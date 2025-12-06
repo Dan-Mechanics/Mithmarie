@@ -124,5 +124,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   filter: {fileID: 4308757009957946029}
   coll: {fileID: 5494077106719623881}
-  maxViewingRange: 75
+  maxViewingRange: 50
   cookingOptions: 16
