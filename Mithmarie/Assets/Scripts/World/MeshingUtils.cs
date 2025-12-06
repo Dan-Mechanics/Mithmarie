@@ -108,6 +108,11 @@ namespace Mithmarie
             }
         }
 
+        /// <summary>
+        /// https://www.reddit.com/r/VoxelGameDev/comments/cmwqwy/whats_the_simplest_greedy_meshing_example_with/
+        /// https://github.com/VictorGordan/opengl-tutorials/blob/main/YoutubeOpenGL%209%20-%20Lighting/Main.cpp
+        /// https://pastebin.com/DXKEmvap
+        /// </summary>
         public static void GenerateGreedyMesh(HashSet<Vector3Int> blocks, Predicate<Vector3Int> hasBlock, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
         {
             verts.Clear();
@@ -421,18 +426,12 @@ namespace Mithmarie
             }
 
             // APPLY GLOBAL OFFSET. ===
-
             for (int i = 0; i < verts.Count; i++)
             {
                 verts[i] += globalOffset;
             }
         }
 
-        /// <summary>
-        /// https://www.reddit.com/r/VoxelGameDev/comments/cmwqwy/whats_the_simplest_greedy_meshing_example_with/
-        /// https://github.com/VictorGordan/opengl-tutorials/blob/main/YoutubeOpenGL%209%20-%20Lighting/Main.cpp
-        /// https://pastebin.com/DXKEmvap
-        /// </summary>
         public static void GenerateExpandingCubesMesh(HashSet<Vector3Int> blocks, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
         {
             verts.Clear();
