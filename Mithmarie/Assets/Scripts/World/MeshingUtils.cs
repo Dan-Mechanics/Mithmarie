@@ -115,11 +115,12 @@ namespace Mithmarie
         /// </summary>
         public static void GenerateGreedyMesh(HashSet<Vector3Int> blocks, Predicate<Vector3Int> hasBlock, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
         {
-            verts.Clear();
-            tris.Clear();
-            uvs.Clear();
+            verts.Capacity = blocks.Count * 3;
+            tris.Capacity = blocks.Count * 5;
+            uvs.Capacity = blocks.Count * 3;
 
             Vector3 globalOffset = new Vector3(-0.5f, 0f, -0.5f);
+
             Dictionary<int, HashSet<Vector2Int>> upFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> downFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> forwardFaces = new Dictionary<int, HashSet<Vector2Int>>();
