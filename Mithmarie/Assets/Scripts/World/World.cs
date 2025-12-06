@@ -54,9 +54,11 @@ namespace Mithmarie
         public void Remove(Vector3Int blockPos)
         {
             Vector3Int chunkPos = Utils.GetChunkPos(blockPos, CHUNK_SIZE);
+            Debug.Log(chunks.Count);
             if (!chunks.ContainsKey(chunkPos))
                 return;
 
+            Debug.LogWarning("blocks in chunk: " + chunks[chunkPos].Count);
             if (!chunks[chunkPos].Contains(blockPos))
                 return;
 

@@ -49,11 +49,6 @@ namespace Mithmarie
         {
             // NOTE: THIS IS PASS-BY-REFERENCE.
             this.allChunks = allChunks;
-
-            /*List<Vector3> verts = new List<Vector3>();
-            List<int> tris = new List<int>();
-            List<Vector2> uvs = new List<Vector2>();*/
-
             MeshingUtils.GenerateCulledMesh(blocks, IsBlockInChunks, verts, tris, uvs);
 
             mesh.Clear();
