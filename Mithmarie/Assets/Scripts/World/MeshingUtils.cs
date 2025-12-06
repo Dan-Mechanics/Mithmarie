@@ -28,68 +28,68 @@ namespace Mithmarie
             tris.Clear();
             uvs.Clear();
 
-            foreach (Vector3Int pos in blocks)
+            foreach (Vector3Int blockPos in blocks)
             {
                 int faceCount = 0;
                 int vertIndexOffset = verts.Count;
 
                 // UP. ===
-                if (!hasBlock(pos + Vector3Int.up))
+                if (!hasBlock(blockPos + Vector3Int.up))
                 {
-                    verts.Add(pos + Vector3Int.up);
-                    verts.Add(pos + upForward);
-                    verts.Add(pos + Vector3Int.one);
-                    verts.Add(pos + upRight);
+                    verts.Add(blockPos + Vector3Int.up);
+                    verts.Add(blockPos + upForward);
+                    verts.Add(blockPos + Vector3Int.one);
+                    verts.Add(blockPos + upRight);
                     faceCount++;
                 }
 
                 // DOWN. ===
-                if (!hasBlock(pos + Vector3Int.down))
+                if (!hasBlock(blockPos + Vector3Int.down))
                 {
-                    verts.Add(pos + Vector3Int.zero);
-                    verts.Add(pos + Vector3Int.right);
-                    verts.Add(pos + forwardRight);
-                    verts.Add(pos + Vector3Int.forward);
+                    verts.Add(blockPos + Vector3Int.zero);
+                    verts.Add(blockPos + Vector3Int.right);
+                    verts.Add(blockPos + forwardRight);
+                    verts.Add(blockPos + Vector3Int.forward);
                     faceCount++;
                 }
 
                 // FORWARD. ===
-                if (!hasBlock(pos + Vector3Int.forward))
+                if (!hasBlock(blockPos + Vector3Int.forward))
                 {
-                    verts.Add(pos + forwardRight);
-                    verts.Add(pos + Vector3Int.one);
-                    verts.Add(pos + upForward);
-                    verts.Add(pos + Vector3Int.forward);
+                    verts.Add(blockPos + forwardRight);
+                    verts.Add(blockPos + Vector3Int.one);
+                    verts.Add(blockPos + upForward);
+                    verts.Add(blockPos + Vector3Int.forward);
                     faceCount++;
                 }
 
                 // RIGHT. ===
-                if (!hasBlock(pos + Vector3Int.right))
+                if (!hasBlock(blockPos + Vector3Int.right))
                 {
-                    verts.Add(pos + Vector3Int.right);
-                    verts.Add(pos + upRight);
-                    verts.Add(pos + Vector3Int.one);
-                    verts.Add(pos + forwardRight);
+                    verts.Add(blockPos + Vector3Int.right);
+                    verts.Add(blockPos + upRight);
+                    verts.Add(blockPos + Vector3Int.one);
+                    verts.Add(blockPos + forwardRight);
                     faceCount++;
                 }
 
                 // BACK. ===
-                if (!hasBlock(pos + Vector3Int.back))
+                if (!hasBlock(blockPos + Vector3Int.back))
                 {
-                    verts.Add(pos + Vector3Int.zero);
-                    verts.Add(pos + Vector3Int.up);
-                    verts.Add(pos + upRight);
-                    verts.Add(pos + Vector3Int.right);
+                    verts.Add(blockPos + Vector3Int.zero);
+                    verts.Add(blockPos + Vector3Int.up);
+                    verts.Add(blockPos + upRight);
+                    verts.Add(blockPos + Vector3Int.right);
                     faceCount++;
                 }
 
-                // lEFT. ===
-                if (!hasBlock(pos + Vector3Int.left))
+                // LEFT. ===
+                if (!hasBlock(blockPos + Vector3Int.left))
                 {
-                    verts.Add(pos + Vector3Int.forward);
-                    verts.Add(pos + upForward);
-                    verts.Add(pos + Vector3Int.up);
-                    verts.Add(pos + Vector3Int.zero);
+                    verts.Add(blockPos + Vector3Int.forward);
+                    verts.Add(blockPos + upForward);
+                    verts.Add(blockPos + Vector3Int.up);
+                    verts.Add(blockPos + Vector3Int.zero);
                     faceCount++;
                 }
 
@@ -115,8 +115,6 @@ namespace Mithmarie
             uvs.Clear();
 
             Vector3 globalOffset = new Vector3(0.5f, -0.5f, -0.5f);
-
-            // GET THE FACES OF THE MESH IN LAYERS. ===
             Dictionary<int, HashSet<Vector2Int>> upFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> downFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> forwardFaces = new Dictionary<int, HashSet<Vector2Int>>();
@@ -124,6 +122,7 @@ namespace Mithmarie
             Dictionary<int, HashSet<Vector2Int>> leftFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> rightFaces = new Dictionary<int, HashSet<Vector2Int>>();
 
+            // GET THE FACES OF THE MESH IN LAYERS. ===
             foreach (Vector3Int blockPos in blocks)
             {
                 if (!hasBlock(blockPos + Vector3Int.up))
@@ -178,7 +177,7 @@ namespace Mithmarie
             // FORWARD. ===
             foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in forwardFaces)
             {
-                float z = slice.Key + globalOffset.z + 1f;
+                float z = slice.Key + 1f;
                 while (slice.Value.Count > 0)
                 {
                     GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
@@ -219,7 +218,7 @@ namespace Mithmarie
             // BACKWARD. ===
             foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in backwardFaces)
             {
-                float z = slice.Key + globalOffset.z;
+                float z = slice.Key;
                 while (slice.Value.Count > 0)
                 {
                     GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
@@ -260,7 +259,7 @@ namespace Mithmarie
             // RIGHT. ===
             foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in rightFaces)
             {
-                float x = slice.Key + globalOffset.x + 1f;
+                float x = slice.Key + 1f;
                 while (slice.Value.Count > 0)
                 {
                     GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
@@ -301,7 +300,7 @@ namespace Mithmarie
             // LEFT. ===
             foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in leftFaces)
             {
-                float x = slice.Key + globalOffset.x;
+                float x = slice.Key;
                 while (slice.Value.Count > 0)
                 {
                     GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
@@ -342,7 +341,7 @@ namespace Mithmarie
             // UP. ===
             foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in upFaces)
             {
-                float y = slice.Key + globalOffset.y + 1f;
+                float y = slice.Key + 1f;
                 while (slice.Value.Count > 0)
                 {
                     GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
@@ -383,7 +382,7 @@ namespace Mithmarie
             // DOWN. ===
             foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in downFaces)
             {
-                float y = slice.Key + globalOffset.y;
+                float y = slice.Key;
                 while (slice.Value.Count > 0)
                 {
                     GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
@@ -419,6 +418,13 @@ namespace Mithmarie
                     tris.Add(vertIndexOffset + 2);
                     tris.Add(vertIndexOffset + 3);
                 }
+            }
+
+            // APPLY GLOBAL OFFSET. ===
+
+            for (int i = 0; i < verts.Count; i++)
+            {
+                verts[i] += globalOffset;
             }
         }
 
