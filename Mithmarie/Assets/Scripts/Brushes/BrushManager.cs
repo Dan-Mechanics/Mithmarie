@@ -12,6 +12,8 @@ namespace Mithmarie
         /// </summary>
         private readonly IBrush[] brushes = new IBrush[]
         {
+            new Sphere(),
+            new Walls(),
             new Fill()
         };
 

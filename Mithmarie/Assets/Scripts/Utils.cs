@@ -17,6 +17,15 @@ namespace Mithmarie
             );
         }
 
+        public static bool IsInElipse(Vector3 direction, float width, float height)
+        {
+            float relativeHeight = height / width;
+
+            direction.z /= relativeHeight;
+            return direction.magnitude <= width;
+        }
+
+
         // possibly add things like:
         // snap to grid or round to decimal or like string formatting for unity debug color
         // or like array to 3D space with the width of the plane as index type beat
