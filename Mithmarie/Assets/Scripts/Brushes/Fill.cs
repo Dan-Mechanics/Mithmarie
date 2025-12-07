@@ -1,0 +1,49 @@
+using System;
+using UnityEngine;
+
+namespace Mithmarie
+{
+    public class Fill : IBrush
+    {
+        private World world;
+
+        public void Setup(World world) => this.world = world;
+        public void Add(Vector3Int a, Vector3Int b) => FillSection(a, b, true);
+        public void Remove(Vector3Int a, Vector3Int b) => FillSection(a, b, false);
+
+        public void FillSection(Vector3Int a, Vector3Int b, bool add)
+        {
+            Vector3Int temp = Vector3Int.zero;
+
+            int width = Mathf.Abs(b.x - a.x) + 1;
+            int height = Mathf.Abs(b.y - a.y) + 1;
+            int depth = Mathf.Abs(b.z - a.z) + 1;
+
+            int xDirection = a.x <= b.x ? 1 : -1;
+            int yDirection = a.y <= b.y ? 1 : -1;
+            int zDirection = a.z <= b.z ? 1 : -1;
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    for (int z = 0; z < depth; z++)
+                    {
+                        temp.x = x * xDirection;
+                        temp.y = y * yDirection;
+                        temp.z = z * zDirection;
+
+                        if (add) 
+                        {
+                            world.Add(a + temp);
+                        }
+                        else
+                        {
+                            world.Remove(a + temp);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

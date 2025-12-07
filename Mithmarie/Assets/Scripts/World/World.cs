@@ -16,25 +16,10 @@ namespace Mithmarie
         private readonly Dictionary<Vector3Int, HashSet<Vector3Int>> chunks = new Dictionary<Vector3Int, HashSet<Vector3Int>>();
         private readonly HashSet<Vector3Int> changedChunkPositions = new HashSet<Vector3Int>();
 
-        private delegate void EditBlock(Vector3Int blockPos);
-        private EditBlock editBlock;
-
         private readonly HashSet<Vector3Int> addedBlocksCache = new HashSet<Vector3Int>();
         private readonly HashSet<Vector3Int> removedBlocksCache = new HashSet<Vector3Int>();
 
         private bool rememberTheFollowing;
-
-        public void AddSelection(Vector3Int a, Vector3Int b)
-        {
-            editBlock = Add;
-            EditSelection(a, b);
-        }
-
-        public void RemoveSelection(Vector3Int a, Vector3Int b)
-        {
-            editBlock = Remove;
-            EditSelection(a, b);
-        }
 
         public void Add(Vector3Int blockPos)
         {
@@ -112,39 +97,6 @@ namespace Mithmarie
 
             OnNewChanges?.Invoke(addedBlocksCache, removedBlocksCache);
             ForgetRecentChanges();
-        }
-
-        private void EditSelection(Vector3Int a, Vector3Int b)
-        {
-            if (a == b)
-            {
-                editBlock(a);
-                return;
-            }
-
-            Vector3Int temp = Vector3Int.zero;
-
-            int width = Mathf.Abs(b.x - a.x) + 1;
-            int height = Mathf.Abs(b.y - a.y) + 1;
-            int depth = Mathf.Abs(b.z - a.z) + 1;
-
-            int xDirection = a.x <= b.x ? 1 : -1;
-            int yDirection = a.y <= b.y ? 1 : -1;
-            int zDirection = a.z <= b.z ? 1 : -1;
-
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < height; y++)
-                {
-                    for (int z = 0; z < depth; z++)
-                    {
-                        temp.x = x * xDirection;
-                        temp.y = y * yDirection;
-                        temp.z = z * zDirection;
-                        editBlock(a + temp);
-                    }
-                }
-            }
         }
 
         public HashSet<Vector3Int> GetAllBlocks()

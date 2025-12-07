@@ -192,7 +192,6 @@ namespace Mithmarie
                     int width = Mathf.Abs(quad.maxX - quad.minX);
                     int height = Mathf.Abs(quad.maxY - quad.minY);
 
-                    int vertIndexOffset = verts.Count;
                     verts.Add(new Vector3(quad.maxX, quad.minY, z) + globalOffset);
                     verts.Add(new Vector3(quad.maxX, quad.maxY, z) + globalOffset);
                     verts.Add(new Vector3(quad.minX, quad.maxY, z) + globalOffset);
@@ -205,13 +204,6 @@ namespace Mithmarie
                         new Vector2(width, height),
                         new Vector2(width, 0)
                     });
-
-                    // tris.Add(vertIndexOffset + 0);
-                    // tris.Add(vertIndexOffset + 1);
-                    // tris.Add(vertIndexOffset + 2);
-                    // tris.Add(vertIndexOffset + 0);
-                    // tris.Add(vertIndexOffset + 2);
-                    // tris.Add(vertIndexOffset + 3);
                 }
             }
 
@@ -227,7 +219,6 @@ namespace Mithmarie
                     int width = Mathf.Abs(quad.maxX - quad.minX);
                     int height = Mathf.Abs(quad.maxY - quad.minY);
 
-                    int vertIndexOffset = verts.Count;
                     verts.Add(new Vector3(quad.minX, quad.minY, z) + globalOffset);
                     verts.Add(new Vector3(quad.minX, quad.maxY, z) + globalOffset);
                     verts.Add(new Vector3(quad.maxX, quad.maxY, z) + globalOffset);
@@ -240,14 +231,6 @@ namespace Mithmarie
                         new Vector2(width, height),
                         new Vector2(width, 0)
                     });
-
-                    // FIRST TRIANGLE.
-                    // tris.Add(vertIndexOffset + 0);
-                    // tris.Add(vertIndexOffset + 1);
-                    // tris.Add(vertIndexOffset + 2);
-                    // tris.Add(vertIndexOffset + 0);
-                    // tris.Add(vertIndexOffset + 2);
-                    // tris.Add(vertIndexOffset + 3);
                 }
             }
 
@@ -263,7 +246,6 @@ namespace Mithmarie
                     int width = Mathf.Abs(quad.maxX - quad.minX);
                     int height = Mathf.Abs(quad.maxY - quad.minY);
 
-                    int vertIndexOffset = verts.Count;
                     verts.Add(new Vector3(x, quad.minX, quad.minY) + globalOffset);
                     verts.Add(new Vector3(x, quad.maxX, quad.minY) + globalOffset);
                     verts.Add(new Vector3(x, quad.maxX, quad.maxY) + globalOffset);
@@ -276,13 +258,6 @@ namespace Mithmarie
                         new Vector2(height, width),
                         new Vector2(height, 0)
                     });
-
-                    // tris.Add(vertIndexOffset + 0);
-                    // tris.Add(vertIndexOffset + 1);
-                    // tris.Add(vertIndexOffset + 2);
-                    // tris.Add(vertIndexOffset + 0);
-                    // tris.Add(vertIndexOffset + 2);
-                    // tris.Add(vertIndexOffset + 3);
                 }
             }
 
@@ -298,7 +273,6 @@ namespace Mithmarie
                     int width = Mathf.Abs(quad.maxX - quad.minX);
                     int height = Mathf.Abs(quad.maxY - quad.minY);
 
-                    int vertIndexOffset = verts.Count;
                     verts.Add(new Vector3(x, quad.minX, quad.maxY) + globalOffset);
                     verts.Add(new Vector3(x, quad.maxX, quad.maxY) + globalOffset);
                     verts.Add(new Vector3(x, quad.maxX, quad.minY) + globalOffset);
@@ -311,13 +285,6 @@ namespace Mithmarie
                         new Vector2(height, width),
                         new Vector2(height, 0)
                     });
-
-                   // tris.Add(vertIndexOffset + 0);
-                   // tris.Add(vertIndexOffset + 1);
-                   // tris.Add(vertIndexOffset + 2);
-                   // tris.Add(vertIndexOffset + 0);
-                   // tris.Add(vertIndexOffset + 2);
-                   // tris.Add(vertIndexOffset + 3);
                 }
             }
 
@@ -333,7 +300,6 @@ namespace Mithmarie
                     int width = Mathf.Abs(quad.maxX - quad.minX);
                     int height = Mathf.Abs(quad.maxY - quad.minY);
 
-                    int vertIndexOffset = verts.Count;
                     verts.Add(new Vector3(quad.minX, y, quad.minY) + globalOffset);
                     verts.Add(new Vector3(quad.minX, y, quad.maxY) + globalOffset);
                     verts.Add(new Vector3(quad.maxX, y, quad.maxY) + globalOffset);
@@ -346,13 +312,6 @@ namespace Mithmarie
                         new Vector2(width, height),
                         new Vector2(width, 0)
                     });
-
-                    // tris.Add(vertIndexOffset + 0);
-                    // tris.Add(vertIndexOffset + 1);
-                    // tris.Add(vertIndexOffset + 2);
-                    // tris.Add(vertIndexOffset + 0);
-                    // tris.Add(vertIndexOffset + 2);
-                    // tris.Add(vertIndexOffset + 3);
                 }
             }
 
@@ -368,7 +327,6 @@ namespace Mithmarie
                     int width = Mathf.Abs(quad.maxX - quad.minX);
                     int height = Mathf.Abs(quad.maxY - quad.minY);
 
-                    int vertIndexOffset = verts.Count;
                     verts.Add(new Vector3(quad.minX, y, quad.minY) + globalOffset);
                     verts.Add(new Vector3(quad.maxX, y, quad.minY) + globalOffset);
                     verts.Add(new Vector3(quad.maxX, y, quad.maxY) + globalOffset);
@@ -381,21 +339,8 @@ namespace Mithmarie
                         new Vector2(height, width),
                         new Vector2(height, 0)
                     });
-
-                    // tris.Add(vertIndexOffset + 0);
-                    // tris.Add(vertIndexOffset + 1);
-                    // tris.Add(vertIndexOffset + 2);
-                    // tris.Add(vertIndexOffset + 0);
-                    // tris.Add(vertIndexOffset + 2);
-                    // tris.Add(vertIndexOffset + 3);
                 }
             }
-
-            // APPLY GLOBAL OFFSET. ===
-            /*for (int i = 0; i < verts.Count; i++)
-            {
-                verts[i] += globalOffset;
-            }*/
 
             for (int i = 0; i < verts.Count; i += 4)
             {

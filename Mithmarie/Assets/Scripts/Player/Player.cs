@@ -11,6 +11,7 @@ namespace Mithmarie
         [SerializeField] private Terraformer removeTerraform = default;
         [SerializeField] private SelectionPreview addSelectionPreview = default;
         [SerializeField] private SelectionPreview removeSelectionPreview = default;
+        [SerializeField] private BrushManager brushManager = default;
         [SerializeField] private HoverHighlight hoverHighlight = default;
         [SerializeField] private HoverPreview hoverPreview = default;
 
@@ -33,6 +34,8 @@ namespace Mithmarie
             addTerraform.Setup(world);
             removeTerraform.Setup(world);
 
+            brushManager.Setup(world);
+
             hoverPreview.Setup();
         }
         
@@ -49,14 +52,14 @@ namespace Mithmarie
 
             playerHUD.Show();
 
-            addTerraform.OnSelectionPreview += addSelectionPreview.UpdatePreview;
-            removeTerraform.OnSelectionPreview += removeSelectionPreview.UpdatePreview;
+            addTerraform.OnPreview += addSelectionPreview.UpdatePreview;
+            removeTerraform.OnPreview += removeSelectionPreview.UpdatePreview;
 
             hoverHighlight.OnHover += hoverPreview.UpdatePreview;
             hoverHighlight.OnHover += playerHUD.SetCenterText;
 
-            addTerraform.OnEdit += world.AddSelection;
-            removeTerraform.OnEdit += world.RemoveSelection;
+            addTerraform.OnEditSelection += brushManager.AddSelection;
+            removeTerraform.OnEditSelection += brushManager.RemoveSelection;
         }
 
         public override void Exit()
@@ -70,14 +73,20 @@ namespace Mithmarie
             if (playerHUD != null)
                 playerHUD.Hide();
 
-            addTerraform.OnSelectionPreview -= addSelectionPreview.UpdatePreview;
-            removeTerraform.OnSelectionPreview -= removeSelectionPreview.UpdatePreview;
+            addTerraform.OnPreview -= addSelectionPreview.UpdatePreview;
+            removeTerraform.OnPreview -= removeSelectionPreview.UpdatePreview;
 
             hoverHighlight.OnHover -= hoverPreview.UpdatePreview;
             hoverHighlight.OnHover -= playerHUD.SetCenterText;
 
-            addTerraform.OnEdit -= world.AddSelection;
-            removeTerraform.OnEdit -= world.RemoveSelection;
+            if (brushManager == null)
+                return;
+
+            if (addTerraform != null)
+                addTerraform.OnEditSelection -= brushManager.AddSelection;
+
+            if (removeTerraform != null)
+                removeTerraform.OnEditSelection -= brushManager.RemoveSelection;
         }
 
         public override void OnFrame()
