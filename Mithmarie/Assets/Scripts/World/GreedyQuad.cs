@@ -9,25 +9,33 @@ namespace Mithmarie
     /// </summary>
     public struct GreedyQuad
     {
+        private readonly Vector2Int origin;
+
         public int minX;
         public int maxX;
         public int minY;
         public int maxY;
-
-        private readonly Vector2Int origin;
     
-        public GreedyQuad(Vector2Int origin, HashSet<Vector2Int> facesRemaining)
+        public GreedyQuad(Vector2Int origin)
         {
             this.origin = origin;
             minX = origin.x;
             minY = origin.y;
             maxX = minX + 1;
             maxY = minY + 1;
-    
-            facesRemaining.Remove(origin);
         }
-    
-        public void ExpandRight(HashSet<Vector2Int> facesRemaining)
+        
+        public void Expand(HashSet<Vector2Int> facesRemaining)
+        {
+            facesRemaining.Remove(origin);
+
+            ExpandRight(facesRemaining);
+            ExpandLeft(facesRemaining);
+            ExpandUp(facesRemaining);
+            ExpandDown(facesRemaining);
+        }
+
+        private void ExpandRight(HashSet<Vector2Int> facesRemaining)
         {
             Vector2Int head = origin;
             head.x++;
@@ -40,8 +48,8 @@ namespace Mithmarie
     
             maxX = head.x;
         }
-    
-        public void ExpandLeft(HashSet<Vector2Int> facesRemaining)
+
+        private void ExpandLeft(HashSet<Vector2Int> facesRemaining)
         {
             Vector2Int head = origin;
             head.x--;
@@ -54,8 +62,8 @@ namespace Mithmarie
     
             minX = head.x + 1;
         }
-    
-        public void ExpandUp(HashSet<Vector2Int> facesLeft)
+
+        private void ExpandUp(HashSet<Vector2Int> facesLeft)
         {
             Queue<Vector2Int> clipped = new Queue<Vector2Int>();
             Vector2Int head = origin;
@@ -73,8 +81,8 @@ namespace Mithmarie
     
             maxY = head.y;
         }
-        
-        public void ExpandDown(HashSet<Vector2Int> facesLeft)
+
+        private void ExpandDown(HashSet<Vector2Int> facesLeft)
         {
             Queue<Vector2Int> clipped = new Queue<Vector2Int>();
             Vector2Int head = origin;

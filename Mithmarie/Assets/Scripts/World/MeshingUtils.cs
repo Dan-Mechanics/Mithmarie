@@ -186,20 +186,17 @@ namespace Mithmarie
                 float z = slice.Key + 1f;
                 while (slice.Value.Count > 0)
                 {
-                    GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
-                    quad.ExpandRight(slice.Value);
-                    quad.ExpandLeft(slice.Value);
-                    quad.ExpandUp(slice.Value);
-                    quad.ExpandDown(slice.Value);
+                    GreedyQuad quad = new GreedyQuad(slice.Value.First());
+                    quad.Expand(slice.Value);
 
                     int width = Mathf.Abs(quad.maxX - quad.minX);
                     int height = Mathf.Abs(quad.maxY - quad.minY);
 
                     int vertIndexOffset = verts.Count;
-                    verts.Add(new Vector3(quad.maxX, quad.minY, z));
-                    verts.Add(new Vector3(quad.maxX, quad.maxY, z));
-                    verts.Add(new Vector3(quad.minX, quad.maxY, z));
-                    verts.Add(new Vector3(quad.minX, quad.minY, z));
+                    verts.Add(new Vector3(quad.maxX, quad.minY, z) + globalOffset);
+                    verts.Add(new Vector3(quad.maxX, quad.maxY, z) + globalOffset);
+                    verts.Add(new Vector3(quad.minX, quad.maxY, z) + globalOffset);
+                    verts.Add(new Vector3(quad.minX, quad.minY, z) + globalOffset);
 
                     uvs.AddRange(new Vector2[]
                     {
@@ -209,15 +206,12 @@ namespace Mithmarie
                         new Vector2(width, 0)
                     });
 
-                    // FIRST TRIANGLE.
-                    tris.Add(vertIndexOffset + 0);
-                    tris.Add(vertIndexOffset + 1);
-                    tris.Add(vertIndexOffset + 2);
-                    
-                    // SECOND TRIANGLE.
-                    tris.Add(vertIndexOffset + 0);
-                    tris.Add(vertIndexOffset + 2);
-                    tris.Add(vertIndexOffset + 3);
+                    // tris.Add(vertIndexOffset + 0);
+                    // tris.Add(vertIndexOffset + 1);
+                    // tris.Add(vertIndexOffset + 2);
+                    // tris.Add(vertIndexOffset + 0);
+                    // tris.Add(vertIndexOffset + 2);
+                    // tris.Add(vertIndexOffset + 3);
                 }
             }
 
@@ -227,20 +221,17 @@ namespace Mithmarie
                 float z = slice.Key;
                 while (slice.Value.Count > 0)
                 {
-                    GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
-                    quad.ExpandRight(slice.Value);
-                    quad.ExpandLeft(slice.Value);
-                    quad.ExpandUp(slice.Value);
-                    quad.ExpandDown(slice.Value);
+                    GreedyQuad quad = new GreedyQuad(slice.Value.First());
+                    quad.Expand(slice.Value);
 
                     int width = Mathf.Abs(quad.maxX - quad.minX);
                     int height = Mathf.Abs(quad.maxY - quad.minY);
 
                     int vertIndexOffset = verts.Count;
-                    verts.Add(new Vector3(quad.minX, quad.minY, z));
-                    verts.Add(new Vector3(quad.minX, quad.maxY, z));
-                    verts.Add(new Vector3(quad.maxX, quad.maxY, z));
-                    verts.Add(new Vector3(quad.maxX, quad.minY, z));
+                    verts.Add(new Vector3(quad.minX, quad.minY, z) + globalOffset);
+                    verts.Add(new Vector3(quad.minX, quad.maxY, z) + globalOffset);
+                    verts.Add(new Vector3(quad.maxX, quad.maxY, z) + globalOffset);
+                    verts.Add(new Vector3(quad.maxX, quad.minY, z) + globalOffset);
 
                     uvs.AddRange(new Vector2[]
                     {
@@ -251,14 +242,12 @@ namespace Mithmarie
                     });
 
                     // FIRST TRIANGLE.
-                    tris.Add(vertIndexOffset + 0);
-                    tris.Add(vertIndexOffset + 1);
-                    tris.Add(vertIndexOffset + 2);
-
-                    // SECOND TRIANGLE.
-                    tris.Add(vertIndexOffset + 0);
-                    tris.Add(vertIndexOffset + 2);
-                    tris.Add(vertIndexOffset + 3);
+                    // tris.Add(vertIndexOffset + 0);
+                    // tris.Add(vertIndexOffset + 1);
+                    // tris.Add(vertIndexOffset + 2);
+                    // tris.Add(vertIndexOffset + 0);
+                    // tris.Add(vertIndexOffset + 2);
+                    // tris.Add(vertIndexOffset + 3);
                 }
             }
 
@@ -268,20 +257,17 @@ namespace Mithmarie
                 float x = slice.Key + 1f;
                 while (slice.Value.Count > 0)
                 {
-                    GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
-                    quad.ExpandRight(slice.Value);
-                    quad.ExpandLeft(slice.Value);
-                    quad.ExpandUp(slice.Value);
-                    quad.ExpandDown(slice.Value);
+                    GreedyQuad quad = new GreedyQuad(slice.Value.First());
+                    quad.Expand(slice.Value);
 
                     int width = Mathf.Abs(quad.maxX - quad.minX);
                     int height = Mathf.Abs(quad.maxY - quad.minY);
 
                     int vertIndexOffset = verts.Count;
-                    verts.Add(new Vector3(x, quad.minX, quad.minY));
-                    verts.Add(new Vector3(x, quad.maxX, quad.minY));
-                    verts.Add(new Vector3(x, quad.maxX, quad.maxY));
-                    verts.Add(new Vector3(x, quad.minX, quad.maxY));
+                    verts.Add(new Vector3(x, quad.minX, quad.minY) + globalOffset);
+                    verts.Add(new Vector3(x, quad.maxX, quad.minY) + globalOffset);
+                    verts.Add(new Vector3(x, quad.maxX, quad.maxY) + globalOffset);
+                    verts.Add(new Vector3(x, quad.minX, quad.maxY) + globalOffset);
 
                     uvs.AddRange(new Vector2[]
                     {
@@ -291,15 +277,12 @@ namespace Mithmarie
                         new Vector2(height, 0)
                     });
 
-                    // FIRST TRIANGLE.
-                    tris.Add(vertIndexOffset + 0);
-                    tris.Add(vertIndexOffset + 1);
-                    tris.Add(vertIndexOffset + 2);
-
-                    // SECOND TRIANGLE.
-                    tris.Add(vertIndexOffset + 0);
-                    tris.Add(vertIndexOffset + 2);
-                    tris.Add(vertIndexOffset + 3);
+                    // tris.Add(vertIndexOffset + 0);
+                    // tris.Add(vertIndexOffset + 1);
+                    // tris.Add(vertIndexOffset + 2);
+                    // tris.Add(vertIndexOffset + 0);
+                    // tris.Add(vertIndexOffset + 2);
+                    // tris.Add(vertIndexOffset + 3);
                 }
             }
 
@@ -309,20 +292,17 @@ namespace Mithmarie
                 float x = slice.Key;
                 while (slice.Value.Count > 0)
                 {
-                    GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
-                    quad.ExpandRight(slice.Value);
-                    quad.ExpandLeft(slice.Value);
-                    quad.ExpandUp(slice.Value);
-                    quad.ExpandDown(slice.Value);
+                    GreedyQuad quad = new GreedyQuad(slice.Value.First());
+                    quad.Expand(slice.Value);
 
                     int width = Mathf.Abs(quad.maxX - quad.minX);
                     int height = Mathf.Abs(quad.maxY - quad.minY);
 
                     int vertIndexOffset = verts.Count;
-                    verts.Add(new Vector3(x, quad.minX, quad.maxY));
-                    verts.Add(new Vector3(x, quad.maxX, quad.maxY));
-                    verts.Add(new Vector3(x, quad.maxX, quad.minY));
-                    verts.Add(new Vector3(x, quad.minX, quad.minY));
+                    verts.Add(new Vector3(x, quad.minX, quad.maxY) + globalOffset);
+                    verts.Add(new Vector3(x, quad.maxX, quad.maxY) + globalOffset);
+                    verts.Add(new Vector3(x, quad.maxX, quad.minY) + globalOffset);
+                    verts.Add(new Vector3(x, quad.minX, quad.minY) + globalOffset);
 
                     uvs.AddRange(new Vector2[]
                     {
@@ -332,15 +312,12 @@ namespace Mithmarie
                         new Vector2(height, 0)
                     });
 
-                    // FIRST TRIANGLE.
-                    tris.Add(vertIndexOffset + 0);
-                    tris.Add(vertIndexOffset + 1);
-                    tris.Add(vertIndexOffset + 2);
-
-                    // SECOND TRIANGLE.
-                    tris.Add(vertIndexOffset + 0);
-                    tris.Add(vertIndexOffset + 2);
-                    tris.Add(vertIndexOffset + 3);
+                   // tris.Add(vertIndexOffset + 0);
+                   // tris.Add(vertIndexOffset + 1);
+                   // tris.Add(vertIndexOffset + 2);
+                   // tris.Add(vertIndexOffset + 0);
+                   // tris.Add(vertIndexOffset + 2);
+                   // tris.Add(vertIndexOffset + 3);
                 }
             }
 
@@ -350,20 +327,17 @@ namespace Mithmarie
                 float y = slice.Key + 1f;
                 while (slice.Value.Count > 0)
                 {
-                    GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
-                    quad.ExpandRight(slice.Value);
-                    quad.ExpandLeft(slice.Value);
-                    quad.ExpandUp(slice.Value);
-                    quad.ExpandDown(slice.Value);
+                    GreedyQuad quad = new GreedyQuad(slice.Value.First());
+                    quad.Expand(slice.Value);
 
                     int width = Mathf.Abs(quad.maxX - quad.minX);
                     int height = Mathf.Abs(quad.maxY - quad.minY);
 
                     int vertIndexOffset = verts.Count;
-                    verts.Add(new Vector3(quad.minX, y, quad.minY));
-                    verts.Add(new Vector3(quad.minX, y, quad.maxY));
-                    verts.Add(new Vector3(quad.maxX, y, quad.maxY));
-                    verts.Add(new Vector3(quad.maxX, y, quad.minY));
+                    verts.Add(new Vector3(quad.minX, y, quad.minY) + globalOffset);
+                    verts.Add(new Vector3(quad.minX, y, quad.maxY) + globalOffset);
+                    verts.Add(new Vector3(quad.maxX, y, quad.maxY) + globalOffset);
+                    verts.Add(new Vector3(quad.maxX, y, quad.minY) + globalOffset);
 
                     uvs.AddRange(new Vector2[]
                     {
@@ -373,15 +347,12 @@ namespace Mithmarie
                         new Vector2(width, 0)
                     });
 
-                    // FIRST TRIANGLE.
-                    tris.Add(vertIndexOffset + 0);
-                    tris.Add(vertIndexOffset + 1);
-                    tris.Add(vertIndexOffset + 2);
-
-                    // SECOND TRIANGLE.
-                    tris.Add(vertIndexOffset + 0);
-                    tris.Add(vertIndexOffset + 2);
-                    tris.Add(vertIndexOffset + 3);
+                    // tris.Add(vertIndexOffset + 0);
+                    // tris.Add(vertIndexOffset + 1);
+                    // tris.Add(vertIndexOffset + 2);
+                    // tris.Add(vertIndexOffset + 0);
+                    // tris.Add(vertIndexOffset + 2);
+                    // tris.Add(vertIndexOffset + 3);
                 }
             }
 
@@ -391,20 +362,17 @@ namespace Mithmarie
                 float y = slice.Key;
                 while (slice.Value.Count > 0)
                 {
-                    GreedyQuad quad = new GreedyQuad(slice.Value.First(), slice.Value);
-                    quad.ExpandRight(slice.Value);
-                    quad.ExpandLeft(slice.Value);
-                    quad.ExpandUp(slice.Value);
-                    quad.ExpandDown(slice.Value);
+                    GreedyQuad quad = new GreedyQuad(slice.Value.First());
+                    quad.Expand(slice.Value);
 
                     int width = Mathf.Abs(quad.maxX - quad.minX);
                     int height = Mathf.Abs(quad.maxY - quad.minY);
 
                     int vertIndexOffset = verts.Count;
-                    verts.Add(new Vector3(quad.minX, y, quad.minY));
-                    verts.Add(new Vector3(quad.maxX, y, quad.minY));
-                    verts.Add(new Vector3(quad.maxX, y, quad.maxY));
-                    verts.Add(new Vector3(quad.minX, y, quad.maxY));
+                    verts.Add(new Vector3(quad.minX, y, quad.minY) + globalOffset);
+                    verts.Add(new Vector3(quad.maxX, y, quad.minY) + globalOffset);
+                    verts.Add(new Vector3(quad.maxX, y, quad.maxY) + globalOffset);
+                    verts.Add(new Vector3(quad.minX, y, quad.maxY) + globalOffset);
 
                     uvs.AddRange(new Vector2[]
                     {
@@ -414,22 +382,29 @@ namespace Mithmarie
                         new Vector2(height, 0)
                     });
 
-                    // FIRST TRIANGLE.
-                    tris.Add(vertIndexOffset + 0);
-                    tris.Add(vertIndexOffset + 1);
-                    tris.Add(vertIndexOffset + 2);
-
-                    // SECOND TRIANGLE.
-                    tris.Add(vertIndexOffset + 0);
-                    tris.Add(vertIndexOffset + 2);
-                    tris.Add(vertIndexOffset + 3);
+                    // tris.Add(vertIndexOffset + 0);
+                    // tris.Add(vertIndexOffset + 1);
+                    // tris.Add(vertIndexOffset + 2);
+                    // tris.Add(vertIndexOffset + 0);
+                    // tris.Add(vertIndexOffset + 2);
+                    // tris.Add(vertIndexOffset + 3);
                 }
             }
 
             // APPLY GLOBAL OFFSET. ===
-            for (int i = 0; i < verts.Count; i++)
+            /*for (int i = 0; i < verts.Count; i++)
             {
                 verts[i] += globalOffset;
+            }*/
+
+            for (int i = 0; i < verts.Count; i += 4)
+            {
+                tris.Add(i + 0);
+                tris.Add(i + 1);
+                tris.Add(i + 2);
+                tris.Add(i + 0);
+                tris.Add(i + 2);
+                tris.Add(i + 3);
             }
         }
     }
