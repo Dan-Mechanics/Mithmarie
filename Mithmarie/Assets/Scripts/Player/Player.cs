@@ -16,10 +16,10 @@ namespace Mithmarie
         [SerializeField] private HoverPreview hoverPreview = default;
 
         private StateBehaviour[] behaviour;
-        private PlayerHUD playerHUD;
+        private PlayerDisplay playerHUD;
         private World world;
 
-        public void Setup(World world, PlayerHUD playerHUD)
+        public void Setup(World world, PlayerDisplay playerHUD)
         {
             this.world = world;
             this.playerHUD = playerHUD;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Mithmarie
 {
-    public class PlayerHUD : MonoBehaviour
+    public class BrushDisplay : MonoBehaviour
     {
         [SerializeField] private TMP_Text centerText = default;
         [SerializeField] private Color colorA = Color.white;

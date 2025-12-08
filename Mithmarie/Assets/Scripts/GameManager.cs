@@ -13,7 +13,7 @@ namespace Mithmarie
         private ChunkVisualizationManager chunkVisualizationManager;
         private PopupManager popupManager;
         private Player player;
-        private PlayerHUD playerHUD;
+        private PlayerDisplay playerDisplay;
         private Menu menu;
         private Transform eyes;
 
@@ -25,7 +25,7 @@ namespace Mithmarie
             fileScreen = FindAnyObjectByType<FileScreen>();
             chunkVisualizationManager = FindAnyObjectByType<ChunkVisualizationManager>();
             player = FindAnyObjectByType<Player>();
-            playerHUD = FindAnyObjectByType<PlayerHUD>();
+            playerDisplay = FindAnyObjectByType<PlayerDisplay>();
             menu = FindAnyObjectByType<Menu>();
 
             eyes = GameObject.FindWithTag("MainCamera").transform;
@@ -35,7 +35,7 @@ namespace Mithmarie
         private void Start()
         {
             popupManager.Setup();
-            playerHUD.Setup();
+            playerDisplay.Setup();
 
             shortcuts.OnSave += fileScreen.Save;
             shortcuts.OnUndo += history.Undo;
@@ -51,7 +51,7 @@ namespace Mithmarie
             world.Add(Vector3Int.zero);
             world.Flush();
 
-            player.Setup(world, playerHUD);
+            player.Setup(world, playerDisplay);
             menu.Setup();
 
             fsm.AddState(player);

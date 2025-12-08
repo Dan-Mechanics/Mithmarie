@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Mithmarie
 {
@@ -7,29 +9,56 @@ namespace Mithmarie
     /// </summary>
     public class BrushManager : StateBehaviour
     {
-        /// <summary>
-        /// Use ScriptableObjects.
-        /// </summary>
-        private readonly IBrush[] brushes = new IBrush[]
+        public event Action<int> OnNewBrushSelected;
+
+        [SerializeField] private Brush[] brushes = default;
+        [SerializeField, Min(0f)] private float deadzone = default;
+        private readonly IBrushable[] brushables = new IBrushable[]
         {
-            new Cylinder(),
+            new Fill(),
             new Walls(),
-            new Fill()
+            new Cylinder()
         };
 
-        private IBrush current;
+        private IBrushable current;
+        private int index;
 
         public void Setup(World world)
         {
-            for (int i = 0; i < brushes.Length; i++)
+            for (int i = 0; i < brushables.Length; i++)
             {
-                brushes[i].Setup(world);
+                brushables[i].Setup(world);
             }
 
-            current = brushes[0];
+            index = -1;
+            ChangeBrush(1);
         }
 
         public void AddSelection(Vector3Int a, Vector3Int b) => current?.Add(a, b);
         public void RemoveSelection(Vector3Int a, Vector3Int b) => current?.Remove(a, b);
+
+        public override void OnFrame()
+        {
+            base.OnFrame();
+            float value = Mouse.current.scroll.value.y;
+
+            if (value > deadzone)
+            {
+                ChangeBrush(1);
+            }
+            else if (value < -deadzone)
+            {
+                ChangeBrush(-1);
+            }
+        }
+
+        private void ChangeBrush(int direction)
+        {
+            index += direction;
+            index %= brushables.Length;
+            current = brushables[index];
+
+            OnNewBrushSelected?.Invoke(index);
+        }
     }
 }

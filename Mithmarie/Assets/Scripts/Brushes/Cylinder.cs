@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Mithmarie
 {
-    public class Cylinder : IBrush
+    public class Cylinder : IBrushable
     {
         private World world;
 
