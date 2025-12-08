@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Mithmarie
 {
-    public class ChunkVisualizationManager : MonoBehaviour
+    public class ChunkVisualManager : MonoBehaviour
     {
         [SerializeField] private GameObject chunkPrefab = default;
         private readonly Dictionary<Vector3Int, IChunkMeshable> chunkMeshes = new Dictionary<Vector3Int, IChunkMeshable>();

@@ -7,12 +7,15 @@ namespace Mithmarie
     {
         [SerializeField] private GameObject slotPrefab = default;
         [SerializeField] private float perSlotOffset = default;
+        [SerializeField] private Vector2 globalOffset = default;
+        [SerializeField] private Brush[] brushes = default;
+
         private Slot[] slots;
 
-        public void Setup(int count, int index)
+        public void Setup()
         {
-            slots = new Slot[count];
-            for (int i = 0; i < count; i++)
+            slots = new Slot[brushes.Length];
+            for (int i = 0; i < slots.Length; i++)
             {
                 RectTransform newSlot = Instantiate(slotPrefab, Vector3.zero, Quaternion.identity).GetComponent<RectTransform>();
                 newSlot.SetParent(transform);
@@ -20,14 +23,18 @@ namespace Mithmarie
                 newSlot.localRotation = Quaternion.identity;
 
                 newSlot.anchoredPosition += i * perSlotOffset * Vector2.up;
+                newSlot.anchoredPosition += globalOffset;
                 slots[i].image = newSlot.GetComponent<Image>();
                 slots[i].arrow = newSlot.GetChild(0).gameObject;
+
+                slots[i].image.sprite = brushes[i].icon;
+                slots[i].image.transform.name = brushes[i].name;
             }
 
-            ShowIndex(index);
+            NewIndexSelected(0);
         }
 
-        public void ShowIndex(int index)
+        public void NewIndexSelected(int index)
         {
             for (int i = 0; i < slots.Length; i++)
             {

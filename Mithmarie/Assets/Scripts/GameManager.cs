@@ -6,27 +6,33 @@ namespace Mithmarie
     {
         private readonly FSM fsm = new FSM();
 
-        private World world;
-        private KeyboardShortcuts shortcuts;
+        private ChunkVisualManager chunkVisualManager;
+        private KeyboardShortcuts keyboardShortcuts;
+        private HoverHighlight hoverHighlight;
+        private PlayerDisplay playerDisplay;
+        private BrushDisplay brushDisplay;
+        private BrushManager brushManager;
+        private PopupManager popupManager;
         private WorldHistory history;
         private FileScreen fileScreen;
-        private ChunkVisualizationManager chunkVisualizationManager;
-        private PopupManager popupManager;
-        private Player player;
-        private PlayerDisplay playerDisplay;
-        private Menu menu;
         private Transform eyes;
+        private Player player;
+        private World world;
+        private Menu menu;
 
         private void Awake()
         {
             world = FindAnyObjectByType<World>();
             history = FindAnyObjectByType<WorldHistory>();
-            shortcuts = FindAnyObjectByType<KeyboardShortcuts>();
+            keyboardShortcuts = FindAnyObjectByType<KeyboardShortcuts>();
             fileScreen = FindAnyObjectByType<FileScreen>();
-            chunkVisualizationManager = FindAnyObjectByType<ChunkVisualizationManager>();
+            chunkVisualManager = FindAnyObjectByType<ChunkVisualManager>();
             player = FindAnyObjectByType<Player>();
             playerDisplay = FindAnyObjectByType<PlayerDisplay>();
             menu = FindAnyObjectByType<Menu>();
+            hoverHighlight = FindAnyObjectByType<HoverHighlight>();
+            brushDisplay = FindAnyObjectByType<BrushDisplay>();
+            brushManager = FindAnyObjectByType<BrushManager>();
 
             eyes = GameObject.FindWithTag("MainCamera").transform;
             popupManager = FindAnyObjectByType<PopupManager>();
@@ -36,22 +42,27 @@ namespace Mithmarie
         {
             popupManager.Setup();
             playerDisplay.Setup();
+            brushDisplay.Setup();
 
-            shortcuts.OnSave += fileScreen.Save;
-            shortcuts.OnUndo += history.Undo;
-            shortcuts.OnRedo += history.Redo;
+            keyboardShortcuts.OnSave += fileScreen.Save;
+            keyboardShortcuts.OnUndo += history.Undo;
+            keyboardShortcuts.OnRedo += history.Redo;
 
             world.OnClear += history.Clear;
             world.OnNewChanges += history.LogImplicitWorldChange;
 
-            chunkVisualizationManager.Setup(eyes);
-            world.OnDrawChunk += chunkVisualizationManager.DrawChunk;
+            chunkVisualManager.Setup(eyes);
+            world.OnDrawChunk += chunkVisualManager.DrawChunk;
             history.Setup(world);
 
-            world.Add(Vector3Int.zero);
-            world.Flush();
+            player.OnOpen += playerDisplay.Show;
+            player.OnClose += playerDisplay.Hide;
+            hoverHighlight.OnHover += playerDisplay.SetCenterText;
 
-            player.Setup(world, playerDisplay);
+            brushManager.Setup(world);
+            brushManager.OnNewBrushSelected += brushDisplay.NewIndexSelected;
+
+            player.Setup(world);
             menu.Setup();
 
             fsm.AddState(player);
@@ -60,19 +71,15 @@ namespace Mithmarie
             fsm.AddTransition(new Transition(menu, player));
 
             fsm.Open(player);
-
-            // ===
-
-            ServiceLocator<IMessageService>.Locate().Send("[WASD] for movement and [MOUSE] for looking.\n" +
-                "Use [RMB] to place blocks, [LMB] to destroy.", Color.black, 4f);
+            Utils.IntroduceTool(world, ServiceLocator<IMessageService>.Locate());
         }
 
         private void Update() => fsm.Update();
         private void FixedUpdate() => fsm.FixedUpdate();
 
-        private void OnDestroy()
-        {
-            // ...
-        }
+        /// <summary>
+        /// !INVERSE
+        /// </summary>
+        private void OnDestroy() { }
     }
 }

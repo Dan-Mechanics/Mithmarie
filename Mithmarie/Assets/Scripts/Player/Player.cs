@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,7 +7,10 @@ using UnityEngine.InputSystem;
 namespace Mithmarie
 {
     public class Player : StateBehaviour
-    {   
+    {
+        public event Action OnOpen;
+        public event Action OnClose;
+        
         [SerializeField] private Terraformer addTerraform = default;
         [SerializeField] private Terraformer removeTerraform = default;
         [SerializeField] private SelectionPreview addSelectionPreview = default;
@@ -16,14 +20,9 @@ namespace Mithmarie
         [SerializeField] private HoverPreview hoverPreview = default;
 
         private StateBehaviour[] behaviour;
-        private PlayerDisplay playerHUD;
-        private World world;
 
-        public void Setup(World world, PlayerDisplay playerHUD)
+        public void Setup(World world)
         {
-            this.world = world;
-            this.playerHUD = playerHUD;
-
             List<StateBehaviour> list = GetComponentsInChildren<StateBehaviour>().ToList();
             list.Remove(this);
             behaviour = list.ToArray();
@@ -35,31 +34,28 @@ namespace Mithmarie
             removeTerraform.Setup(world);
 
             brushManager.Setup(world);
-
             hoverPreview.Setup();
         }
         
         public override void Enter()
         {
             base.Enter();
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-
             for (int i = 0; i < behaviour.Length; i++)
             {
                 behaviour[i].Enter();
             }
 
-            playerHUD.Show();
-
             addTerraform.OnPreview += addSelectionPreview.UpdatePreview;
             removeTerraform.OnPreview += removeSelectionPreview.UpdatePreview;
-
             hoverHighlight.OnHover += hoverPreview.UpdatePreview;
-            hoverHighlight.OnHover += playerHUD.SetCenterText;
 
             addTerraform.OnEditSelection += brushManager.AddSelection;
             removeTerraform.OnEditSelection += brushManager.RemoveSelection;
+
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
+            OnOpen?.Invoke();
         }
 
         public override void Exit()
@@ -70,23 +66,14 @@ namespace Mithmarie
                 behaviour[i].Exit();
             }
 
-            if (playerHUD != null)
-                playerHUD.Hide();
-
             addTerraform.OnPreview -= addSelectionPreview.UpdatePreview;
             removeTerraform.OnPreview -= removeSelectionPreview.UpdatePreview;
-
             hoverHighlight.OnHover -= hoverPreview.UpdatePreview;
-            hoverHighlight.OnHover -= playerHUD.SetCenterText;
 
-            if (brushManager == null)
-                return;
+            addTerraform.OnEditSelection -= brushManager.AddSelection;
+            removeTerraform.OnEditSelection -= brushManager.RemoveSelection;
 
-            if (addTerraform != null)
-                addTerraform.OnEditSelection -= brushManager.AddSelection;
-
-            if (removeTerraform != null)
-                removeTerraform.OnEditSelection -= brushManager.RemoveSelection;
+            OnClose?.Invoke();
         }
 
         public override void OnFrame()

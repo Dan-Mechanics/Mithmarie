@@ -10,8 +10,6 @@ namespace Mithmarie
     public class BrushManager : StateBehaviour
     {
         public event Action<int> OnNewBrushSelected;
-
-        [SerializeField] private Brush[] brushes = default;
         [SerializeField, Min(0f)] private float deadzone = default;
         private readonly IBrushable[] brushables = new IBrushable[]
         {

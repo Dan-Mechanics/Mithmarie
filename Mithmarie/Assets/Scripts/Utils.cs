@@ -25,7 +25,13 @@ namespace Mithmarie
             return direction.magnitude <= width;
         }
 
-
+        public static void IntroduceTool(World world, IMessageService message)
+        {
+            world.Add(Vector3Int.zero);
+            world.Flush();
+            message.Send("[WASD] for movement and [MOUSE] for looking.\n" +
+                "Use [RMB] to place blocks, [LMB] to destroy.", Color.black, 4f);
+        }
         // possibly add things like:
         // snap to grid or round to decimal or like string formatting for unity debug color
         // or like array to 3D space with the width of the plane as index type beat
