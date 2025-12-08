@@ -93,7 +93,7 @@ namespace Mithmarie
             {
                 for (int z = 0; z < depth; z++)
                 {
-                    for (int y = x+1 - 1; y >= 0; y--)
+                    for (int y = x; y >= 0; y--)
                     {
                         temp.x = x * xDirection;
                         temp.y = y * yDirection;
@@ -119,7 +119,7 @@ namespace Mithmarie
             {
                 for (int z = 0; z < depth; z++)
                 {
-                    for (int y = z+1 - 1; y >= 0; y--)
+                    for (int y = z; y >= 0; y--)
                     {
                         temp.x = x * xDirection;
                         temp.y = y * yDirection;
