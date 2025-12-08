@@ -9,7 +9,7 @@ namespace Mithmarie
 
         public void Setup(World world) => this.world = world;
         public void Add(Vector3Int a, Vector3Int b) => Summarize(a, b, true);
-        public void Remove(Vector3Int a, Vector3Int b) => Summarize(a, b, true);
+        public void Remove(Vector3Int a, Vector3Int b) => Summarize(a, b, false);
 
         private void Summarize(Vector3Int a, Vector3Int b, bool add)
         {
@@ -25,6 +25,7 @@ namespace Mithmarie
         private void Apply(int height, int radius, Vector3Int center, bool add)
         {
             int halfHeight = Mathf.CeilToInt(height / 2f);
+            center.y++;
 
             for (int x = -radius; x <= radius; x++)
             {

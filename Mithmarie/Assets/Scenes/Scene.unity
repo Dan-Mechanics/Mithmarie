@@ -1365,7 +1365,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5960359173949541903, guid: f57ebd6712a0ca040a05e6d9f4d96050, type: 3}
       propertyPath: m_text
-      value: Export
+      value: Export ( OBJ )
       objectReference: {fileID: 0}
     - target: {fileID: 7823168416533342386, guid: f57ebd6712a0ca040a05e6d9f4d96050, type: 3}
       propertyPath: m_Pivot.x
@@ -1738,6 +1738,8 @@ MonoBehaviour:
   slotPrefab: {fileID: 1629591524865239822, guid: 0e7ce6560ddb705459422740d369d751, type: 3}
   perSlotOffset: 115
   globalOffset: {x: -15, y: 15}
+  colorA: {r: 0.77254903, g: 0.90588236, b: 0.98039216, a: 1}
+  colorB: {r: 0.63529414, g: 0.73333335, b: 0.85882354, a: 1}
   brushes:
   - {fileID: 11400000, guid: f9afa530b46079d4db399f80e631cb3b, type: 2}
   - {fileID: 11400000, guid: f7358ad9fecc1f54684084063ab9ab7e, type: 2}

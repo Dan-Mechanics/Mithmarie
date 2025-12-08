@@ -54,8 +54,10 @@ namespace Mithmarie
         {
             index += direction;
             index %= brushables.Length;
-            current = brushables[index];
+            if (index < 0)
+                index += brushables.Length;
 
+            current = brushables[index];
             OnNewBrushSelected?.Invoke(index);
         }
     }

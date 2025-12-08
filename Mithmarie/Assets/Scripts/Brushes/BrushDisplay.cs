@@ -8,6 +8,8 @@ namespace Mithmarie
         [SerializeField] private GameObject slotPrefab = default;
         [SerializeField] private float perSlotOffset = default;
         [SerializeField] private Vector2 globalOffset = default;
+        [SerializeField] private Color colorA = Color.white;
+        [SerializeField] private Color colorB = Color.white;
         [SerializeField] private Brush[] brushes = default;
 
         private Slot[] slots;
@@ -39,7 +41,7 @@ namespace Mithmarie
             for (int i = 0; i < slots.Length; i++)
             {
                 slots[i].arrow.SetActive(i == index);
-                slots[i].image.color = i == index ? Color.white : Color.gray;
+                slots[i].image.color = i == index ? colorA : colorB;
             }
         }
 
