@@ -5,8 +5,8 @@ namespace Mithmarie
 {
     public class Stairs : IBrushable
     {
-        private readonly World world;
         private readonly Transform player;
+        private readonly World world;
 
         public Stairs(World world, Transform player)
         {
