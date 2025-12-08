@@ -33,7 +33,6 @@ namespace Mithmarie
             addTerraform.Setup(world);
             removeTerraform.Setup(world);
 
-            brushManager.Setup(world);
             hoverPreview.Setup();
         }
         

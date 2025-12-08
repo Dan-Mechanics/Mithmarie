@@ -5,9 +5,13 @@ namespace Mithmarie
 {
     public class Fill : IBrushable
     {
-        private World world;
+        private readonly World world;
 
-        public void Setup(World world) => this.world = world;
+        public Fill(World world)
+        {
+            this.world = world;
+        }
+
         public void Add(Vector3Int a, Vector3Int b) => Apply(a, b, true);
         public void Remove(Vector3Int a, Vector3Int b) => Apply(a, b, false);
 

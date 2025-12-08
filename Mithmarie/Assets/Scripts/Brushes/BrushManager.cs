@@ -11,22 +11,20 @@ namespace Mithmarie
     {
         public event Action<int> OnNewBrushSelected;
         [SerializeField, Min(0f)] private float deadzone = default;
-        private readonly IBrushable[] brushables = new IBrushable[]
-        {
-            new Fill(),
-            new Walls(),
-            new Cylinder()
-        };
+        private IBrushable[] brushables;
 
         private IBrushable current;
         private int index;
 
-        public void Setup(World world)
+        public void Setup(World world, Transform eyes)
         {
-            for (int i = 0; i < brushables.Length; i++)
+            brushables = new IBrushable[]
             {
-                brushables[i].Setup(world);
-            }
+                new Fill(world),
+                new Walls(world),
+                new Cylinder(world),
+                new Stairs(world, eyes)
+            };
 
             index = -1;
             ChangeBrush(1);

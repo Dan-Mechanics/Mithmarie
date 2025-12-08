@@ -5,9 +5,13 @@ namespace Mithmarie
 {
     public class Cylinder : IBrushable
     {
-        private World world;
+        private readonly World world;
 
-        public void Setup(World world) => this.world = world;
+        public Cylinder(World world)
+        {
+            this.world = world;
+        }
+
         public void Add(Vector3Int a, Vector3Int b) => Summarize(a, b, true);
         public void Remove(Vector3Int a, Vector3Int b) => Summarize(a, b, false);
 
