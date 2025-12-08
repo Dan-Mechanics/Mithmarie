@@ -11,7 +11,7 @@ namespace Mithmarie
         public void Add(Vector3Int a, Vector3Int b) => Apply(a, b, true);
         public void Remove(Vector3Int a, Vector3Int b) => Apply(a, b, false);
 
-        public void Apply(Vector3Int a, Vector3Int b, bool add)
+        private void Apply(Vector3Int a, Vector3Int b, bool add)
         {
             int width = Mathf.Abs(b.x - a.x) + 1;
             int height = Mathf.Abs(b.y - a.y) + 1;
