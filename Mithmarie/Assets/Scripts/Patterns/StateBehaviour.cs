@@ -11,12 +11,6 @@ namespace Mithmarie
         public virtual void Exit() { }
         public virtual void OnFrame() { }
         public virtual void OnTick() { }
-
-        /// <summary>
-        /// !NEW CODE
-        /// </summary>
-        public virtual void OnDestroy() => Exit();
-
         protected void Close() => OnYield?.Invoke(this);
     }
 }

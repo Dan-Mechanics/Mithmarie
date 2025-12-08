@@ -76,10 +76,6 @@ namespace Mithmarie
 
         private void Update() => fsm.Update();
         private void FixedUpdate() => fsm.FixedUpdate();
-
-        /// <summary>
-        /// !INVERSE
-        /// </summary>
-        private void OnDestroy() { }
+        private void OnApplicationQuit() => fsm?.Close();
     }
 }
