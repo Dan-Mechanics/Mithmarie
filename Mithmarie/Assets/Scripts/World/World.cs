@@ -110,6 +110,15 @@ namespace Mithmarie
             return blocks;
         }
 
+        public bool Has(Vector3Int blockPos)
+        {
+            Vector3Int chunkPos = Utils.GetChunkPos(blockPos, CHUNK_SIZE);
+            if (!chunks.ContainsKey(chunkPos))
+                return false;
+
+            return chunks[chunkPos].Contains(blockPos);
+        }
+
         private void NotifyChunkChange(Vector3Int chunkPos)
         {
             changedChunkPositions.Add(chunkPos);

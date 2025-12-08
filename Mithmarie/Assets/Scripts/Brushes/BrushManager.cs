@@ -4,15 +4,13 @@ using UnityEngine.InputSystem;
 
 namespace Mithmarie
 {
-    /// <summary>
-    /// Make a seperate class for UI memes.
-    /// </summary>
     public class BrushManager : StateBehaviour
     {
         public event Action<int> OnNewBrushSelected;
+        
         [SerializeField, Min(0f)] private float deadzone = default;
-        private IBrushable[] brushables;
 
+        private IBrushable[] brushables;
         private IBrushable current;
         private int index;
 
@@ -23,7 +21,8 @@ namespace Mithmarie
                 new Fill(world),
                 new Walls(world),
                 new Cylinder(world),
-                new Stairs(world, eyes)
+                new Stairs(world, eyes),
+                new Clone(world)
             };
 
             index = -1;
