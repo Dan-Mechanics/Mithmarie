@@ -101,8 +101,8 @@ namespace Mithmarie
 
             world.Clear();
             world.Deserialize(reader, message);
-
             reader.Close();
+
             world.Flush();
             CloseCompletely();
         }

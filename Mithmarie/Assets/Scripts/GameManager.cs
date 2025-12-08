@@ -62,6 +62,8 @@ namespace Mithmarie
             brushManager.Setup(world, eyes.parent);
             brushManager.OnNewBrushSelected += brushDisplay.NewIndexSelected;
 
+            Utils.IntroduceTool(world, ServiceLocator<IMessageService>.Locate());
+
             player.Setup(world);
             menu.Setup();
 
@@ -71,7 +73,6 @@ namespace Mithmarie
             fsm.AddTransition(new Transition(menu, player));
 
             fsm.Open(player);
-            Utils.IntroduceTool(world, ServiceLocator<IMessageService>.Locate());
         }
 
         private void Update() => fsm.Update();
