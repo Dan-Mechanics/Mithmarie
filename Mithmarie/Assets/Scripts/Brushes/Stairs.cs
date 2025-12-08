@@ -47,10 +47,10 @@ namespace Mithmarie
                     MakeNorthFacingStairs(a, add, width, depth, xDirection, yDirection, zDirection);
                     break;
                 case CardinalDirection.East:
-                    MakeNorthFacingStairs(a, add, width, depth, xDirection, yDirection, zDirection);
+                    MakeEastFacingStairs(a, add, width, depth, xDirection, yDirection, zDirection);
                     break;
                 case CardinalDirection.South:
-                    MakeNorthFacingStairs(a, add, width, depth, xDirection, yDirection, zDirection);
+                    MakeSouthFacingStairs(a, add, width, depth, xDirection, yDirection, zDirection);
                     break;
                 case CardinalDirection.West:
                     MakeWestFacingStairs(a, add, width, depth, xDirection, yDirection, zDirection);
@@ -68,6 +68,58 @@ namespace Mithmarie
                 for (int z = 0; z < depth; z++)
                 {
                     for (int y = 0; y < z + 1; y++)
+                    {
+                        temp.x = x * xDirection;
+                        temp.y = y * yDirection;
+                        temp.z = z * zDirection;
+
+                        if (add)
+                        {
+                            world.Add(a + temp);
+                        }
+                        else
+                        {
+                            world.Remove(a + temp);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void MakeEastFacingStairs(Vector3Int a, bool add, int width, int depth, int xDirection, int yDirection, int zDirection)
+        {
+            Vector3Int temp = Vector3Int.zero;
+            for (int x = 0; x < width; x++)
+            {
+                for (int z = 0; z < depth; z++)
+                {
+                    for (int y = x+1 - 1; y >= 0; y--)
+                    {
+                        temp.x = x * xDirection;
+                        temp.y = y * yDirection;
+                        temp.z = z * zDirection;
+
+                        if (add)
+                        {
+                            world.Add(a + temp);
+                        }
+                        else
+                        {
+                            world.Remove(a + temp);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void MakeSouthFacingStairs(Vector3Int a, bool add, int width, int depth, int xDirection, int yDirection, int zDirection)
+        {
+            Vector3Int temp = Vector3Int.zero;
+            for (int x = 0; x < width; x++)
+            {
+                for (int z = 0; z < depth; z++)
+                {
+                    for (int y = z+1 - 1; y >= 0; y--)
                     {
                         temp.x = x * xDirection;
                         temp.y = y * yDirection;
