@@ -140,7 +140,7 @@ namespace Mithmarie
 
             try
             {
-                writer.Write(Application.version);
+                // writer.Write(Application.version);
                 writer.Write(blockCount * 3);
                 foreach (KeyValuePair<Vector3Int, HashSet<Vector3Int>> chunk in chunks)
                 {
