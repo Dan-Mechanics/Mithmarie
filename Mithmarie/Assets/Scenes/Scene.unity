@@ -1365,7 +1365,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5960359173949541903, guid: f57ebd6712a0ca040a05e6d9f4d96050, type: 3}
       propertyPath: m_text
-      value: Export OBJ
+      value: Export
       objectReference: {fileID: 0}
     - target: {fileID: 7823168416533342386, guid: f57ebd6712a0ca040a05e6d9f4d96050, type: 3}
       propertyPath: m_Pivot.x
@@ -3064,11 +3064,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1162151958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 482.809, y: 130.9979}
-  m_Pivot: {x: 0.5, y: 0}
+  m_SizeDelta: {x: 482.80896, y: 130.99792}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &1657479047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3123,8 +3123,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 1024
+  m_HorizontalAlignment: 4
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -4162,7 +4162,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5960359173949541903, guid: f57ebd6712a0ca040a05e6d9f4d96050, type: 3}
       propertyPath: m_text
-      value: Back to Default
+      value: Reset to Default
       objectReference: {fileID: 0}
     - target: {fileID: 7823168416533342386, guid: f57ebd6712a0ca040a05e6d9f4d96050, type: 3}
       propertyPath: m_Pivot.x
