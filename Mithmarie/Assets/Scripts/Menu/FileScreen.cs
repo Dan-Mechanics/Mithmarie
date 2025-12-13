@@ -17,17 +17,19 @@ namespace Mithmarie
         [SerializeField] private Button exportButton = default;
 
         private World world;
+        private IBinarySerializable level;
         private IMessageService message;
         private IExportStrategy exportStrat;
         private IWorldMeshStrategy worldMeshStrat;
         private string savePath;
         private string exportPath;
 
-        public void Setup(World world, IExportStrategy exportStrat, IWorldMeshStrategy worldMeshStrat)
+        public void Setup(World world, IExportStrategy exportStrat, IWorldMeshStrategy worldMeshStrat, IBinarySerializable level)
         {
             this.world = world;
             this.exportStrat = exportStrat;
             this.worldMeshStrat = worldMeshStrat;
+            this.level = level;
             message = ServiceLocator<IMessageService>.Locate();
 
             if (File.Exists(SavePathPath))
@@ -49,7 +51,7 @@ namespace Mithmarie
             BinaryWriter writer = new BinaryWriter(stream);
 
             world.Flush();
-            world.Serialize(writer, message);
+            level.Serialize(writer, message);
 
             writer.Flush();
             writer.Close();
@@ -100,7 +102,7 @@ namespace Mithmarie
             savePath = path;
 
             world.Clear();
-            world.Deserialize(reader, message);
+            level.Deserialize(reader, message);
             reader.Close();
 
             world.Flush();

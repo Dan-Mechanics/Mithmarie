@@ -140,7 +140,6 @@ namespace Mithmarie
 
             try
             {
-                writer.Write(Application.version);
                 writer.Write(blockCount * 3);
                 foreach (KeyValuePair<Vector3Int, HashSet<Vector3Int>> chunk in chunks)
                 {
@@ -162,10 +161,6 @@ namespace Mithmarie
         {
             try
             {
-                string fileVersion = reader.ReadString();
-                if (fileVersion != Application.version)
-                    message.Send($"Loading from a different version. This might cause problems. \nNEW: {Application.version} | OLD: {fileVersion}", Color.yellow);
-
                 int count = reader.ReadInt32();
                 Vector3Int pos = Vector3Int.zero;
                 int axisCounter = 0;

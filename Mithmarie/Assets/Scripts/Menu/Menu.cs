@@ -20,10 +20,10 @@ namespace Mithmarie
         /// You could possiblely make it so GameManager injects the dependencies to the other states here.
         /// This might make it too unreadable thought.
         /// </summary>
-        public void Setup()
+        public void Setup(IBinarySerializable level)
         {
             message = ServiceLocator<IMessageService>.Locate();
-            fileScreen.Setup(FindAnyObjectByType<World>(), new OBJ(), new GreedyWorldMesh());
+            fileScreen.Setup(FindAnyObjectByType<World>(), new OBJ(), new GreedyWorldMesh(), level);
             settingsScreen.Setup();
 
             screens = GetComponentsInChildren<Screen>(true);

@@ -8,7 +8,7 @@ namespace Mithmarie
     {
         public event Action<int> OnNewBrushSelected;
         
-        [SerializeField, Min(0f)] private float deadzone = default;
+        [SerializeField, Min(0f)] private float scrollDeadzone = default;
 
         private IBrushable[] brushables;
         private IBrushable current;
@@ -37,11 +37,11 @@ namespace Mithmarie
             base.OnFrame();
             float value = Mouse.current.scroll.value.y;
 
-            if (value > deadzone)
+            if (value > scrollDeadzone)
             {
                 ChangeBrush(1);
             }
-            else if (value < -deadzone)
+            else if (value < -scrollDeadzone)
             {
                 ChangeBrush(-1);
             }
