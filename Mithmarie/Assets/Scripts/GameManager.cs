@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Mithmarie
 {
@@ -64,8 +65,8 @@ namespace Mithmarie
 
             Utils.IntroduceTool(world, ServiceLocator<IMessageService>.Locate());
 
-            player.Setup(world);
-            menu.Setup();
+            player.Setup(world); //                  YOU CAN ADD MORE STUFF HERE LATER.
+            menu.Setup(new Level(new List<IBinarySerializable> { world }));
 
             fsm.AddState(player);
             fsm.AddState(menu);
