@@ -25,6 +25,9 @@ namespace Mithmarie
             }
         }
 
+        public string GetShortName() => "obj";
+        public string GetWholeName() => "Wavefront";
+
         private string GetMeshOBJ(Mesh mesh)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
@@ -47,8 +50,8 @@ namespace Mithmarie
                 builder.AppendLine(string.Format("vt {0} {1}", uv.x, uv.y));
             }
 
-            builder.AppendLine("s 1");
-            builder.AppendLine("s off");
+            //builder.AppendLine("s 1");
+            //builder.AppendLine("s off");
 
             /*for (int i = 0; i < mesh.subMeshCount; i++)
             {
@@ -65,17 +68,15 @@ namespace Mithmarie
 
             for (int j = 0; j < mesh.triangles.Length; j += 3)
             {
-                builder.AppendLine(string.Format("f {0}/{0} {1}/{1} {2}/{2}",
-                mesh.triangles[j] + 1,
-                mesh.triangles[j + 1] + 1,
-                mesh.triangles[j + 2] + 1));
+                builder.AppendLine (
+                    string.Format("f {0}/{0} {1}/{1} {2}/{2}",
+                    mesh.triangles[j] + 1,
+                    mesh.triangles[j + 1] + 1,
+                    mesh.triangles[j + 2] + 1)
+                );
             }
 
-            string str = builder.ToString();
-
-            Debug.Log(str);
-
-            return str;
+            return builder.ToString();
         }
     }
 }
