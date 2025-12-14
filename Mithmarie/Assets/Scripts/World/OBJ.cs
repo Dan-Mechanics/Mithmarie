@@ -17,7 +17,7 @@ namespace Mithmarie
             try
             {
                 using StreamWriter writer = new StreamWriter(path);
-                writer.Write(GetMeshOBJ(mesh.name, mesh, Matrix4x4.identity));
+                writer.Write(GetMeshOBJ(mesh));
             }
             catch (Exception exception)
             {
@@ -25,41 +25,57 @@ namespace Mithmarie
             }
         }
 
-        private string GetMeshOBJ(string name, Mesh mesh, Matrix4x4 objTransform)
+        private string GetMeshOBJ(Mesh mesh)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             StringBuilder builder = new StringBuilder();
 
-            foreach (Vector3 v in mesh.vertices)
+            builder.AppendLine($"o {mesh.name}");
+
+            foreach (Vector3 vert in mesh.vertices)
             {
-                Vector3 writeV = (objTransform != Matrix4x4.identity && objTransform != default) ? objTransform.MultiplyPoint(v) : v;
-                builder.Append(string.Format("v {0} {1} {2}\n", writeV.x, writeV.y, writeV.z));
+                builder.AppendLine(string.Format("v {0} {1} {2}", vert.x, vert.y, vert.z));
             }
 
-            foreach (Vector3 v in mesh.uv)
+            foreach (Vector3 normal in mesh.normals)
             {
-                builder.Append(string.Format("vt {0} {1} {2}\n", v.x, v.y, v.z));
+                builder.AppendLine(string.Format("vn {0} {1} {2}", normal.x, normal.y, normal.z));
             }
 
-            foreach (Vector3 v in mesh.normals)
+            foreach (Vector2 uv in mesh.uv)
             {
-                builder.Append(string.Format("vn {0} {1} {2}\n", v.x, v.y, v.z));
+                builder.AppendLine(string.Format("vt {0} {1}", uv.x, uv.y));
             }
 
-            for (int material = 0; material < mesh.subMeshCount; material++)
+            builder.AppendLine("s 1");
+            builder.AppendLine("s off");
+
+            /*for (int i = 0; i < mesh.subMeshCount; i++)
             {
                 builder.Append(string.Format("\ng {0}\n", name));
-                int[] triangles = mesh.GetTriangles(material);
-                for (int i = 0; i < triangles.Length; i += 3)
+                int[] triangles = mesh.GetTriangles(i);
+                for (int j = 0; j < triangles.Length; j += 3)
                 {
-                    builder.Append(string.Format("f {0}/{0} {1}/{1} {2}/{2}\n",
-                    triangles[i] + 1,
-                    triangles[i + 1] + 1,
-                    triangles[i + 2] + 1));
+                    builder.AppendLine(string.Format("f {0}/{0} {1}/{1} {2}/{2}",
+                    triangles[j] + 1,
+                    triangles[j + 1] + 1,
+                    triangles[j + 2] + 1));
                 }
+            }*/
+
+            for (int j = 0; j < mesh.triangles.Length; j += 3)
+            {
+                builder.AppendLine(string.Format("f {0}/{0} {1}/{1} {2}/{2}",
+                mesh.triangles[j] + 1,
+                mesh.triangles[j + 1] + 1,
+                mesh.triangles[j + 2] + 1));
             }
 
-            return builder.ToString();
+            string str = builder.ToString();
+
+            Debug.Log(str);
+
+            return str;
         }
     }
 }

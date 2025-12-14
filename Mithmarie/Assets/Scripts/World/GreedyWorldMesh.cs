@@ -11,6 +11,7 @@ namespace Mithmarie
             List<int> tris = new List<int>();
             List<Vector2> uvs = new List<Vector2>();
             Mesh mesh = new Mesh();
+            mesh.name = "greedy_level";
 
             MeshingUtils.GenerateGreedyMesh(blocks, blocks.Contains, verts, tris, uvs);
 
