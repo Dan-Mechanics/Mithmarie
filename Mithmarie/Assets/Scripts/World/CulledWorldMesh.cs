@@ -11,6 +11,7 @@ namespace Mithmarie
             List<int> tris = new List<int>();
             List<Vector2> uvs = new List<Vector2>();
             Mesh mesh = new Mesh();
+            mesh.name = "culled_level";
 
             MeshingUtils.GenerateCulledMesh(blocks, blocks.Contains, verts, tris, uvs);
 

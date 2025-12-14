@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Mithmarie
 {
@@ -10,8 +9,6 @@ namespace Mithmarie
         public event Action<Vector3Int, Vector3Int> OnEditSelection;
 
         [SerializeField] private Transform eyes = default;
-        [SerializeField] private bool leftMouseButton = default;
-        [SerializeField] private PersistentBool swapMouseButtons;
         [SerializeField] private TerraformRaycast raycast = default;
 
         private readonly SelectionInformation selection = new SelectionInformation();
@@ -26,27 +23,7 @@ namespace Mithmarie
             ResetToDefault();
         }
 
-        private bool ButtonPressed()
-        {
-            if (!swapMouseButtons.value)
-                return leftMouseButton ? Mouse.current.leftButton.wasPressedThisFrame : Mouse.current.rightButton.wasPressedThisFrame;
-
-            return !leftMouseButton ? Mouse.current.leftButton.wasPressedThisFrame : Mouse.current.rightButton.wasPressedThisFrame;
-        }
-
-        private bool ButtonReleased()
-        {
-            if (!swapMouseButtons.value)
-                return leftMouseButton ? Mouse.current.leftButton.wasReleasedThisFrame : Mouse.current.rightButton.wasReleasedThisFrame;
-
-            return !leftMouseButton ? Mouse.current.leftButton.wasReleasedThisFrame : Mouse.current.rightButton.wasReleasedThisFrame;
-        }
-
-        public override void Enter()
-        {
-            base.Enter();
-            swapMouseButtons.Load();
-        }
+        private void ResetToDefault() => firstPos = null;
 
         public override void OnTick()
         {
@@ -60,38 +37,34 @@ namespace Mithmarie
             if(firstPos == null)
             {
                 OnPreview?.Invoke(null);
+                return;
             }
-            else
-            {
-                selection.a = (Vector3Int)firstPos;
-                selection.b = secondPos;
-                OnPreview?.Invoke(selection);
-            }
+
+            selection.a = (Vector3Int)firstPos;
+            selection.b = secondPos;
+            OnPreview?.Invoke(selection);
         }
 
-        public override void OnFrame()
+        public void Press()
         {
-            base.OnFrame();
-            if (ButtonPressed())
-            {
-                ResetToDefault();
-                raycast.Cast(eyes, out hit);
-                firstPos = Utils.GetBlockPos(hit.point);
-            }
-
-            if (firstPos != null && ButtonReleased())
-            {
-                raycast.Cast(eyes, out hit);
-                secondPos = Utils.GetBlockPos(hit.point);
-
-                world.RememberTheFollowing();
-                OnEditSelection?.Invoke((Vector3Int)firstPos, secondPos);
-                world.Flush();
-
-                ResetToDefault();
-            }
+            ResetToDefault();
+            raycast.Cast(eyes, out hit);
+            firstPos = Utils.GetBlockPos(hit.point);
         }
 
-        private void ResetToDefault() => firstPos = null;
+        public void Release()
+        {
+            if (firstPos == null)
+                return;
+            
+            raycast.Cast(eyes, out hit);
+            secondPos = Utils.GetBlockPos(hit.point);
+
+            world.RememberTheFollowing();
+            OnEditSelection?.Invoke((Vector3Int)firstPos, secondPos);
+            world.Flush();
+
+            ResetToDefault();
+        }
     }
 }

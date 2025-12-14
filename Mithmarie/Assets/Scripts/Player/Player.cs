@@ -11,6 +11,7 @@ namespace Mithmarie
         public event Action OnOpen;
         public event Action OnClose;
         
+        [SerializeField] private TerraformInput terraformInput = default;
         [SerializeField] private Terraformer addTerraform = default;
         [SerializeField] private Terraformer removeTerraform = default;
         [SerializeField] private SelectionPreview addSelectionPreview = default;
@@ -51,6 +52,12 @@ namespace Mithmarie
             addTerraform.OnEditSelection += brushManager.AddSelection;
             removeTerraform.OnEditSelection += brushManager.RemoveSelection;
 
+            terraformInput.OnAddPressed += addTerraform.Press;
+            terraformInput.OnAddReleased += addTerraform.Release;
+            
+            terraformInput.OnRemovePressed += removeTerraform.Press;
+            terraformInput.OnRemoveReleased += removeTerraform.Release;
+
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
@@ -71,6 +78,12 @@ namespace Mithmarie
 
             addTerraform.OnEditSelection -= brushManager.AddSelection;
             removeTerraform.OnEditSelection -= brushManager.RemoveSelection;
+
+            terraformInput.OnAddPressed -= addTerraform.Press;
+            terraformInput.OnAddReleased -= addTerraform.Release;
+
+            terraformInput.OnRemovePressed -= removeTerraform.Press;
+            terraformInput.OnRemoveReleased -= removeTerraform.Release;
 
             OnClose?.Invoke();
         }

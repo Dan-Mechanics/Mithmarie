@@ -111,7 +111,7 @@ namespace Mithmarie
 
         private void StartExport()
         {
-            ExtensionFilter[] extensionList = new[] { new ExtensionFilter("Wavefront", "obj") };
+            ExtensionFilter[] extensionList = new[] { new ExtensionFilter(exportStrat.GetWholeName(), exportStrat.GetShortName()) };
 
             string path = StandaloneFileBrowser.SaveFilePanel("Save As", "", "level", extensionList);
             if (!Utils.IsStringValid(path))
