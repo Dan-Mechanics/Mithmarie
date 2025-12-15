@@ -1,4 +1,5 @@
 using SFB;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,8 +31,8 @@ namespace Mithmarie
             this.exportStrat = exportStrat;
             this.worldMeshStrat = worldMeshStrat;
             this.level = level;
-            message = ServiceLocator<IMessageService>.Locate();
 
+            message = ServiceLocator<IMessageService>.Locate();
             if (File.Exists(SavePathPath))
                 savePath = File.ReadAllText(SavePathPath);
 
@@ -47,6 +48,8 @@ namespace Mithmarie
             }
 
             message.Send("Saving ...", (Color.green + Color.gray + Color.gray) / 3f, MESSAGE_DURATION);
+            File.WriteAllText(SavePathPath, savePath);
+
             FileStream stream = File.OpenWrite(savePath);
             BinaryWriter writer = new BinaryWriter(stream);
 
@@ -68,12 +71,15 @@ namespace Mithmarie
                 return;
 
             savePath = path;
+            File.WriteAllText(SavePathPath, savePath);
+
             Save();
         }
 
         private void New()
         {
             savePath = string.Empty;
+            File.WriteAllText(SavePathPath, savePath);
 
             world.Clear();
             world.Flush();
@@ -92,6 +98,7 @@ namespace Mithmarie
 
         private void LoadPath(string path)
         {
+            Debug.LogWarning(path);
             if (!Utils.IsStringValid(path) || !File.Exists(path))
                 return;
 
@@ -100,6 +107,7 @@ namespace Mithmarie
             BinaryReader reader = new BinaryReader(stream);
 
             savePath = path;
+            File.WriteAllText(SavePathPath, savePath);
 
             world.Clear();
             level.Deserialize(reader, message);
@@ -127,8 +135,12 @@ namespace Mithmarie
         private void Export()
         {
             world.Flush();
-            Mesh mesh = worldMeshStrat.GenerateMesh(world.GetAllBlocks());
-            exportStrat.Export(exportPath, mesh, message);
+
+            /*Mesh mesh = worldMeshStrat.GenerateMesh(world.GetAllBlocks());
+            exportStrat.Export(exportPath, mesh, message);*/
+
+            List<Mesh> meshes = worldMeshStrat.GenerateAsChunks(world.GetChunks());
+            exportStrat.ExportAsChunks(exportPath, meshes, message);
 
             CloseCompletely();
         }
@@ -155,11 +167,6 @@ namespace Mithmarie
             loadButton.onClick.RemoveListener(Load);
             newButton.onClick.RemoveListener(New);
             exportButton.onClick.RemoveListener(StartExport);
-        }
-
-        private void OnApplicationQuit()
-        {
-            File.WriteAllText(SavePathPath, savePath);
         }
     }
 }

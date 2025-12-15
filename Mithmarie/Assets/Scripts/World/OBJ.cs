@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -25,6 +26,19 @@ namespace Mithmarie
             }
         }
 
+        public void ExportAsChunks(string path, List<Mesh> meshes, IMessageService message)
+        {
+            try
+            {
+                using StreamWriter writer = new StreamWriter(path);
+                writer.Write(GetMeshesOBJ(meshes));
+            }
+            catch (Exception exception)
+            {
+                message.Send(exception.Message, Color.red);
+            }
+        }
+
         public string GetShortName() => "obj";
         public string GetWholeName() => "Wavefront";
 
@@ -40,18 +54,10 @@ namespace Mithmarie
                 builder.AppendLine(string.Format("v {0} {1} {2}", vert.x, vert.y, vert.z));
             }
 
-            foreach (Vector3 normal in mesh.normals)
-            {
-                builder.AppendLine(string.Format("vn {0} {1} {2}", normal.x, normal.y, normal.z));
-            }
-
             foreach (Vector2 uv in mesh.uv)
             {
                 builder.AppendLine(string.Format("vt {0} {1}", uv.x, uv.y));
             }
-
-            //builder.AppendLine("s 1");
-            //builder.AppendLine("s off");
 
             /*for (int i = 0; i < mesh.subMeshCount; i++)
             {
@@ -73,6 +79,56 @@ namespace Mithmarie
                     mesh.triangles[j] + 1,
                     mesh.triangles[j + 1] + 1,
                     mesh.triangles[j + 2] + 1)
+                );
+            }
+
+            return builder.ToString();
+        }
+
+        private string GetMeshesOBJ(List<Mesh> meshes)
+        {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            StringBuilder builder = new StringBuilder();
+
+            int offset = 0;
+            List<int> triangles = new List<int>();
+            Dictionary<int, Mesh> subMeshPoints = new Dictionary<int, Mesh>();
+            builder.AppendLine($"o obj_level");
+
+            foreach (Mesh mesh in meshes)
+            {
+                foreach (Vector3 vert in mesh.vertices)
+                {
+                    builder.AppendLine(string.Format("v {0} {1} {2}", vert.x, vert.y, vert.z));
+                }
+
+                subMeshPoints.Add(triangles.Count, mesh);
+                foreach (int tri in mesh.triangles)
+                {
+                    triangles.Add(offset + tri);
+                }
+
+                offset += mesh.vertices.Length;
+            }
+
+            foreach (Mesh mesh in meshes)
+            {
+                foreach (Vector2 uv in mesh.uv)
+                {
+                    builder.AppendLine(string.Format("vt {0} {1}", uv.x, uv.y));
+                }
+            }
+
+            for (int j = 0; j < triangles.Count; j += 3)
+            {
+                if(subMeshPoints.ContainsKey(j))
+                    builder.Append(string.Format("\ng {0}\n", subMeshPoints[j].name));
+
+                builder.AppendLine(string.Format (
+                    "f {0}/{0} {1}/{1} {2}/{2}",
+                    triangles[j] + 1,
+                    triangles[j + 1] + 1,
+                    triangles[j + 2] + 1)
                 );
             }
 

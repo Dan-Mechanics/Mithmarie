@@ -23,7 +23,7 @@ namespace Mithmarie
         public void Setup(IBinarySerializable level)
         {
             message = ServiceLocator<IMessageService>.Locate();
-            fileScreen.Setup(FindAnyObjectByType<World>(), new FBX(), new GreedyWorldMesh(), level);
+            fileScreen.Setup(FindAnyObjectByType<World>(), new OBJ(), new GreedyWorldMesh(), level);
             settingsScreen.Setup();
 
             screens = GetComponentsInChildren<Screen>(true);

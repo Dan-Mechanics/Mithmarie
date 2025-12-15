@@ -14,7 +14,7 @@ namespace Mithmarie
         private static readonly List<int> tris = new List<int>();
         private static readonly List<Vector2> uvs = new List<Vector2>();
 
-        private Dictionary<Vector3Int, HashSet<Vector3Int>> allChunks;
+        private Dictionary<Vector3Int, HashSet<Vector3Int>> chunks;
         private Transform eyes;
         private Vector3 center;
         private Mesh mesh;
@@ -39,16 +39,16 @@ namespace Mithmarie
         private bool IsBlockInChunks(Vector3Int blockPos)
         {
             Vector3Int chunkPos = Utils.GetChunkPos(blockPos, World.CHUNK_SIZE);
-            if (!allChunks.ContainsKey(chunkPos))
+            if (!chunks.ContainsKey(chunkPos))
                 return false;
 
-            return allChunks[chunkPos].Contains(blockPos);
+            return chunks[chunkPos].Contains(blockPos);
         }
 
-        public void GenerateMesh(HashSet<Vector3Int> blocks, Dictionary<Vector3Int, HashSet<Vector3Int>> allChunks)
+        public void GenerateMesh(HashSet<Vector3Int> blocks, Dictionary<Vector3Int, HashSet<Vector3Int>> chunks)
         {
             // NOTE: THIS IS PASS-BY-REFERENCE.
-            this.allChunks = allChunks;
+            this.chunks = chunks;
             MeshingUtils.GenerateCulledMesh(blocks, IsBlockInChunks, verts, tris, uvs);
 
             mesh.Clear();
