@@ -63,14 +63,8 @@ namespace Mithmarie
 
             /*foreach (Vector3 normal in mesh.normals)
             {
-                builder.AppendLine(string.Format("vn {0} {1} {2}", normal.x, normal.y, normal.z));
+                builder.AppendLine(string.Format("vn {0} {1} {2}", normal.z, normal.y, normal.x));
             }*/
-
-            for (int i = 0; i < mesh.normals.Length; i+=4)
-            {
-                Vector3 normal = mesh.normals[i];
-                builder.AppendLine(string.Format("vn {0} {1} {2}", normal.x, normal.y, normal.z));
-            }
 
             foreach (Vector2 uv in mesh.uv)
             {

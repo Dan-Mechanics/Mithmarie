@@ -35,6 +35,7 @@ namespace Mithmarie
         {
             try
             {
+                Debug.Log(path);
                 GameObject parent = new GameObject("fbx_level");
                 for (int i = 0; i < meshes.Count; i++)
                 {
