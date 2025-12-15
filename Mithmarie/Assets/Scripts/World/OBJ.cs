@@ -31,14 +31,7 @@ namespace Mithmarie
             try
             {
                 using StreamWriter writer = new StreamWriter(path);
-
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < meshes.Count; i++)
-                {
-                    builder.AppendLine(GetMeshOBJ(meshes[i]));
-                }
-
-                writer.Write(builder.ToString());
+                writer.Write(GetMeshesOBJ(meshes));
             }
             catch (Exception exception)
             {
@@ -86,6 +79,56 @@ namespace Mithmarie
                     mesh.triangles[j] + 1,
                     mesh.triangles[j + 1] + 1,
                     mesh.triangles[j + 2] + 1)
+                );
+            }
+
+            return builder.ToString();
+        }
+
+        private string GetMeshesOBJ(List<Mesh> meshes)
+        {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            StringBuilder builder = new StringBuilder();
+
+            int offset = 0;
+            List<int> triangles = new List<int>();
+            Dictionary<int, Mesh> subMeshPoints = new Dictionary<int, Mesh>();
+            builder.AppendLine($"o obj_level");
+
+            foreach (Mesh mesh in meshes)
+            {
+                foreach (Vector3 vert in mesh.vertices)
+                {
+                    builder.AppendLine(string.Format("v {0} {1} {2}", vert.x, vert.y, vert.z));
+                }
+
+                subMeshPoints.Add(triangles.Count, mesh);
+                foreach (int tri in mesh.triangles)
+                {
+                    triangles.Add(offset + tri);
+                }
+
+                offset += mesh.vertices.Length;
+            }
+
+            foreach (Mesh mesh in meshes)
+            {
+                foreach (Vector2 uv in mesh.uv)
+                {
+                    builder.AppendLine(string.Format("vt {0} {1}", uv.x, uv.y));
+                }
+            }
+
+            for (int j = 0; j < triangles.Count; j += 3)
+            {
+                if(subMeshPoints.ContainsKey(j))
+                    builder.Append(string.Format("\ng {0}\n", subMeshPoints[j].name));
+
+                builder.AppendLine(string.Format (
+                    "f {0}/{0} {1}/{1} {2}/{2}",
+                    triangles[j] + 1,
+                    triangles[j + 1] + 1,
+                    triangles[j + 2] + 1)
                 );
             }
 
