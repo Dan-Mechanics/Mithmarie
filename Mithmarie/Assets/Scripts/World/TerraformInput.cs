@@ -24,30 +24,30 @@ namespace Mithmarie
             base.OnFrame();
             if (!swapMouseButtons.value)
             {
-                if (Mouse.current.leftButton.wasPressedThisFrame)
+                if (Mouse.current.rightButton.wasPressedThisFrame)
                     OnAddPressed?.Invoke();
 
-                if (Mouse.current.leftButton.wasReleasedThisFrame)
+                if (Mouse.current.rightButton.wasReleasedThisFrame)
                     OnAddReleased?.Invoke();
 
-                if (Mouse.current.rightButton.wasPressedThisFrame)
+                if (Mouse.current.leftButton.wasPressedThisFrame)
                     OnRemovePressed?.Invoke();
 
-                if (Mouse.current.rightButton.wasReleasedThisFrame)
+                if (Mouse.current.leftButton.wasReleasedThisFrame)
                     OnRemoveReleased?.Invoke();
             }
             else
             {
-                if (Mouse.current.rightButton.wasPressedThisFrame)
+                if (Mouse.current.leftButton.wasPressedThisFrame)
                     OnAddPressed?.Invoke();
 
-                if (Mouse.current.rightButton.wasReleasedThisFrame)
+                if (Mouse.current.leftButton.wasReleasedThisFrame)
                     OnAddReleased?.Invoke();
 
-                if (Mouse.current.leftButton.wasPressedThisFrame)
+                if (Mouse.current.rightButton.wasPressedThisFrame)
                     OnRemovePressed?.Invoke();
 
-                if (Mouse.current.leftButton.wasReleasedThisFrame)
+                if (Mouse.current.rightButton.wasReleasedThisFrame)
                     OnRemoveReleased?.Invoke();
             }
         }
