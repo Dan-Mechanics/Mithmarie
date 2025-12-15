@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -23,6 +24,11 @@ namespace Mithmarie
             {
                 message.Send(exception.Message, Color.red);
             }
+        }
+
+        public void ExportAsChunks(string path, List<Mesh> meshes, IMessageService message)
+        {
+            throw new NotImplementedException();
         }
 
         public string GetShortName() => "obj";

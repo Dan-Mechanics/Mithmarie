@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor.Formats.Fbx.Exporter;
 using UnityEngine;
 
@@ -16,6 +17,26 @@ namespace Mithmarie
                 GameObject go = new GameObject(mesh.name);
                 go.AddComponent<MeshRenderer>();
                 go.AddComponent<MeshFilter>().sharedMesh = mesh;
+
+                ExportModelOptions options = new ExportModelOptions();
+                options.ExportFormat = ExportFormat.Binary;
+
+                ModelExporter.ExportObject(path, go, options);
+
+                UnityEngine.Object.Destroy(go);
+            }
+            catch (Exception exception)
+            {
+                message.Send(exception.Message, Color.red);
+            }
+        }
+
+        public void ExportAsChunks(string path, List<Mesh> meshes, IMessageService message)
+        {
+            try
+            {
+                GameObject go = new GameObject("fbx_level");
+                
 
                 ExportModelOptions options = new ExportModelOptions();
                 options.ExportFormat = ExportFormat.Binary;
