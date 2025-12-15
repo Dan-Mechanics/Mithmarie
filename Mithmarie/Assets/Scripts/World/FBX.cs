@@ -35,15 +35,21 @@ namespace Mithmarie
         {
             try
             {
-                GameObject go = new GameObject("fbx_level");
-                
+                GameObject parent = new GameObject("fbx_level");
+                for (int i = 0; i < meshes.Count; i++)
+                {
+                    Mesh mesh = meshes[i];
+                    GameObject submesh = new GameObject(mesh.name);
+                    submesh.AddComponent<MeshFilter>().sharedMesh = mesh;
+                    submesh.transform.SetParent(parent.transform);
+                }
 
                 ExportModelOptions options = new ExportModelOptions();
                 options.ExportFormat = ExportFormat.Binary;
 
-                ModelExporter.ExportObject(path, go, options);
+                ModelExporter.ExportObject(path, parent, options);
 
-                UnityEngine.Object.Destroy(go);
+                UnityEngine.Object.Destroy(parent);
             }
             catch (Exception exception)
             {

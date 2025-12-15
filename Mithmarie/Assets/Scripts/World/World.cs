@@ -110,6 +110,8 @@ namespace Mithmarie
             return blocks;
         }
 
+        public Dictionary<Vector3Int, HashSet<Vector3Int>> GetChunks() => chunks;
+
         public bool Has(Vector3Int blockPos)
         {
             Vector3Int chunkPos = Utils.GetChunkPos(blockPos, CHUNK_SIZE);

@@ -1,4 +1,5 @@
 using SFB;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -127,8 +128,11 @@ namespace Mithmarie
         private void Export()
         {
             world.Flush();
-            Mesh mesh = worldMeshStrat.GenerateMesh(world.GetAllBlocks());
-            exportStrat.Export(exportPath, mesh, message);
+            /*Mesh mesh = worldMeshStrat.GenerateMesh(world.GetAllBlocks());
+            exportStrat.Export(exportPath, mesh, message);*/
+
+            List<Mesh> meshes = worldMeshStrat.GenerateAsChunks(world.GetChunks());
+            exportStrat.ExportAsChunks(exportPath, meshes, message);
 
             CloseCompletely();
         }

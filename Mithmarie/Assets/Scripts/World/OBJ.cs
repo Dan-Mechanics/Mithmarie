@@ -28,7 +28,22 @@ namespace Mithmarie
 
         public void ExportAsChunks(string path, List<Mesh> meshes, IMessageService message)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using StreamWriter writer = new StreamWriter(path);
+
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < meshes.Count; i++)
+                {
+                    builder.AppendLine(GetMeshOBJ(meshes[i]));
+                }
+
+                writer.Write(builder.ToString());
+            }
+            catch (Exception exception)
+            {
+                message.Send(exception.Message, Color.red);
+            }
         }
 
         public string GetShortName() => "obj";
@@ -46,8 +61,14 @@ namespace Mithmarie
                 builder.AppendLine(string.Format("v {0} {1} {2}", vert.x, vert.y, vert.z));
             }
 
-            foreach (Vector3 normal in mesh.normals)
+            /*foreach (Vector3 normal in mesh.normals)
             {
+                builder.AppendLine(string.Format("vn {0} {1} {2}", normal.x, normal.y, normal.z));
+            }*/
+
+            for (int i = 0; i < mesh.normals.Length; i+=4)
+            {
+                Vector3 normal = mesh.normals[i];
                 builder.AppendLine(string.Format("vn {0} {1} {2}", normal.x, normal.y, normal.z));
             }
 
