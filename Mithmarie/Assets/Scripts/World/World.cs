@@ -99,7 +99,7 @@ namespace Mithmarie
             ForgetRecentChanges();
         }
 
-        public HashSet<Vector3Int> GetAllBlocks()
+        public HashSet<Vector3Int> GetWorldBlocks()
         {
             HashSet<Vector3Int> blocks = new HashSet<Vector3Int>();
             foreach (HashSet<Vector3Int> chunk in chunks.Values)

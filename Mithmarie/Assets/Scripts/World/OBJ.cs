@@ -10,6 +10,7 @@ namespace Mithmarie
 {
     /// <summary>
     /// https://discussions.unity.com/t/export-unity-mesh-to-obj-or-fbx-format/525773/14
+    /// https://en.wikipedia.org/wiki/Wavefront_.obj_file
     /// </summary>
     public class OBJ : IExportStrategy
     {
@@ -54,23 +55,13 @@ namespace Mithmarie
                 builder.AppendLine(string.Format("v {0} {1} {2}", vert.x, vert.y, vert.z));
             }
 
+            // I DON'T INCLUDE NORMALS ON PURPOSE HERE 
+            // BECAUSE BLENDER AND UNITY CALCULATE THEM AUTOMATICALLY.
+
             foreach (Vector2 uv in mesh.uv)
             {
                 builder.AppendLine(string.Format("vt {0} {1}", uv.x, uv.y));
             }
-
-            /*for (int i = 0; i < mesh.subMeshCount; i++)
-            {
-                builder.Append(string.Format("\ng {0}\n", name));
-                int[] triangles = mesh.GetTriangles(i);
-                for (int j = 0; j < triangles.Length; j += 3)
-                {
-                    builder.AppendLine(string.Format("f {0}/{0} {1}/{1} {2}/{2}",
-                    triangles[j] + 1,
-                    triangles[j + 1] + 1,
-                    triangles[j + 2] + 1));
-                }
-            }*/
 
             for (int j = 0; j < mesh.triangles.Length; j += 3)
             {
@@ -90,9 +81,9 @@ namespace Mithmarie
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             StringBuilder builder = new StringBuilder();
 
-            int offset = 0;
+            int vertOffset = 0;
             List<int> triangles = new List<int>();
-            Dictionary<int, Mesh> subMeshPoints = new Dictionary<int, Mesh>();
+            Dictionary<int, Mesh> subMeshStarts = new Dictionary<int, Mesh>();
             builder.AppendLine($"o obj_level");
 
             foreach (Mesh mesh in meshes)
@@ -102,13 +93,13 @@ namespace Mithmarie
                     builder.AppendLine(string.Format("v {0} {1} {2}", vert.x, vert.y, vert.z));
                 }
 
-                subMeshPoints.Add(triangles.Count, mesh);
+                subMeshStarts.Add(triangles.Count, mesh);
                 foreach (int tri in mesh.triangles)
                 {
-                    triangles.Add(offset + tri);
+                    triangles.Add(vertOffset + tri);
                 }
 
-                offset += mesh.vertices.Length;
+                vertOffset += mesh.vertices.Length;
             }
 
             foreach (Mesh mesh in meshes)
@@ -119,16 +110,16 @@ namespace Mithmarie
                 }
             }
 
-            for (int j = 0; j < triangles.Count; j += 3)
+            for (int i = 0; i < triangles.Count; i += 3)
             {
-                if(subMeshPoints.ContainsKey(j))
-                    builder.Append(string.Format("\ng {0}\n", subMeshPoints[j].name));
+                if(subMeshStarts.ContainsKey(i))
+                    builder.AppendLine().AppendLine(string.Format("g {0}", subMeshStarts[i].name));
 
                 builder.AppendLine(string.Format (
                     "f {0}/{0} {1}/{1} {2}/{2}",
-                    triangles[j] + 1,
-                    triangles[j + 1] + 1,
-                    triangles[j + 2] + 1)
+                    triangles[i] + 1,
+                    triangles[i + 1] + 1,
+                    triangles[i + 2] + 1)
                 );
             }
 

@@ -14,17 +14,9 @@ namespace Mithmarie
         private IBrushable current;
         private int index;
 
-        public void Setup(World world, Transform eyes)
+        public void Setup(IBrushable[] brushables)
         {
-            brushables = new IBrushable[]
-            {
-                new Fill(world),
-                new Walls(world),
-                new Cylinder(world),
-                new Stairs(world, eyes),
-                new Clone(world)
-            };
-
+            this.brushables = brushables;
             index = -1;
             ChangeBrush(1);
         }

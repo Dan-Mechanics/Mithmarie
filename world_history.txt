@@ -1,0 +1,48 @@
+@startuml
+
+interface IBinarySerializable
+{
+    + void Serialize(writer: BinaryWriter, message: IMessageService)
+    + void Deserialize(reader: BinaryReader, message: IMessageService)
+}
+
+class World implements IBinarySerializable
+{
+    + OnDrawChunk: event Action<Vector3Int, Dictionary<Vector3Int, HashSet<Vector3Int>>>
+    + OnNewChanges: event Action<HashSet<Vector3Int>, HashSet<Vector3Int>>
+    + OnClear: event Action
+    
+    + void Add(blockPos: Vector3Int)
+    + void Remove(blockPos: Vector3Int)
+    + void Clear()
+    + void RememberTheFollowing() 
+    + void Flush()
+    + HashSet<Vector3Int> GetAllBlocks()
+    + Dictionary<Vector3Int, HashSet<Vector3Int>> GetChunks()
+    + bool Has(blockPos: Vector3Int)
+}
+
+class ImplicitWorldChange
+{
+    + HashSet<Vector3Int> added
+    + HashSet<Vector3Int> removed
+
+    + ImplicitWorldChange(added: HashSet<Vector3Int>, removed: HashSet<Vector3Int>)
+    + void Undo(World world)
+    + void Redo(World world)
+}
+
+class WorldHistory
+{
+    + void Setup(world: World)
+    + void LogImplicitWorldChange(added: HashSet<Vector3Int>, removed: HashSet<Vector3Int>)
+    + void Clear()
+    + void Undo()
+    + void Redo()
+}
+
+WorldHistory ..>  World
+WorldHistory ..>  ImplicitWorldChange
+ImplicitWorldChange ..>  World
+
+@enduml
