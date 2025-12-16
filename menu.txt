@@ -1,0 +1,105 @@
+@startuml
+
+class StateBehaviour implements IState
+{
+    + OnYield: event Action<IState>
+
+    + virtual void Enter()
+    + virtual void Exit()
+    + virtual void OnFrame()
+    + virtual void OnTick()
+}
+
+class Menu extends StateBehaviour
+{
+    + void Setup(level: IBinarySerializable)
+    + override void OnFrame()
+    + override void OnTick()
+    + override void Enter()
+    + override void Exit()
+}
+
+class Screen extends StateBehaviour
+{
+    + OnDoneWithTask: event Action
+    
+    + override void Enter()
+    + override void Exit()
+}
+
+class SettingsScreen extends Screen
+{
+    + void Setup()
+    + override void Enter()
+    + override void Exit()
+    + void ReturnToDefault()
+}
+
+class FileScreen extends Screen
+{
+    + void Setup()
+    + override void Enter()
+    + override void Exit()
+    + void ReturnToDefault()
+}
+
+interface IDefaultable
+{
+    + void ReturnToDefault()
+}
+
+interface IBinarySerializable
+{
+    + void Serialize(writer: BinaryWriter, message: IMessageService)
+    + void Deserialize(reader: BinaryReader, message: IMessageService)
+}
+
+class World implements IBinarySerializable
+{
+    + OnDrawChunk: event Action<Vector3Int, Dictionary<Vector3Int, HashSet<Vector3Int>>>
+    + OnNewChanges: event Action<HashSet<Vector3Int>, HashSet<Vector3Int>>
+    + OnClear: event Action
+    
+    + void Add(blockPos: Vector3Int)
+    + void Remove(blockPos: Vector3Int)
+    + void Clear()
+    + void RememberTheFollowing() 
+    + void Flush()
+    + HashSet<Vector3Int> GetAllBlocks()
+    + Dictionary<Vector3Int, HashSet<Vector3Int>> GetChunks()
+    + bool Has(blockPos: Vector3Int)
+}
+
+class FSM 
+{
+    + void AddState(state: IState)
+    + void AddTransition(transition: Transition)
+    + void Update() 
+    + void FixedUpdate()
+    + void Open(state: IState)
+    + void Close()
+}
+
+interface IState
+{
+    + OnYield: event Action<IState>
+    
+    + void Enter()
+    + void Exit()
+    + void OnFrame()
+    + void OnTick()
+}
+
+struct Transition
+{
+    + from: IState
+    + to: IState
+}
+
+SettingsScreen ..> IDefaultable
+FileScreen ..> World
+Menu ..> FSM
+FSM ..> IState
+FSM ..> Transition
+
+@enduml

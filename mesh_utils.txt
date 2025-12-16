@@ -2,22 +2,17 @@
 
 interface IExportStrategy 
 {
-    + void Export(path: string, mesh: Mesh, message: IMessageService);
-    + void ExportAsChunks(path: string, meshes: List<Mesh>, message: IMessageService);
-    + string GetShortName();
-    + string GetWholeName();
+    + void Export(path: string, mesh: Mesh, message: IMessageService)
+    + void ExportAsChunks(path: string, meshes: List<Mesh>, message: IMessageService)
+    + string GetShortName()
+    + string GetWholeName()
 }
 
 interface IWorldMeshStrategy
 {
-    + Mesh GenerateMesh(blocks: HashSet<Vector3Int>);
-    + List<Mesh> GenerateAsChunks(chunks: Dictionary<Vector3Int, HashSet<Vector3Int>>);
+    + Mesh GenerateMesh(blocks: HashSet<Vector3Int>)
+    + List<Mesh> GenerateAsChunks(chunks: Dictionary<Vector3Int, HashSet<Vector3Int>>)
 }
-
-class OBJ implements IExportStrategy
-class FBX implements IExportStrategy
-class GreedyWorldMesh implements IWorldMeshStrategy
-class CulledChunk implements IChunkMeshable
 
 class ChunkVisualManager 
 {
@@ -27,10 +22,10 @@ class ChunkVisualManager
 
 interface IChunkMeshable
 {
-    + void Setup(chunkPos: Vector3Int, eyes: Transform);
-    + void Tick();
-    + void GenerateMesh(blocks: HashSet<Vector3Int>, chunks: Dictionary<Vector3Int, HashSet<Vector3Int>>);
-    + void Dispose();
+    + void Setup(chunkPos: Vector3Int, eyes: Transform)
+    + void Tick()
+    + void GenerateMesh(blocks: HashSet<Vector3Int>, chunks: Dictionary<Vector3Int, HashSet<Vector3Int>>)
+    + void Dispose()
 }
 
 class MeshingUtils
@@ -39,7 +34,11 @@ class MeshingUtils
     + void GenerateGreedyMesh(blocks: HashSet<Vector3Int>, hasBlock: Predicate<Vector3Int>, verts: List<Vector3>, tris: List<int>, uvs: List<Vector2>)
 }
 
-ChunkVisualManager --*  IChunkMeshable
+class OBJ implements IExportStrategy
+class GreedyWorldMesh implements IWorldMeshStrategy
+class CulledChunk implements IChunkMeshable
+
+ChunkVisualManager ..>  IChunkMeshable
 GreedyWorldMesh ..>  MeshingUtils
 CulledChunk ..>  MeshingUtils
 

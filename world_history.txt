@@ -2,8 +2,8 @@
 
 interface IBinarySerializable
 {
-    + void Serialize(writer: BinaryWriter, message: IMessageService);
-    + void Deserialize(reader: BinaryReader, message: IMessageService);
+    + void Serialize(writer: BinaryWriter, message: IMessageService)
+    + void Deserialize(reader: BinaryReader, message: IMessageService)
 }
 
 class World implements IBinarySerializable
@@ -24,8 +24,8 @@ class World implements IBinarySerializable
 
 class ImplicitWorldChange
 {
-    + HashSet<Vector3Int> added;
-    + HashSet<Vector3Int> removed;
+    + HashSet<Vector3Int> added
+    + HashSet<Vector3Int> removed
 
     + ImplicitWorldChange(added: HashSet<Vector3Int>, removed: HashSet<Vector3Int>)
     + void Undo(World world)
@@ -42,7 +42,7 @@ class WorldHistory
 }
 
 WorldHistory ..>  World
-WorldHistory --*  ImplicitWorldChange
+WorldHistory ..>  ImplicitWorldChange
 ImplicitWorldChange ..>  World
 
 @enduml

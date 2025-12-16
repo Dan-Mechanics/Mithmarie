@@ -8,7 +8,6 @@ namespace Mithmarie
     {
         [SerializeField] private FileScreen fileScreen = default;
         [SerializeField] private SettingsScreen settingsScreen = default;
-        [Space(15)]
         [SerializeField] private Button closeButton = default;
         [SerializeField] private Button quitButton = default;
 
@@ -18,7 +17,7 @@ namespace Mithmarie
 
         /// <summary>
         /// You could possiblely make it so GameManager injects the dependencies to the other states here.
-        /// This might make it too unreadable thought.
+        /// This might make it too unreadable though.
         /// </summary>
         public void Setup(IBinarySerializable level)
         {
