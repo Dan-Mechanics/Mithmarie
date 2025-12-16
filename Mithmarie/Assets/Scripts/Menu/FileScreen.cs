@@ -16,6 +16,7 @@ namespace Mithmarie
         [SerializeField] private Button saveAsButton = default;
         [SerializeField] private Button loadButton = default;
         [SerializeField] private Button exportButton = default;
+        [SerializeField] private Button exportAsChunksButton = default;
 
         private World world;
         private IBinarySerializable level;
@@ -129,15 +130,39 @@ namespace Mithmarie
             exportPath = path;
 
             CancelInvoke(nameof(Export));
+            CancelInvoke(nameof(ExportAsChunks));
             Invoke(nameof(Export), 0.1f);
+        }
+
+        private void StartExportAsChunks()
+        {
+            ExtensionFilter[] extensionList = new[] { new ExtensionFilter(exportStrat.GetWholeName(), exportStrat.GetShortName()) };
+
+            string path = StandaloneFileBrowser.SaveFilePanel("Save As", "", "level_chunks", extensionList);
+            if (!Utils.IsStringValid(path))
+                return;
+
+            message.Send("Exporting Chunks ...", Color.gray, MESSAGE_DURATION);
+            exportPath = path;
+
+            CancelInvoke(nameof(ExportAsChunks));
+            CancelInvoke(nameof(Export));
+            Invoke(nameof(ExportAsChunks), 0.1f);
         }
 
         private void Export()
         {
             world.Flush();
 
-            /*Mesh mesh = worldMeshStrat.GenerateMesh(world.GetAllBlocks());
-            exportStrat.Export(exportPath, mesh, message);*/
+            Mesh mesh = worldMeshStrat.GenerateMesh(world.GetWorldBlocks());
+            exportStrat.Export(exportPath, mesh, message);
+
+            CloseCompletely();
+        }
+
+        private void ExportAsChunks()
+        {
+            world.Flush();
 
             List<Mesh> meshes = worldMeshStrat.GenerateAsChunks(world.GetChunks());
             exportStrat.ExportAsChunks(exportPath, meshes, message);
@@ -154,6 +179,7 @@ namespace Mithmarie
             saveButton.onClick.AddListener(Save);
             loadButton.onClick.AddListener(Load);
             exportButton.onClick.AddListener(StartExport);
+            exportAsChunksButton.onClick.AddListener(StartExportAsChunks);
             newButton.onClick.AddListener(New);
         }
 
@@ -166,6 +192,7 @@ namespace Mithmarie
             saveButton.onClick.RemoveListener(Save);
             loadButton.onClick.RemoveListener(Load);
             newButton.onClick.RemoveListener(New);
+            exportAsChunksButton.onClick.RemoveListener(StartExportAsChunks);
             exportButton.onClick.RemoveListener(StartExport);
         }
     }
