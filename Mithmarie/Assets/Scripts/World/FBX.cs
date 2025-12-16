@@ -16,8 +16,8 @@ namespace Mithmarie
         {
             try
             {
-                // THIS IS BECAUSE IT DOESN'T WORK IN BUILD 
-                // VERSION OF THE GAME.
+                // THIS IS BECAUSE IT DOESN'T WORK IN THE 
+                // BUILD VERSION OF THE GAME.
                 throw new NotImplementedException();
 
                 /*GameObject go = new GameObject(mesh.name);
