@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Formats.Fbx.Exporter;
 using UnityEngine;
+/*using UnityEditor.Formats.Fbx.Exporter;*/
 
 namespace Mithmarie
 {
@@ -12,7 +12,12 @@ namespace Mithmarie
     {
         public void Export(string path, Mesh mesh, IMessageService message)
         {
-            try
+            throw new NotImplementedException();
+
+            // THIS IS BECAUSE IT DOESN'T WORK IN BUILD 
+            // VERSION OF THE GAME.
+
+            /*try
             {
                 GameObject go = new GameObject(mesh.name);
                 go.AddComponent<MeshRenderer>();
@@ -28,12 +33,13 @@ namespace Mithmarie
             catch (Exception exception)
             {
                 message.Send(exception.Message, Color.red);
-            }
+            }*/
         }
 
         public void ExportAsChunks(string path, List<Mesh> meshes, IMessageService message)
         {
-            try
+            throw new NotImplementedException();
+            /*try
             {
                 Debug.Log(path);
                 GameObject parent = new GameObject("fbx_level");
@@ -55,7 +61,7 @@ namespace Mithmarie
             catch (Exception exception)
             {
                 message.Send(exception.Message, Color.red);
-            }
+            }*/
         }
 
         public string GetShortName() => "fbx";
