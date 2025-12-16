@@ -113,7 +113,7 @@ namespace Mithmarie
             for (int i = 0; i < triangles.Count; i += 3)
             {
                 if(subMeshStarts.ContainsKey(i))
-                    builder.Append(string.Format("\ng {0}\n", subMeshStarts[i].name));
+                    builder.AppendLine().AppendLine(string.Format("g {0}", subMeshStarts[i].name));
 
                 builder.AppendLine(string.Format (
                     "f {0}/{0} {1}/{1} {2}/{2}",

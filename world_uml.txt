@@ -1,0 +1,126 @@
+@startuml
+
+
+interface IBinarySerializable
+{
+    + void Serialize(writer: BinaryWriter, message: IMessageService);
+    + void Deserialize(reader: BinaryReader, message: IMessageService);
+}
+
+interface IState 
+{
+    + void Setup(fsm : FSM)
+    + void EnterState()
+    + void Update()
+    + void ExitState()
+}
+
+class Timer
+{
+    + onTimerComplete: event Action
+    
+    + void SetTimer(value: float)
+}
+
+class HealthStateHandler implements IInteractable
+{
+    - fsm: readonly FSM<HealthState>
+    
+    + Setup()
+    + Update()
+    + Interact(type: Type)
+}
+
+class KillerAttacks
+{
+    + void Slash()
+    + void Infect()
+}
+
+class World implements IBinarySerializable
+{
+    + OnDrawChunk: event Action<Vector3Int, Dictionary<Vector3Int, HashSet<Vector3Int>>>
+    + OnNewChanges: event Action<HashSet<Vector3Int>, HashSet<Vector3Int>>
+    + OnClear: event Action
+    
+    + void Add(blockPos: Vector3Int)
+    + void Remove(blockPos: Vector3Int)
+    + void Clear()
+    + void RememberTheFollowing() 
+    + void Flush()
+    + HashSet<Vector3Int> GetAllBlocks()
+    + Dictionary<Vector3Int, HashSet<Vector3Int>> GetChunks()
+    + bool Has(blockPos: Vector3Int)
+}
+
+abstract class HealthState implements IState 
+{
+    + onEnter: event Action
+    + onExit: event Action
+    # fsm: FSM
+    
+    + virtual void Setup(fsm : FSM)
+    + virtual void EnterState()
+    + virtual void Update()
+    + virtual void ExitState()
+    + virtual void Interact(type: Type)
+}
+
+
+class HealthyState extends HealthState 
+{
+    + override Setup(fsm : FSM)
+    + override EnterState()
+    + override Update()
+    + override ExitState()
+}
+
+class InjuredState extends HealthState 
+{
+    + override Setup(fsm : FSM)
+    + override EnterState()
+    + override Update()
+    + override ExitState()
+}
+
+class DeepWoundState extends HealthState 
+{
+    - timer : Timer
+    
+    + override void Setup(fsm : FSM)
+    + override void EnterState()
+    + override void Update()
+    + override void ExitState()
+    + override void Interact(type: Type)
+}
+
+class DownedState extends HealthState 
+{
+    -recoveryProgress: float
+    
+    + override void Setup(fsm : FSM)
+    + override void EnterState()
+    + override void Update()
+    + override void ExitState()
+    + override void Interact(type: Type)
+}
+
+class InfectedState extends HealthState 
+{
+    - timer : Timer
+    
+    + override void Setup(fsm : FSM)
+    + override void EnterState()
+    + override void Update()
+    + override void ExitState()
+    + override void Interact(type: Type)
+}
+
+FSM --* HealthStateHandler
+Timer --* DeepWoundState
+Timer --*  InfectedState
+FSM ..> IState
+HealthStateHandler ..> HealthState
+KillerAttacks ..> IInteractable
+
+@enduml
