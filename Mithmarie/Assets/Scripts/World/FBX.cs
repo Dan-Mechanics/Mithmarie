@@ -6,20 +6,21 @@ using UnityEngine;
 namespace Mithmarie
 {
     /// <summary>
+    /// https://docs.unity3d.com/Packages/com.autodesk.fbx@3.0/manual/index.html
     /// https://docs.unity3d.com/Packages/com.unity.formats.fbx@2.0/manual/devguide.html
+    /// https://help.autodesk.com/cloudhelp/2018/ENU/FBX-Developer-Help/cpp_ref/annotated.html
     /// </summary>
     public class FBX : IExportStrategy
     {
         public void Export(string path, Mesh mesh, IMessageService message)
         {
-            throw new NotImplementedException();
-
-            // THIS IS BECAUSE IT DOESN'T WORK IN BUILD 
-            // VERSION OF THE GAME.
-
-            /*try
+            try
             {
-                GameObject go = new GameObject(mesh.name);
+                // THIS IS BECAUSE IT DOESN'T WORK IN BUILD 
+                // VERSION OF THE GAME.
+                throw new NotImplementedException();
+
+                /*GameObject go = new GameObject(mesh.name);
                 go.AddComponent<MeshRenderer>();
                 go.AddComponent<MeshFilter>().sharedMesh = mesh;
 
@@ -28,21 +29,20 @@ namespace Mithmarie
 
                 ModelExporter.ExportObject(path, go, options);
 
-                UnityEngine.Object.Destroy(go);
+                UnityEngine.Object.Destroy(go);*/
             }
             catch (Exception exception)
             {
                 message.Send(exception.Message, Color.red);
-            }*/
+            }
         }
 
         public void ExportAsChunks(string path, List<Mesh> meshes, IMessageService message)
         {
-            throw new NotImplementedException();
-            /*try
+            try
             {
-                Debug.Log(path);
-                GameObject parent = new GameObject("fbx_level");
+                throw new NotImplementedException();
+                /*GameObject parent = new GameObject("fbx_level");
                 for (int i = 0; i < meshes.Count; i++)
                 {
                     Mesh mesh = meshes[i];
@@ -56,12 +56,12 @@ namespace Mithmarie
 
                 ModelExporter.ExportObject(path, parent, options);
 
-                UnityEngine.Object.Destroy(parent);
+                UnityEngine.Object.Destroy(parent);*/
             }
             catch (Exception exception)
             {
                 message.Send(exception.Message, Color.red);
-            }*/
+            }
         }
 
         public string GetShortName() => "fbx";
