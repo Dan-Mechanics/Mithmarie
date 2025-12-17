@@ -60,8 +60,7 @@ namespace Mithmarie
             player.OnClose += playerDisplay.Hide;
             hoverHighlight.OnHover += playerDisplay.SetCenterText;
 
-            brushManager.Setup(new IBrushable[]
-            {
+            brushManager.Setup(new IBrushable[] {
                 new Fill(world),
                 new Walls(world),
                 new Cylinder(world),
