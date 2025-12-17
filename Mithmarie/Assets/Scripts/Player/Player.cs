@@ -20,13 +20,13 @@ namespace Mithmarie
         [SerializeField] private HoverHighlight hoverHighlight = default;
         [SerializeField] private HoverPreview hoverPreview = default;
 
-        private StateBehaviour[] behaviour;
+        private StateBehaviour[] behaviours;
 
         public void Setup(World world)
         {
             List<StateBehaviour> list = GetComponentsInChildren<StateBehaviour>().ToList();
             list.Remove(this);
-            behaviour = list.ToArray();
+            behaviours = list.ToArray();
 
             addSelectionPreview.Setup();
             removeSelectionPreview.Setup();
@@ -40,9 +40,9 @@ namespace Mithmarie
         public override void Enter()
         {
             base.Enter();
-            for (int i = 0; i < behaviour.Length; i++)
+            for (int i = 0; i < behaviours.Length; i++)
             {
-                behaviour[i].Enter();
+                behaviours[i].Enter();
             }
 
             addTerraform.OnPreview += addSelectionPreview.UpdatePreview;
@@ -67,9 +67,9 @@ namespace Mithmarie
         public override void Exit()
         {
             base.Exit();
-            for (int i = 0; i < behaviour.Length; i++)
+            for (int i = 0; i < behaviours.Length; i++)
             {
-                behaviour[i].Exit();
+                behaviours[i].Exit();
             }
 
             addTerraform.OnPreview -= addSelectionPreview.UpdatePreview;
@@ -92,9 +92,9 @@ namespace Mithmarie
         {
             base.OnFrame();
 
-            for (int i = 0; i < behaviour.Length; i++)
+            for (int i = 0; i < behaviours.Length; i++)
             {
-                behaviour[i].OnFrame();
+                behaviours[i].OnFrame();
             }
 
             if (Keyboard.current.escapeKey.wasPressedThisFrame)
@@ -104,9 +104,9 @@ namespace Mithmarie
         public override void OnTick()
         {
             base.OnTick();
-            for (int i = 0; i < behaviour.Length; i++)
+            for (int i = 0; i < behaviours.Length; i++)
             {
-                behaviour[i].OnTick();
+                behaviours[i].OnTick();
             }
         }
     }
