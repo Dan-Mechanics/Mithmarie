@@ -7,7 +7,7 @@ namespace Mithmarie
         private const float MAX_CAM_ANGLE = 90f;
         [SerializeField] private Transform eyes = default;
         [SerializeField] private PersistentFloat sens = default;
-        [SerializeField] public Vector2 rotation = default;
+        [SerializeField] private Vector2 rotation = default;
 
         private Vector2 mouseInput;
 
