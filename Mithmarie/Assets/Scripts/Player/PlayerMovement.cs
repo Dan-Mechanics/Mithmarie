@@ -18,15 +18,13 @@ namespace Mithmarie
 
         public override void OnFrame()
         {
-            Vector3 movement = GetInputDirection();
-            movement = transform.TransformDirection(movement);
-            movement.Normalize();
-
+            Vector3 movement = GetMovement();
             float currentSpeed = Keyboard.current[sprintKey].isPressed ? speed.Value * sprintSpeedMult : speed.Value;
-            transform.Translate(currentSpeed * Time.deltaTime * movement, Space.World);
+
+            transform.Translate(currentSpeed * Time.deltaTime * movement, Space.Self);
         }
 
-        private Vector3 GetInputDirection() 
+        private Vector3 GetMovement() 
         {
             float z = 0f;
             if (Keyboard.current.wKey.isPressed)
@@ -42,6 +40,9 @@ namespace Mithmarie
             if (Keyboard.current.aKey.isPressed)
                 x--;
 
+            Vector3 result = new Vector3(x, 0f, z);
+            result.Normalize();
+
             float y = 0f;
             if (Keyboard.current.spaceKey.isPressed)
                 y++;
@@ -49,7 +50,8 @@ namespace Mithmarie
             if (Keyboard.current[downKey].isPressed)
                 y--;
 
-            return new Vector3(x, y, z);
+            result.y = y;
+            return result;
         }
     }
 }
