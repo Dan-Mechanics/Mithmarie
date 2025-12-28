@@ -9,7 +9,6 @@ namespace Mithmarie
         [SerializeField] private LayerMask mask = default;
         [SerializeField] private QueryTriggerInteraction interaction = default;
 
-        // TODO: ACTION EVENTS AND LINK VIA GAMEMANAGER.
         [SerializeField] private UnityEvent onEnter = default;
         [SerializeField] private UnityEvent onExit = default;
 

@@ -99,7 +99,6 @@ namespace Mithmarie
 
         private void LoadPath(string path)
         {
-            Debug.LogWarning(path);
             if (!Utils.IsStringValid(path) || !File.Exists(path))
                 return;
 
