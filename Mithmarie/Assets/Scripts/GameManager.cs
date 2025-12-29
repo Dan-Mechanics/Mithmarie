@@ -16,6 +16,9 @@ namespace Mithmarie
         private PopupManager popupManager;
         private WorldHistory history;
         private FileScreen fileScreen;
+        private OverlapSphere greenOverlap;
+        private OverlapSphere redOverlap;
+        private OverlayManager overlayManager;
         private Transform eyes;
         private Player player;
         private World world;
@@ -34,8 +37,13 @@ namespace Mithmarie
             hoverHighlight = FindAnyObjectByType<HoverHighlight>();
             brushDisplay = FindAnyObjectByType<BrushDisplay>();
             brushManager = FindAnyObjectByType<BrushManager>();
+            overlayManager = FindAnyObjectByType<OverlayManager>();
 
             eyes = GameObject.FindWithTag("MainCamera").transform;
+            OverlapSphere[] overlapSpheres = eyes.GetComponents<OverlapSphere>();
+            greenOverlap = overlapSpheres[0];
+            redOverlap = overlapSpheres[1];
+
             popupManager = FindAnyObjectByType<PopupManager>();
         }
         
@@ -48,6 +56,9 @@ namespace Mithmarie
             keyboardShortcuts.OnSave += fileScreen.Save;
             keyboardShortcuts.OnUndo += history.Undo;
             keyboardShortcuts.OnRedo += history.Redo;
+
+            greenOverlap.OnChange += overlayManager.EnableGreen;
+            redOverlap.OnChange += overlayManager.EnableRed;
 
             world.OnClear += history.Clear;
             world.OnNewChanges += history.LogImplicitWorldChange;
