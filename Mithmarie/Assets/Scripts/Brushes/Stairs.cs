@@ -8,10 +8,7 @@ namespace Mithmarie
         private readonly Transform player;
         private readonly World world;
 
-        // I KNOW GLOBAL VARIABLES ARE NOT
-        // IDEAL BUT IT WOULD BE WORSE OTHERWISE.
-        private float slope;
-        private Vector3Int prev;
+        private delegate bool IsBlockWithinStair(int width, int height, int depth, int x, int y, int z);
 
         public Stairs(World world, Transform player)
         {
@@ -47,87 +44,51 @@ namespace Mithmarie
             int yDirection = a.y <= b.y ? 1 : -1;
             int zDirection = a.z <= b.z ? 1 : -1;
 
-            Debug.Log(direction);
-            slope = (float)height / depth;
+            IsBlockWithinStair isBlockWithinStair = IsBlockWithinStairNorth;
+            switch (direction)
+            {
+                case CardinalDirection.East:
+                    //isBlockWithinStair =
+                    break;
+                case CardinalDirection.South:
+                    break;
+                case CardinalDirection.West:
+                    break;
+            }
 
+            Vector3Int temp = Vector3Int.zero;
             for (int x = 0; x < width; x++)
             {
-                for (int z = 0; z < depth; z++)
+                for (int y = 0; y < height; y++)
                 {
-                    switch (direction)
+                    for (int z = 0; z < depth; z++)
                     {
-                        case CardinalDirection.North:
-                            MakeNorthFacingStairs(a, add, x, z, xDirection, yDirection, zDirection);
-                            break;
-                        case CardinalDirection.East:
-                            MakeEastFacingStairs(a, add, x, z, xDirection, yDirection, zDirection);
-                            break;
-                        case CardinalDirection.South:
-                            MakeSouthFacingStairs(a, add, x, z, xDirection, yDirection, zDirection);
-                            break;
-                        case CardinalDirection.West:
-                            MakeWestFacingStairs(a, add, x, z, xDirection, yDirection, zDirection);
-                            break;
+                        if (!isBlockWithinStair(width, height, depth, x, y, z))
+                            continue;
+                        
+                        temp.x = x * xDirection;
+                        temp.y = y * yDirection;
+                        temp.z = z * zDirection;
+
+                        if (add)
+                        {
+                            world.Add(a + temp);
+                        }
+                        else
+                        {
+                            world.Remove(a + temp);
+                        }
                     }
                 }
             }
         }
 
-        private void MakeNorthFacingStairs(Vector3Int a, bool add, int x, int z, int xDirection, int yDirection, int zDirection)
+        private bool IsBlockWithinStairNorth(int width, int height, int depth, int x, int y, int z)
         {
-            int max = z + 1;
-            for (int y = 0; y < max; y++)
-            {
-                Place(a, add, xDirection, yDirection, zDirection, x, y, z);
-            }
-        }
-
-        private void MakeEastFacingStairs(Vector3Int a, bool add, int x, int z, int xDirection, int yDirection, int zDirection)
-        {
-            int max = x;
-            for (int y = max; y >= 0; y--)
-            {
-                Place(a, add, xDirection, yDirection, zDirection, x, y, z);
-            }
-        }
-
-        private void MakeSouthFacingStairs(Vector3Int a, bool add, int x, int z, int xDirection, int yDirection, int zDirection)
-        {
-            int max = z;
-            for (int y = max; y >= 0; y--)
-            {
-                Place(a, add, xDirection, yDirection, zDirection, x, y, z);
-            }
-        }
-
-        private void MakeWestFacingStairs(Vector3Int a, bool add, int x, int z, int xDirection, int yDirection, int zDirection)
-        {
-            int max = x + 1;
-            for (int y = 0; y < max; y++)
-            {
-                Place(a, add, xDirection, yDirection, zDirection, x, y, z);
-            }
-        }
-
-        private void Place(Vector3Int blockPos, bool add, int xDirection, int yDirection, int zDirection, int x, int y, int z)
-        {
-            blockPos += new Vector3Int(x * xDirection, (int)(y * yDirection * slope), z * zDirection);
-            int height = Mathf.Abs(blockPos.y - prev.y);
-
-            for (int i = 0; i < height; i++)
-            {
-                if (add)
-                {
-                    world.Add(blockPos);
-                }
-                else
-                {
-                    world.Remove(blockPos);
-                }
-                blockPos.y++;
-            }
-
-            prev = blockPos;
+            float slope = (float)height / depth;
+            int max = Mathf.CeilToInt(z * slope);
+            //Debug.Log($"max{max}, y{y}");
+            return y <= max;
         }
     }
 }
