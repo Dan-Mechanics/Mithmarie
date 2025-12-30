@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Mithmarie
@@ -70,8 +69,6 @@ namespace Mithmarie
 
             IsBlockWithinStairs isBlockWithinStairs = IsBlockWithinStairsNorth;
             CardinalDirection cardinal = GetCardinal(player.rotation.eulerAngles.y);
-            Debug.Log(cardinal);
-
             switch (cardinal)
             {
                 case CardinalDirection.East:
@@ -85,6 +82,7 @@ namespace Mithmarie
                     break;
             }
 
+            Vector3Int temp = Vector3Int.zero;
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
@@ -93,15 +91,19 @@ namespace Mithmarie
                     {
                         if (!isBlockWithinStairs(width, height, depth, x, y, z))
                             continue;
-                        
-                        Vector3Int offset = new Vector3Int(x, y, z);
+
+                        temp.x = x;
+                        temp.y = y;
+                        temp.z = z;
+                        temp += a;
+
                         if (add)
                         {
-                            world.Add(a + offset);
+                            world.Add(temp);
                         }
                         else
                         {
-                            world.Remove(a + offset);
+                            world.Remove(temp);
                         }
                     }
                 }

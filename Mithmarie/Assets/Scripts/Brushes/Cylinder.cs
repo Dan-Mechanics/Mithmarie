@@ -12,46 +12,80 @@ namespace Mithmarie
             this.world = world;
         }
 
-        public void Add(Vector3Int a, Vector3Int b) => Summarize(a, b, true);
-        public void Remove(Vector3Int a, Vector3Int b) => Summarize(a, b, false);
+        public void Add(Vector3Int a, Vector3Int b) => Apply(a, b, true);
+        public void Remove(Vector3Int a, Vector3Int b) => Apply(a, b, false);
 
-        private void Summarize(Vector3Int a, Vector3Int b, bool add)
+        private void Apply(Vector3Int a, Vector3Int b, bool add)
         {
-            int height = Mathf.Abs(b.y - a.y) + 1;
-            float radius = Vector2.Distance(new Vector2(b.x, b.z), new Vector2(a.x, a.z)) + 1f;
-            radius /= 2f;
-
-            Vector3 center = a + b;
-            center /= 2f;
-            Apply(height, Mathf.CeilToInt(radius), Utils.GetBlockPos(center), add);
-        }
-
-        private void Apply(int height, int radius, Vector3Int center, bool add)
-        {
-            int halfHeight = Mathf.CeilToInt(height / 2f);
-            center.y++;
-
-            for (int x = -radius; x <= radius; x++)
+            if (a.x > b.x)
             {
-                for (int z = -radius; z <= radius; z++)
+                int aX = a.x;
+                int bX = b.x;
+                a.x = bX;
+                b.x = aX;
+            }
+
+            if (a.y > b.y)
+            {
+                int aY = a.y;
+                int bY = b.y;
+                a.y = bY;
+                b.y = aY;
+            }
+
+            if (a.z > b.z)
+            {
+                int aZ = a.z;
+                int bZ = b.z;
+                a.z = bZ;
+                b.z = aZ;
+            }
+
+            int width = Mathf.Abs(b.x - a.x) + 1;
+            int height = Mathf.Abs(b.y - a.y) + 1;
+            int depth = Mathf.Abs(b.z - a.z) + 1;
+
+            Vector3Int temp = Vector3Int.zero;
+            for (int x = 0; x < width; x++)
+            {
+                for (int z = 0; z < depth; z++)
                 {
-                    float mag = new Vector2(x, z).magnitude;
-                    if (mag > radius || mag < radius - 1f)
+                    if (!IsBlockWithinCircle(x, z, width, depth))
                         continue;
 
-                    for (int y = -halfHeight; y < halfHeight; y++)
+                    for (int y = 0; y < height; y++)
                     {
+                        temp.x = x;
+                        temp.y = y;
+                        temp.z = z;
+                        temp += a;
+
                         if (add)
                         {
-                            world.Add(center + new Vector3Int(x, y, z));
+                            world.Add(temp);
                         }
                         else
                         {
-                            world.Remove(center + new Vector3Int(x, y, z));
+                            world.Remove(temp);
                         }
                     }
                 }
             }
+        }
+
+        private bool IsBlockWithinCircle(int x, int z, int width, int depth)
+        {
+            float xRad = width / 2f;
+            float zRad = depth / 2f;
+
+            float xCenter = (width - 1) / 2f;
+            float zCenter = (depth - 1) / 2f;
+
+            float xDist = Mathf.Abs(x - xCenter);
+            float zDist = Mathf.Abs(z - zCenter);
+
+            float dist = Utils.NormalizeElipse(new Vector3(xDist, 0f, zDist), xRad, zRad);
+            return dist <= xRad && dist >= xRad - 1f;
         }
     }
 }

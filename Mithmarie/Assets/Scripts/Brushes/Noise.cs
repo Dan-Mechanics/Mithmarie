@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace Mithmarie
 {
-    public class Walls : IBrushable
+    public class Noise : IBrushable
     {
         private readonly World world;
 
-        public Walls(World world)
+        public Noise(World world)
         {
             this.world = world;
         }
@@ -28,19 +28,19 @@ namespace Mithmarie
             Vector3Int temp = Vector3Int.zero;
             for (int x = 0; x < width; x++)
             {
-                for (int z = 0; z < depth; z++)
+                for (int y = 0; y < height; y++)
                 {
-                    if (x > 0 && x < width - 1 && z > 0 && z < depth - 1)
-                        continue;
-
-                    for (int y = 0; y < height; y++)
+                    for (int z = 0; z < depth; z++)
                     {
+                        if (UnityEngine.Random.Range(0, 3) != 0)
+                            continue;
+
                         temp.x = x * xDirection;
                         temp.y = y * yDirection;
                         temp.z = z * zDirection;
                         temp += a;
 
-                        if (add)
+                        if (add) 
                         {
                             world.Add(temp);
                         }

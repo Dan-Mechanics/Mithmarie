@@ -76,7 +76,8 @@ namespace Mithmarie
                 new Walls(world),
                 new Cylinder(world),
                 new Stairs(world, eyes),
-                new Clone(world)
+                new Clone(world),
+                new Noise(world)
             });
 
             brushManager.OnNewBrushSelected += brushDisplay.NewIndexSelected;

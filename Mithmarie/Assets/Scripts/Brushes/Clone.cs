@@ -6,7 +6,7 @@ namespace Mithmarie
 {
     public class Clone : IBrushable
     {
-        private readonly HashSet<Vector3Int> model = new HashSet<Vector3Int>();
+        private readonly HashSet<Vector3Int> example = new HashSet<Vector3Int>();
         private readonly World world;
 
         public Clone(World world)
@@ -14,12 +14,12 @@ namespace Mithmarie
             this.world = world;
         }
 
-        public void Add(Vector3Int a, Vector3Int b) => Copy(a, b);
-        public void Remove(Vector3Int a, Vector3Int b) => Paste(a);
+        public void Add(Vector3Int a, Vector3Int b) => Paste(a);
+        public void Remove(Vector3Int a, Vector3Int b) => Copy(a, b);
 
         private void Copy(Vector3Int a, Vector3Int b)
         {
-            model.Clear();
+            example.Clear();
             
             int width = Mathf.Abs(b.x - a.x) + 1;
             int height = Mathf.Abs(b.y - a.y) + 1;
@@ -42,7 +42,7 @@ namespace Mithmarie
                         temp += a;
 
                         if (world.Has(temp))
-                            model.Add(temp - a);
+                            example.Add(temp - a);
                     }
                 }
             }
@@ -50,9 +50,9 @@ namespace Mithmarie
 
         private void Paste(Vector3Int a)
         {
-            foreach (Vector3Int blockPos in model)
+            foreach (Vector3Int blockPos in example)
             {
-                world.Add(a + blockPos + Vector3Int.up);
+                world.Add(a + blockPos);
             }
         }
     }

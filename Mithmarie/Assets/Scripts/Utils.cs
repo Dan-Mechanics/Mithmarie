@@ -35,6 +35,14 @@ namespace Mithmarie
             return direction.magnitude <= width;
         }
 
+        public static float NormalizeElipse(Vector3 direction, float width, float height)
+        {
+            float relativeHeight = height / width;
+
+            direction.z /= relativeHeight;
+            return direction.magnitude;
+        }
+
         public static void IntroduceTool(World world, IMessageService message)
         {
             world.Add(Vector3Int.zero);
