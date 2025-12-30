@@ -8,7 +8,7 @@ namespace Mithmarie
         private readonly Transform player;
         private readonly World world;
 
-        private delegate bool IsBlockWithinStair(int width, int height, int depth, int x, int y, int z);
+        private delegate bool IsBlockWithinStairs(int width, int height, int depth, int x, int y, int z);
 
         public Stairs(World world, Transform player)
         {
@@ -19,9 +19,8 @@ namespace Mithmarie
         public void Add(Vector3Int a, Vector3Int b) => Apply(a, b, true);
         public void Remove(Vector3Int a, Vector3Int b) => Apply(a, b, false);
 
-        private void Apply(Vector3Int a, Vector3Int b, bool add)
+        private CardinalDirection GetCardinal(float rot)
         {
-            float rot = player.rotation.eulerAngles.y;
             float angle = 22.5f;
             CardinalDirection direction = CardinalDirection.North;
             if (rot > angle)
@@ -36,59 +35,105 @@ namespace Mithmarie
             if (rot > 270f + angle)
                 direction = CardinalDirection.North;
 
+            return direction;
+        }
+
+        private void Apply(Vector3Int a, Vector3Int b, bool add)
+        {
+            if (a.x > b.x)
+            {
+                int aX = a.x;
+                int bX = b.x;
+                a.x = bX;
+                b.x = aX;
+            }
+
+            if (a.y > b.y)
+            {
+                int aY = a.y;
+                int bY = b.y;
+                a.y = bY;
+                b.y = aY;
+            }
+
+            if (a.z > b.z)
+            {
+                int aZ = a.z;
+                int bZ = b.z;
+                a.z = bZ;
+                b.z = aZ;
+            }
+
             int width = Mathf.Abs(b.x - a.x) + 1;
             int height = Mathf.Abs(b.y - a.y) + 1;
             int depth = Mathf.Abs(b.z - a.z) + 1;
 
-            int xDirection = a.x <= b.x ? 1 : -1;
-            int yDirection = a.y <= b.y ? 1 : -1;
-            int zDirection = a.z <= b.z ? 1 : -1;
+            IsBlockWithinStairs isBlockWithinStairs = IsBlockWithinStairsNorth;
+            CardinalDirection cardinal = GetCardinal(player.rotation.eulerAngles.y);
+            Debug.Log(cardinal);
 
-            IsBlockWithinStair isBlockWithinStair = IsBlockWithinStairNorth;
-            switch (direction)
+            switch (cardinal)
             {
                 case CardinalDirection.East:
-                    //isBlockWithinStair =
+                    isBlockWithinStairs = IsBlockWithinStairsEast;
                     break;
                 case CardinalDirection.South:
+                    isBlockWithinStairs = IsBlockWithinStairsSouth;
                     break;
                 case CardinalDirection.West:
+                    isBlockWithinStairs = IsBlockWithinStairsWest;
                     break;
             }
 
-            Vector3Int temp = Vector3Int.zero;
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
                     for (int z = 0; z < depth; z++)
                     {
-                        if (!isBlockWithinStair(width, height, depth, x, y, z))
+                        if (!isBlockWithinStairs(width, height, depth, x, y, z))
                             continue;
                         
-                        temp.x = x * xDirection;
-                        temp.y = y * yDirection;
-                        temp.z = z * zDirection;
-
+                        Vector3Int offset = new Vector3Int(x, y, z);
                         if (add)
                         {
-                            world.Add(a + temp);
+                            world.Add(a + offset);
                         }
                         else
                         {
-                            world.Remove(a + temp);
+                            world.Remove(a + offset);
                         }
                     }
                 }
             }
         }
 
-        private bool IsBlockWithinStairNorth(int width, int height, int depth, int x, int y, int z)
+        private bool IsBlockWithinStairsNorth(int width, int height, int depth, int x, int y, int z)
         {
             float slope = (float)height / depth;
-            int max = Mathf.CeilToInt(z * slope);
-            //Debug.Log($"max{max}, y{y}");
+            int max = Mathf.RoundToInt(z * slope);
             return y <= max;
+        }
+
+        private bool IsBlockWithinStairsEast(int width, int height, int depth, int x, int y, int z)
+        {
+            float slope = (float)height / width;
+            int max = Mathf.RoundToInt(x * slope);
+            return y <= max;
+        }
+
+        private bool IsBlockWithinStairsSouth(int width, int height, int depth, int x, int y, int z)
+        {
+            // INVERT.
+            z = depth - 1 - z;
+            return IsBlockWithinStairsNorth(width, height, depth, x, y, z);
+        }
+
+        private bool IsBlockWithinStairsWest(int width, int height, int depth, int x, int y, int z)
+        {
+            // INVERT.
+            x = width - 1 - x;
+            return IsBlockWithinStairsEast(width, height, depth, x, y, z);
         }
     }
 }
