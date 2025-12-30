@@ -24,7 +24,6 @@ namespace Mithmarie
         private IExportStrategy exportStrat;
         private IWorldMeshStrategy worldMeshStrat;
         private string savePath;
-        private string exportPath;
 
         public void Setup(World world, IExportStrategy exportStrat, IWorldMeshStrategy worldMeshStrat, IBinarySerializable level)
         {
@@ -117,7 +116,7 @@ namespace Mithmarie
             CloseCompletely();
         }
 
-        private void StartExport()
+        private void Export()
         {
             ExtensionFilter[] extensionList = new[] { new ExtensionFilter(exportStrat.GetWholeName(), exportStrat.GetShortName()) };
 
@@ -126,14 +125,15 @@ namespace Mithmarie
                 return;
 
             message.Send("Exporting ...", Color.gray, MESSAGE_DURATION);
-            exportPath = path;
+            world.Flush();
 
-            CancelInvoke(nameof(Export));
-            CancelInvoke(nameof(ExportAsChunks));
-            Invoke(nameof(Export), 0.1f);
+            Mesh mesh = worldMeshStrat.GenerateMesh(world.GetWorldBlocks());
+            exportStrat.Export(path, mesh, message);
+
+            CloseCompletely();
         }
 
-        private void StartExportAsChunks()
+        private void ExportAsChunks()
         {
             ExtensionFilter[] extensionList = new[] { new ExtensionFilter(exportStrat.GetWholeName(), exportStrat.GetShortName()) };
 
@@ -142,29 +142,10 @@ namespace Mithmarie
                 return;
 
             message.Send("Exporting Chunks ...", Color.gray, MESSAGE_DURATION);
-            exportPath = path;
-
-            CancelInvoke(nameof(ExportAsChunks));
-            CancelInvoke(nameof(Export));
-            Invoke(nameof(ExportAsChunks), 0.1f);
-        }
-
-        private void Export()
-        {
-            world.Flush();
-
-            Mesh mesh = worldMeshStrat.GenerateMesh(world.GetWorldBlocks());
-            exportStrat.Export(exportPath, mesh, message);
-
-            CloseCompletely();
-        }
-
-        private void ExportAsChunks()
-        {
             world.Flush();
 
             List<Mesh> meshes = worldMeshStrat.GenerateAsChunks(world.GetChunks());
-            exportStrat.ExportAsChunks(exportPath, meshes, message);
+            exportStrat.ExportAsChunks(path, meshes, message);
 
             CloseCompletely();
         }
@@ -177,8 +158,8 @@ namespace Mithmarie
             saveAsButton.onClick.AddListener(SaveAs);
             saveButton.onClick.AddListener(Save);
             loadButton.onClick.AddListener(Load);
-            exportButton.onClick.AddListener(StartExport);
-            exportAsChunksButton.onClick.AddListener(StartExportAsChunks);
+            exportButton.onClick.AddListener(Export);
+            exportAsChunksButton.onClick.AddListener(ExportAsChunks);
             newButton.onClick.AddListener(New);
         }
 
@@ -191,8 +172,8 @@ namespace Mithmarie
             saveButton.onClick.RemoveListener(Save);
             loadButton.onClick.RemoveListener(Load);
             newButton.onClick.RemoveListener(New);
-            exportAsChunksButton.onClick.RemoveListener(StartExportAsChunks);
-            exportButton.onClick.RemoveListener(StartExport);
+            exportAsChunksButton.onClick.RemoveListener(ExportAsChunks);
+            exportButton.onClick.RemoveListener(Export);
         }
     }
 }

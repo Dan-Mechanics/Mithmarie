@@ -15,7 +15,7 @@ namespace Mithmarie
             if (!Keyboard.current.leftCtrlKey.isPressed)
                 return;
 
-            if (Keyboard.current.sKey.wasPressedThisFrame && Keyboard.current.leftAltKey.isPressed)
+            if (Keyboard.current.sKey.wasPressedThisFrame)
                 OnSave?.Invoke();
 
             if (Keyboard.current.zKey.wasPressedThisFrame)
