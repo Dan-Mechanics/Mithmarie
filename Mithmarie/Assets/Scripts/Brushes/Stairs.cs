@@ -41,7 +41,16 @@ namespace Mithmarie
             int yDirection = a.y <= b.y ? 1 : -1;
             int zDirection = a.z <= b.z ? 1 : -1;
 
-            switch (direction)
+            for (int y = 0; y < x + 1; y++)
+            {
+                for (int z = 0; z < depth; z++)
+                {
+
+                }
+            }
+
+
+                    switch (direction)
             {
                 case CardinalDirection.North:
                     MakeNorthFacingStairs(a, add, width, depth, xDirection, yDirection, zDirection);
@@ -60,107 +69,48 @@ namespace Mithmarie
             }
         }
 
-        private void MakeNorthFacingStairs(Vector3Int a, bool add, int width, int depth, int xDirection, int yDirection, int zDirection)
+        private void MakeNorthFacingStairs(Vector3Int a, bool add, int x, int z, int xDirection, int yDirection, int zDirection)
         {
-            Vector3Int temp = Vector3Int.zero;
-            for (int x = 0; x < width; x++)
+            for (int y = 0; y < z + 1; y++)
             {
-                for (int z = 0; z < depth; z++)
-                {
-                    for (int y = 0; y < z + 1; y++)
-                    {
-                        temp.x = x * xDirection;
-                        temp.y = y * yDirection;
-                        temp.z = z * zDirection;
-
-                        if (add)
-                        {
-                            world.Add(a + temp);
-                        }
-                        else
-                        {
-                            world.Remove(a + temp);
-                        }
-                    }
-                }
+                Place(a, add, xDirection, yDirection, zDirection, x, z, y);
             }
         }
 
-        private void MakeEastFacingStairs(Vector3Int a, bool add, int width, int depth, int xDirection, int yDirection, int zDirection)
+        private void MakeEastFacingStairs(Vector3Int a, bool add, int x, int z, int xDirection, int yDirection, int zDirection)
         {
-            Vector3Int temp = Vector3Int.zero;
-            for (int x = 0; x < width; x++)
+            for (int y = x; y >= 0; y--)
             {
-                for (int z = 0; z < depth; z++)
-                {
-                    for (int y = x; y >= 0; y--)
-                    {
-                        temp.x = x * xDirection;
-                        temp.y = y * yDirection;
-                        temp.z = z * zDirection;
-
-                        if (add)
-                        {
-                            world.Add(a + temp);
-                        }
-                        else
-                        {
-                            world.Remove(a + temp);
-                        }
-                    }
-                }
+                Place(a, add, xDirection, yDirection, zDirection, x, z, y);
             }
         }
 
-        private void MakeSouthFacingStairs(Vector3Int a, bool add, int width, int depth, int xDirection, int yDirection, int zDirection)
+        private void MakeSouthFacingStairs(Vector3Int a, bool add, int x, int z, int xDirection, int yDirection, int zDirection)
         {
-            Vector3Int temp = Vector3Int.zero;
-            for (int x = 0; x < width; x++)
+            for (int y = z; y >= 0; y--)
             {
-                for (int z = 0; z < depth; z++)
-                {
-                    for (int y = z; y >= 0; y--)
-                    {
-                        temp.x = x * xDirection;
-                        temp.y = y * yDirection;
-                        temp.z = z * zDirection;
-
-                        if (add)
-                        {
-                            world.Add(a + temp);
-                        }
-                        else
-                        {
-                            world.Remove(a + temp);
-                        }
-                    }
-                }
+                Place(a, add, xDirection, yDirection, zDirection, x, z, y);
             }
         }
 
-        private void MakeWestFacingStairs(Vector3Int a, bool add, int width, int depth, int xDirection, int yDirection, int zDirection)
+        private void MakeWestFacingStairs(Vector3Int a, bool add, int x, int z, int xDirection, int yDirection, int zDirection)
         {
-            Vector3Int temp = Vector3Int.zero;
-            for (int x = 0; x < width; x++)
+            for (int y = 0; y < x + 1; y++)
             {
-                for (int z = 0; z < depth; z++)
-                {
-                    for (int y = 0; y < x + 1; y++)
-                    {
-                        temp.x = x * xDirection;
-                        temp.y = y * yDirection;
-                        temp.z = z * zDirection;
+                Place(a, add, xDirection, yDirection, zDirection, x, z, y);
+            }
+        }
 
-                        if (add)
-                        {
-                            world.Add(a + temp);
-                        }
-                        else
-                        {
-                            world.Remove(a + temp);
-                        }
-                    }
-                }
+        private void Place(Vector3Int blockPos, bool add, int xDirection, int yDirection, int zDirection, int x, int z, int y)
+        {
+            blockPos += new Vector3Int(x * xDirection, y * yDirection, z * zDirection);
+            if (add)
+            {
+                world.Add(blockPos);
+            }
+            else
+            {
+                world.Remove(blockPos);
             }
         }
     }
