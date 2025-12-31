@@ -124,7 +124,7 @@ namespace Mithmarie
             Dictionary<int, HashSet<Vector2Int>> upFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> downFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> forwardFaces = new Dictionary<int, HashSet<Vector2Int>>();
-            Dictionary<int, HashSet<Vector2Int>> baclFaces = new Dictionary<int, HashSet<Vector2Int>>();
+            Dictionary<int, HashSet<Vector2Int>> backFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> leftFaces = new Dictionary<int, HashSet<Vector2Int>>();
             Dictionary<int, HashSet<Vector2Int>> rightFaces = new Dictionary<int, HashSet<Vector2Int>>();
 
@@ -165,10 +165,10 @@ namespace Mithmarie
 
                 if (!hasBlock(blockPos + Vector3Int.back))
                 {
-                    if (!baclFaces.ContainsKey(blockPos.z))
-                        baclFaces.Add(blockPos.z, new HashSet<Vector2Int>());
+                    if (!backFaces.ContainsKey(blockPos.z))
+                        backFaces.Add(blockPos.z, new HashSet<Vector2Int>());
 
-                    baclFaces[blockPos.z].Add(new Vector2Int(blockPos.x, blockPos.y));
+                    backFaces[blockPos.z].Add(new Vector2Int(blockPos.x, blockPos.y));
                 }
 
                 if (!hasBlock(blockPos + Vector3Int.left))
@@ -208,7 +208,7 @@ namespace Mithmarie
             }
 
             // BACK. ===
-            foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in baclFaces)
+            foreach (KeyValuePair<int, HashSet<Vector2Int>> slice in backFaces)
             {
                 float z = slice.Key;
                 while (slice.Value.Count > 0)
