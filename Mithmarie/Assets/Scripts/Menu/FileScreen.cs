@@ -24,6 +24,7 @@ namespace Mithmarie
         private IExportStrategy exportStrat;
         private IWorldMeshStrategy worldMeshStrat;
         private string savePath;
+        private bool unsavedChanges;
 
         public void Setup(World world, IExportStrategy exportStrat, IWorldMeshStrategy worldMeshStrat, IBinarySerializable level)
         {
@@ -32,12 +33,16 @@ namespace Mithmarie
             this.worldMeshStrat = worldMeshStrat;
             this.level = level;
 
+            world.OnNewChanges += OnNewChanges;
             message = ServiceLocator<IMessageService>.Locate();
+
             if (File.Exists(SavePathPath))
                 savePath = File.ReadAllText(SavePathPath);
 
             LoadPath(savePath);
         }
+
+        private void OnNewChanges(HashSet<Vector3Int> added, HashSet<Vector3Int> removed) => unsavedChanges = true;
 
         public void Save()
         {
@@ -59,6 +64,8 @@ namespace Mithmarie
             writer.Flush();
             writer.Close();
 
+            unsavedChanges = false;
+
             CloseCompletely();
         }
 
@@ -78,6 +85,9 @@ namespace Mithmarie
 
         private void New()
         {
+            if (CheckUnsavedChanges())
+                return;
+
             savePath = string.Empty;
             File.WriteAllText(SavePathPath, savePath);
 
@@ -96,9 +106,23 @@ namespace Mithmarie
             LoadPath(paths[0]);
         }
 
+        private bool CheckUnsavedChanges()
+        {
+            if (!unsavedChanges)
+                return false;
+            
+            message.Send("You have unsaved changes!\nTry again to confirm.", Color.red, 3.0f);
+            unsavedChanges = false;
+
+            return true;
+        }
+
         private void LoadPath(string path)
         {
             if (!Utils.IsStringValid(path) || !File.Exists(path))
+                return;
+
+            if (CheckUnsavedChanges())
                 return;
 
             message.Send(path, Color.gray, MESSAGE_DURATION);
@@ -174,6 +198,12 @@ namespace Mithmarie
             newButton.onClick.RemoveListener(New);
             exportAsChunksButton.onClick.RemoveListener(ExportAsChunks);
             exportButton.onClick.RemoveListener(Export);
+        }
+
+        private void OnApplicationQuit()
+        {
+            if (unsavedChanges)
+                Save();
         }
     }
 }

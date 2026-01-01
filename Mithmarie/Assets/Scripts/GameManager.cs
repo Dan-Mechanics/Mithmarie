@@ -61,7 +61,7 @@ namespace Mithmarie
             redOverlap.OnChange += overlayManager.EnableRed;
 
             world.OnClear += history.Clear;
-            world.OnNewChanges += history.LogImplicitWorldChange;
+            world.OnNewChanges += history.StoreWorldChange;
 
             chunkVisualManager.Setup(eyes);
             world.OnDrawChunk += chunkVisualManager.DrawChunk;

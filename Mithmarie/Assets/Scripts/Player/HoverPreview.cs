@@ -35,16 +35,12 @@ namespace Mithmarie
             facePreview.gameObject.SetActive(hover.hasHit);
             cubePreview.gameObject.SetActive(!hover.hasHit);
 
-            if (hover.hasHit)
-            {
-                facePreview.position = hover.pos;
-                facePreview.forward = hover.normal;
-            }
-            else
-            {
-                cubePreview.position = hover.pos;
-                // THE CUBE DOESN'T ROTATE.
-            }
+            cubePreview.position = hover.pos;
+            if (!hover.hasHit)
+                return;
+
+            facePreview.position = hover.pos;
+            facePreview.forward = hover.normal;
         }
     }
 }
