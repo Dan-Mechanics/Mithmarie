@@ -9,17 +9,17 @@ namespace Mithmarie
 
         private ChunkVisualManager chunkVisualManager;
         private KeyboardShortcuts keyboardShortcuts;
+        private OverlayManager overlayManager;
         private HoverHighlight hoverHighlight;
         private PlayerDisplay playerDisplay;
+        private OverlapSphere greenOverlap;
         private BrushDisplay brushDisplay;
         private BrushManager brushManager;
-        private PopupManager popupManager;
-        private WorldHistory history;
-        private FileScreen fileScreen;
-        private OverlapSphere greenOverlap;
-        private OverlapSphere redOverlap;
         private ClonePreview clonePreview;
-        private OverlayManager overlayManager;
+        private PopupManager popupManager;
+        private OverlapSphere redOverlap;
+        private FileScreen fileScreen;
+        private WorldHistory history;
         private Transform eyes;
         private Player player;
         private World world;
@@ -40,13 +40,12 @@ namespace Mithmarie
             brushManager = FindAnyObjectByType<BrushManager>();
             overlayManager = FindAnyObjectByType<OverlayManager>();
             clonePreview = FindAnyObjectByType<ClonePreview>();
+            popupManager = FindAnyObjectByType<PopupManager>();
 
             eyes = GameObject.FindWithTag("MainCamera").transform;
             OverlapSphere[] overlapSpheres = eyes.GetComponents<OverlapSphere>();
             greenOverlap = overlapSpheres[0];
             redOverlap = overlapSpheres[1];
-
-            popupManager = FindAnyObjectByType<PopupManager>();
         }
         
         private void Start()
@@ -74,33 +73,36 @@ namespace Mithmarie
             hoverHighlight.OnHover += playerDisplay.SetCenterText;
 
             Clone clone = new Clone(world);
-            clonePreview.Setup(4);
             clonePreview.SetVisibilityWithBrushIndex(-1);
             clone.OnNewExample += clonePreview.Show;
-
             hoverHighlight.OnHover += clonePreview.UpdatePreview;
 
-            brushManager.Setup(new IBrushable[] {
+            IBrushable[] brushables = new IBrushable[] {
                 new Fill(world),
                 new Walls(world),
                 new Cylinder(world),
                 new Stairs(world, eyes),
-                clone,
-                new Noise(world)
-            });
+                new Noise(world),
+                clone
+            };
+
+            brushManager.Setup(brushables);
+            clonePreview.Setup(brushables.Length - 1);
 
             brushManager.OnNewBrushSelected += brushDisplay.NewIndexSelected;
             brushManager.OnNewBrushSelected += clonePreview.SetVisibilityWithBrushIndex;
 
             // ===
 
+            IMessageService message = ServiceLocator<IMessageService>.Locate();
             world.Add(Vector3Int.zero);
             world.Flush();
             message.Send("[WASD] for movement and [MOUSE] for looking.\n" +
                 "Use [RMB] to place blocks, [LMB] to destroy.", Color.black, 4f);
-            // ==
 
-            player.Setup(world); //                  YOU CAN ADD MORE STUFF HERE LATER.
+            // ===
+
+            player.Setup(world);
             menu.Setup(new Level(new List<IBinarySerializable> { world }));
 
             fsm.AddState(player);

@@ -40,28 +40,13 @@ namespace Mithmarie
         private void Apply(Vector3Int a, Vector3Int b, bool add)
         {
             if (a.x > b.x)
-            {
-                int aX = a.x;
-                int bX = b.x;
-                a.x = bX;
-                b.x = aX;
-            }
+                Utils.SwapAxis(ref a, ref b, Axis.X);
 
             if (a.y > b.y)
-            {
-                int aY = a.y;
-                int bY = b.y;
-                a.y = bY;
-                b.y = aY;
-            }
+                Utils.SwapAxis(ref a, ref b, Axis.Y);
 
             if (a.z > b.z)
-            {
-                int aZ = a.z;
-                int bZ = b.z;
-                a.z = bZ;
-                b.z = aZ;
-            }
+                Utils.SwapAxis(ref a, ref b, Axis.Z);
 
             int width = Mathf.Abs(b.x - a.x) + 1;
             int height = Mathf.Abs(b.y - a.y) + 1;
@@ -97,14 +82,7 @@ namespace Mithmarie
                         temp.z = z;
                         temp += a;
 
-                        if (add)
-                        {
-                            world.Add(temp);
-                        }
-                        else
-                        {
-                            world.Remove(temp);
-                        }
+                        world.ChangeBlock(temp, add);
                     }
                 }
             }

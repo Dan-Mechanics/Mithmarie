@@ -40,14 +40,7 @@ namespace Mithmarie
                         temp.z = z * zDirection;
                         temp += a;
 
-                        if (add)
-                        {
-                            world.Add(temp);
-                        }
-                        else
-                        {
-                            world.Remove(temp);
-                        }
+                        world.ChangeBlock(temp, add);
                     }
                 }
             }

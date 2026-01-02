@@ -9,7 +9,14 @@ namespace Mithmarie
         South = 2,
         West = 3
     }
-    
+
+    public enum Axis
+    {
+        X = 0,
+        Y = 1,
+        Z = 2
+    }
+
     public static class Utils
     {
         public static Vector3Int GetBlockPos(Vector3 pos) => new Vector3Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), Mathf.RoundToInt(pos.z));
@@ -18,9 +25,9 @@ namespace Mithmarie
         public static Vector3Int GetChunkPos(Vector3Int blockPos, int chunkSize)
         {
             return new Vector3Int(
-                blockPos.x / chunkSize,
-                blockPos.y / chunkSize,
-                blockPos.z / chunkSize
+                Mathf.FloorToInt((float)blockPos.x / chunkSize),
+                Mathf.FloorToInt((float)blockPos.y / chunkSize),
+                Mathf.FloorToInt((float)blockPos.z / chunkSize)
             );
         }
 
@@ -66,6 +73,33 @@ namespace Mithmarie
                 RoundToDecimalPlaces(vector.y, decimalPlaces),
                 RoundToDecimalPlaces(vector.z, decimalPlaces)
             );
+        }
+
+        public static void SwapAxis(ref Vector3Int a, ref Vector3Int b, Axis axis)
+        {
+            switch (axis)
+            {
+                case Axis.X:
+                    int aX = a.x;
+                    int bX = b.x;
+                    a.x = bX;
+                    b.x = aX;
+                    break;
+                case Axis.Y:
+                    int aY = a.y;
+                    int bY = b.y;
+                    a.y = bY;
+                    b.y = aY;
+                    break;
+                case Axis.Z:
+                    int aZ = a.z;
+                    int bZ = b.z;
+                    a.z = bZ;
+                    b.z = aZ;
+                    break;
+                default:
+                    break;
+            }
         }
 
         public static string SetRichTextColor(string str, string color) => $"<color={color}>{str}</color>";
