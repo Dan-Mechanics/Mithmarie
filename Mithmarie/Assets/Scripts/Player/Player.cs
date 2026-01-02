@@ -36,7 +36,10 @@ namespace Mithmarie
 
             hoverPreview.Setup();
         }
-        
+
+        public SelectionPreview GetAddSelectionPreview() => addSelectionPreview;
+        public SelectionPreview GetRemoveSelectionPreview() => removeSelectionPreview;
+
         public override void Enter()
         {
             base.Enter();

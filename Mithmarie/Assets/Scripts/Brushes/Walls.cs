@@ -38,15 +38,9 @@ namespace Mithmarie
                         temp.x = x * xDirection;
                         temp.y = y * yDirection;
                         temp.z = z * zDirection;
+                        temp += a;
 
-                        if (add)
-                        {
-                            world.Add(a + temp);
-                        }
-                        else
-                        {
-                            world.Remove(a + temp);
-                        }
+                        world.ChangeBlock(temp, add);
                     }
                 }
             }

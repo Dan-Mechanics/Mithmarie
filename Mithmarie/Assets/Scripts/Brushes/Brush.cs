@@ -6,6 +6,7 @@ namespace Mithmarie
     public class Brush : ScriptableObject
     {
         public Sprite icon;
+        public Mesh previewMesh;
         public IBrushable brushable;
     }
 }

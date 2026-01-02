@@ -230,6 +230,8 @@ GameObject:
   - component: {fileID: 7032356765651341419}
   - component: {fileID: 8823984721961712048}
   - component: {fileID: 7349501011555011749}
+  - component: {fileID: 8756031297461839699}
+  - component: {fileID: 4626050569691114094}
   m_Layer: 3
   m_Name: eyes
   m_TagString: MainCamera
@@ -325,3 +327,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 7032356765651341419}
   fov: {fileID: 11400000, guid: 863fbcfe2ef7d82449c98395c9b9f739, type: 2}
+--- !u!114 &8756031297461839699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3889645060876896680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d9254da781bb974f829f6c3dae6c0e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.5
+  mask:
+    serializedVersion: 2
+    m_Bits: 64
+  interaction: 1
+--- !u!114 &4626050569691114094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3889645060876896680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d9254da781bb974f829f6c3dae6c0e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.5
+  mask:
+    serializedVersion: 2
+    m_Bits: 128
+  interaction: 1

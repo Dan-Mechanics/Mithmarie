@@ -56,6 +56,18 @@ namespace Mithmarie
                 removedBlocksCache.Add(blockPos);
         }
 
+        public void ChangeBlock(Vector3Int blockPos, bool add)
+        {
+            if (add)
+            {
+                Add(blockPos);
+            }
+            else
+            {
+                Remove(blockPos);
+            }
+        }
+
         public void Clear()
         {
             foreach (Vector3Int chunkPos in chunks.Keys)

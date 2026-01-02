@@ -12,7 +12,7 @@ namespace Mithmarie
 
         public void Setup(World world) => this.world = world;
 
-        public void LogImplicitWorldChange(HashSet<Vector3Int> added, HashSet<Vector3Int> removed)
+        public void StoreWorldChange(HashSet<Vector3Int> added, HashSet<Vector3Int> removed)
         {
             for (int i = history.Count - 1; i > index; i--)
             {

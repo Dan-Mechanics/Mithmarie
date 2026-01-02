@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace Mithmarie
 {
-    public class Fill : IBrushable
+    public class Noise : IBrushable
     {
         private readonly World world;
 
-        public Fill(World world)
+        public Noise(World world)
         {
             this.world = world;
         }
@@ -32,6 +32,9 @@ namespace Mithmarie
                 {
                     for (int z = 0; z < depth; z++)
                     {
+                        if (UnityEngine.Random.Range(0, 3) != 0)
+                            continue;
+
                         temp.x = x * xDirection;
                         temp.y = y * yDirection;
                         temp.z = z * zDirection;

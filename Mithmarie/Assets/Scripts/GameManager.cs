@@ -5,17 +5,23 @@ namespace Mithmarie
 {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField] private Brush[] brushes = default;
+        
         private readonly FSM fsm = new FSM();
 
         private ChunkVisualManager chunkVisualManager;
         private KeyboardShortcuts keyboardShortcuts;
+        private OverlayManager overlayManager;
         private HoverHighlight hoverHighlight;
         private PlayerDisplay playerDisplay;
+        private OverlapSphere greenOverlap;
         private BrushDisplay brushDisplay;
         private BrushManager brushManager;
+        private ClonePreview clonePreview;
         private PopupManager popupManager;
-        private WorldHistory history;
+        private OverlapSphere redOverlap;
         private FileScreen fileScreen;
+        private WorldHistory history;
         private Transform eyes;
         private Player player;
         private World world;
@@ -34,23 +40,31 @@ namespace Mithmarie
             hoverHighlight = FindAnyObjectByType<HoverHighlight>();
             brushDisplay = FindAnyObjectByType<BrushDisplay>();
             brushManager = FindAnyObjectByType<BrushManager>();
+            overlayManager = FindAnyObjectByType<OverlayManager>();
+            clonePreview = FindAnyObjectByType<ClonePreview>();
+            popupManager = FindAnyObjectByType<PopupManager>();
 
             eyes = GameObject.FindWithTag("MainCamera").transform;
-            popupManager = FindAnyObjectByType<PopupManager>();
+            OverlapSphere[] overlapSpheres = eyes.GetComponents<OverlapSphere>();
+            greenOverlap = overlapSpheres[0];
+            redOverlap = overlapSpheres[1];
         }
         
         private void Start()
         {
             popupManager.Setup();
             playerDisplay.Setup();
-            brushDisplay.Setup();
+            brushDisplay.Setup(brushes);
 
             keyboardShortcuts.OnSave += fileScreen.Save;
             keyboardShortcuts.OnUndo += history.Undo;
             keyboardShortcuts.OnRedo += history.Redo;
 
+            greenOverlap.OnChange += overlayManager.EnableGreen;
+            redOverlap.OnChange += overlayManager.EnableRed;
+
             world.OnClear += history.Clear;
-            world.OnNewChanges += history.LogImplicitWorldChange;
+            world.OnNewChanges += history.StoreWorldChange;
 
             chunkVisualManager.Setup(eyes);
             world.OnDrawChunk += chunkVisualManager.DrawChunk;
@@ -60,19 +74,41 @@ namespace Mithmarie
             player.OnClose += playerDisplay.Hide;
             hoverHighlight.OnHover += playerDisplay.SetCenterText;
 
-            brushManager.Setup(new IBrushable[] {
+            Clone clone = new Clone(world);
+            clonePreview.SetVisibilityWithBrushIndex(-1);
+            clone.OnNewExample += clonePreview.Show;
+            hoverHighlight.OnHover += clonePreview.UpdatePreview;
+
+            IBrushable[] brushables = new IBrushable[] 
+            {
                 new Fill(world),
                 new Walls(world),
                 new Cylinder(world),
                 new Stairs(world, eyes),
-                new Clone(world)
-            });
+                new Noise(world),
+                clone
+            };
+
+            brushManager.Setup(brushes, brushables);
+            clonePreview.Setup(brushes.Length - 1);
 
             brushManager.OnNewBrushSelected += brushDisplay.NewIndexSelected;
+            brushManager.OnNewBrushSelected += clonePreview.SetVisibilityWithBrushIndex;
 
-            Utils.IntroduceTool(world, ServiceLocator<IMessageService>.Locate());
+            // ===
 
-            player.Setup(world); //                  YOU CAN ADD MORE STUFF HERE LATER.
+            IMessageService message = ServiceLocator<IMessageService>.Locate();
+            world.Add(Vector3Int.zero);
+            world.Flush();
+            message.Send("[WASD] for movement and [MOUSE] for looking.\n" +
+                "Use [RMB] to place blocks, [LMB] to destroy.", Color.black, 4f);
+
+            // ===
+
+            player.Setup(world);
+            brushManager.OnNewPreviewMesh += player.GetAddSelectionPreview().UpdateMesh;
+            brushManager.OnNewPreviewMesh += player.GetRemoveSelectionPreview().UpdateMesh;
+
             menu.Setup(new Level(new List<IBinarySerializable> { world }));
 
             fsm.AddState(player);

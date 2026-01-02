@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Mithmarie
@@ -7,6 +6,8 @@ namespace Mithmarie
     {
         private readonly Transform player;
         private readonly World world;
+
+        private delegate bool IsBlockWithinStairs(int width, int height, int depth, int x, int y, int z);
 
         public Stairs(World world, Transform player)
         {
@@ -17,9 +18,8 @@ namespace Mithmarie
         public void Add(Vector3Int a, Vector3Int b) => Apply(a, b, true);
         public void Remove(Vector3Int a, Vector3Int b) => Apply(a, b, false);
 
-        private void Apply(Vector3Int a, Vector3Int b, bool add)
+        private CardinalDirection GetCardinal(float rot)
         {
-            float rot = player.rotation.eulerAngles.y;
             float angle = 22.5f;
             CardinalDirection direction = CardinalDirection.North;
             if (rot > angle)
@@ -34,134 +34,86 @@ namespace Mithmarie
             if (rot > 270f + angle)
                 direction = CardinalDirection.North;
 
+            return direction;
+        }
+
+        private void Apply(Vector3Int a, Vector3Int b, bool add)
+        {
+            if (a.x > b.x)
+                Utils.SwapAxis(ref a, ref b, Axis.X);
+
+            if (a.y > b.y)
+                Utils.SwapAxis(ref a, ref b, Axis.Y);
+
+            if (a.z > b.z)
+                Utils.SwapAxis(ref a, ref b, Axis.Z);
+
             int width = Mathf.Abs(b.x - a.x) + 1;
+            int height = Mathf.Abs(b.y - a.y) + 1;
             int depth = Mathf.Abs(b.z - a.z) + 1;
 
-            int xDirection = a.x <= b.x ? 1 : -1;
-            int yDirection = a.y <= b.y ? 1 : -1;
-            int zDirection = a.z <= b.z ? 1 : -1;
-
-            switch (direction)
+            IsBlockWithinStairs isBlockWithinStairs = IsBlockWithinStairsNorth;
+            CardinalDirection cardinal = GetCardinal(player.rotation.eulerAngles.y);
+            switch (cardinal)
             {
-                case CardinalDirection.North:
-                    MakeNorthFacingStairs(a, add, width, depth, xDirection, yDirection, zDirection);
-                    break;
                 case CardinalDirection.East:
-                    MakeEastFacingStairs(a, add, width, depth, xDirection, yDirection, zDirection);
+                    isBlockWithinStairs = IsBlockWithinStairsEast;
                     break;
                 case CardinalDirection.South:
-                    MakeSouthFacingStairs(a, add, width, depth, xDirection, yDirection, zDirection);
+                    isBlockWithinStairs = IsBlockWithinStairsSouth;
                     break;
                 case CardinalDirection.West:
-                    MakeWestFacingStairs(a, add, width, depth, xDirection, yDirection, zDirection);
+                    isBlockWithinStairs = IsBlockWithinStairsWest;
                     break;
-                default:
-                    throw new NotImplementedException();
             }
-        }
 
-        private void MakeNorthFacingStairs(Vector3Int a, bool add, int width, int depth, int xDirection, int yDirection, int zDirection)
-        {
             Vector3Int temp = Vector3Int.zero;
             for (int x = 0; x < width; x++)
             {
-                for (int z = 0; z < depth; z++)
+                for (int y = 0; y < height; y++)
                 {
-                    for (int y = 0; y < z + 1; y++)
+                    for (int z = 0; z < depth; z++)
                     {
-                        temp.x = x * xDirection;
-                        temp.y = y * yDirection;
-                        temp.z = z * zDirection;
+                        if (!isBlockWithinStairs(width, height, depth, x, y, z))
+                            continue;
 
-                        if (add)
-                        {
-                            world.Add(a + temp);
-                        }
-                        else
-                        {
-                            world.Remove(a + temp);
-                        }
+                        temp.x = x;
+                        temp.y = y;
+                        temp.z = z;
+                        temp += a;
+
+                        world.ChangeBlock(temp, add);
                     }
                 }
             }
         }
 
-        private void MakeEastFacingStairs(Vector3Int a, bool add, int width, int depth, int xDirection, int yDirection, int zDirection)
+        private bool IsBlockWithinStairsNorth(int width, int height, int depth, int x, int y, int z)
         {
-            Vector3Int temp = Vector3Int.zero;
-            for (int x = 0; x < width; x++)
-            {
-                for (int z = 0; z < depth; z++)
-                {
-                    for (int y = x; y >= 0; y--)
-                    {
-                        temp.x = x * xDirection;
-                        temp.y = y * yDirection;
-                        temp.z = z * zDirection;
-
-                        if (add)
-                        {
-                            world.Add(a + temp);
-                        }
-                        else
-                        {
-                            world.Remove(a + temp);
-                        }
-                    }
-                }
-            }
+            float slope = (float)height / depth;
+            int max = Mathf.RoundToInt(z * slope);
+            return y <= max;
         }
 
-        private void MakeSouthFacingStairs(Vector3Int a, bool add, int width, int depth, int xDirection, int yDirection, int zDirection)
+        private bool IsBlockWithinStairsEast(int width, int height, int depth, int x, int y, int z)
         {
-            Vector3Int temp = Vector3Int.zero;
-            for (int x = 0; x < width; x++)
-            {
-                for (int z = 0; z < depth; z++)
-                {
-                    for (int y = z; y >= 0; y--)
-                    {
-                        temp.x = x * xDirection;
-                        temp.y = y * yDirection;
-                        temp.z = z * zDirection;
-
-                        if (add)
-                        {
-                            world.Add(a + temp);
-                        }
-                        else
-                        {
-                            world.Remove(a + temp);
-                        }
-                    }
-                }
-            }
+            float slope = (float)height / width;
+            int max = Mathf.RoundToInt(x * slope);
+            return y <= max;
         }
 
-        private void MakeWestFacingStairs(Vector3Int a, bool add, int width, int depth, int xDirection, int yDirection, int zDirection)
+        private bool IsBlockWithinStairsSouth(int width, int height, int depth, int x, int y, int z)
         {
-            Vector3Int temp = Vector3Int.zero;
-            for (int x = 0; x < width; x++)
-            {
-                for (int z = 0; z < depth; z++)
-                {
-                    for (int y = 0; y < x + 1; y++)
-                    {
-                        temp.x = x * xDirection;
-                        temp.y = y * yDirection;
-                        temp.z = z * zDirection;
+            // INVERT.
+            z = depth - 1 - z;
+            return IsBlockWithinStairsNorth(width, height, depth, x, y, z);
+        }
 
-                        if (add)
-                        {
-                            world.Add(a + temp);
-                        }
-                        else
-                        {
-                            world.Remove(a + temp);
-                        }
-                    }
-                }
-            }
+        private bool IsBlockWithinStairsWest(int width, int height, int depth, int x, int y, int z)
+        {
+            // INVERT.
+            x = width - 1 - x;
+            return IsBlockWithinStairsEast(width, height, depth, x, y, z);
         }
     }
 }
