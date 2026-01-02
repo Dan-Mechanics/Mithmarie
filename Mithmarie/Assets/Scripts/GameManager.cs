@@ -5,6 +5,8 @@ namespace Mithmarie
 {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField] private Brush[] brushes = default;
+        
         private readonly FSM fsm = new FSM();
 
         private ChunkVisualManager chunkVisualManager;
@@ -52,7 +54,7 @@ namespace Mithmarie
         {
             popupManager.Setup();
             playerDisplay.Setup();
-            brushDisplay.Setup();
+            brushDisplay.Setup(brushes);
 
             keyboardShortcuts.OnSave += fileScreen.Save;
             keyboardShortcuts.OnUndo += history.Undo;
@@ -77,7 +79,8 @@ namespace Mithmarie
             clone.OnNewExample += clonePreview.Show;
             hoverHighlight.OnHover += clonePreview.UpdatePreview;
 
-            IBrushable[] brushables = new IBrushable[] {
+            IBrushable[] brushables = new IBrushable[] 
+            {
                 new Fill(world),
                 new Walls(world),
                 new Cylinder(world),
@@ -86,8 +89,8 @@ namespace Mithmarie
                 clone
             };
 
-            brushManager.Setup(brushables);
-            clonePreview.Setup(brushables.Length - 1);
+            brushManager.Setup(brushes, brushables);
+            clonePreview.Setup(brushes.Length - 1);
 
             brushManager.OnNewBrushSelected += brushDisplay.NewIndexSelected;
             brushManager.OnNewBrushSelected += clonePreview.SetVisibilityWithBrushIndex;
@@ -103,6 +106,9 @@ namespace Mithmarie
             // ===
 
             player.Setup(world);
+            brushManager.OnNewPreviewMesh += player.GetAddSelectionPreview().UpdateMesh;
+            brushManager.OnNewPreviewMesh += player.GetRemoveSelectionPreview().UpdateMesh;
+
             menu.Setup(new Level(new List<IBinarySerializable> { world }));
 
             fsm.AddState(player);

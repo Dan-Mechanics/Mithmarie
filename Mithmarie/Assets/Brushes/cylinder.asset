@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: cylinder
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: fdd9cecb229594647bc3f7a7aef2bd12, type: 3}
+  previewMesh: {fileID: -2432090755550338912, guid: a35da209c6f0b5647b9b3cc0de9c502a, type: 3}

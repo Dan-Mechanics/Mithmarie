@@ -10,11 +10,9 @@ namespace Mithmarie
         [SerializeField] private Vector2 globalOffset = default;
         [SerializeField] private Color colorA = Color.white;
         [SerializeField] private Color colorB = Color.white;
-        [SerializeField] private Brush[] brushes = default;
-
         private Slot[] slots;
 
-        public void Setup()
+        public void Setup(Brush[] brushes)
         {
             slots = new Slot[brushes.Length];
             for (int i = 0; i < slots.Length; i++)

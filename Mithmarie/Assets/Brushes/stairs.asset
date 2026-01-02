@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: stairs
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: bdc97fac29f313f40a1ea264239187be, type: 3}
+  previewMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}

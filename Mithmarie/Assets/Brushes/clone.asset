@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: clone
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: c6945ebe25a540e4d9f39f623c4d4cfd, type: 3}
+  previewMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}

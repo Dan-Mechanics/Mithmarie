@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: walls
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: effd66f7c3e94bc4a84289dbd511978f, type: 3}
+  previewMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}

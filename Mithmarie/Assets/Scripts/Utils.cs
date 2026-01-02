@@ -27,8 +27,7 @@ namespace Mithmarie
             return new Vector3Int(
                 Mathf.FloorToInt((float)blockPos.x / chunkSize),
                 Mathf.FloorToInt((float)blockPos.y / chunkSize),
-                Mathf.FloorToInt((float)blockPos.z / chunkSize)
-            );
+                Mathf.FloorToInt((float)blockPos.z / chunkSize));
         }
 
         public static bool IsInEllipse(Vector3 direction, float width, float height)
@@ -71,8 +70,7 @@ namespace Mithmarie
             return new Vector3(
                 RoundToDecimalPlaces(vector.x, decimalPlaces),
                 RoundToDecimalPlaces(vector.y, decimalPlaces),
-                RoundToDecimalPlaces(vector.z, decimalPlaces)
-            );
+                RoundToDecimalPlaces(vector.z, decimalPlaces));
         }
 
         public static void SwapAxis(ref Vector3Int a, ref Vector3Int b, Axis axis)

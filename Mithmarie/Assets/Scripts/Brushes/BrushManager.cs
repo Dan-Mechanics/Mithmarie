@@ -7,22 +7,41 @@ namespace Mithmarie
     public class BrushManager : StateBehaviour
     {
         public event Action<int> OnNewBrushSelected;
+        public event Action<Mesh> OnNewPreviewMesh;
 
         [SerializeField, Min(0f)] private float scrollDeadzone = default;
 
-        private IBrushable[] brushables;
-        private IBrushable current;
+        private Brush[] brushes;
+        private Brush current;
         private int index;
 
-        public void Setup(IBrushable[] brushables)
+        public void Setup(Brush[] brushes, IBrushable[] brushables)
         {
-            this.brushables = brushables;
+            for (int i = 0; i < brushes.Length; i++)
+            {
+                brushes[i].brushable = brushables[i];
+            }
+
+            this.brushes = brushes;
             index = -1;
             ChangeBrush(1);
         }
 
-        public void AddSelection(Vector3Int a, Vector3Int b) => current?.Add(a, b);
-        public void RemoveSelection(Vector3Int a, Vector3Int b) => current?.Remove(a, b);
+        public void AddSelection(Vector3Int a, Vector3Int b)
+        {
+            if (current == null)
+                return;
+
+            current.brushable?.Add(a, b);
+        }
+
+        public void RemoveSelection(Vector3Int a, Vector3Int b)
+        {
+            if (current == null)
+                return;
+
+            current.brushable?.Remove(a, b);
+        }
 
         public override void OnFrame()
         {
@@ -42,12 +61,13 @@ namespace Mithmarie
         private void ChangeBrush(int direction)
         {
             index += direction;
-            index %= brushables.Length;
+            index %= brushes.Length;
             if (index < 0)
-                index += brushables.Length;
+                index += brushes.Length;
 
-            current = brushables[index];
+            current = brushes[index];
             OnNewBrushSelected?.Invoke(index);
+            OnNewPreviewMesh?.Invoke(current.previewMesh);
         }
     }
 }
