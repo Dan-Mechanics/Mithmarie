@@ -18,6 +18,7 @@ namespace Mithmarie
         private FileScreen fileScreen;
         private OverlapSphere greenOverlap;
         private OverlapSphere redOverlap;
+        private ClonePreview clonePreview;
         private OverlayManager overlayManager;
         private Transform eyes;
         private Player player;
@@ -38,6 +39,7 @@ namespace Mithmarie
             brushDisplay = FindAnyObjectByType<BrushDisplay>();
             brushManager = FindAnyObjectByType<BrushManager>();
             overlayManager = FindAnyObjectByType<OverlayManager>();
+            clonePreview = FindAnyObjectByType<ClonePreview>();
 
             eyes = GameObject.FindWithTag("MainCamera").transform;
             OverlapSphere[] overlapSpheres = eyes.GetComponents<OverlapSphere>();
@@ -71,18 +73,32 @@ namespace Mithmarie
             player.OnClose += playerDisplay.Hide;
             hoverHighlight.OnHover += playerDisplay.SetCenterText;
 
+            Clone clone = new Clone(world);
+            clonePreview.Setup(4);
+            clonePreview.SetVisibilityWithBrushIndex(-1);
+            clone.OnNewExample += clonePreview.Show;
+
+            hoverHighlight.OnHover += clonePreview.UpdatePreview;
+
             brushManager.Setup(new IBrushable[] {
                 new Fill(world),
                 new Walls(world),
                 new Cylinder(world),
                 new Stairs(world, eyes),
-                new Clone(world),
+                clone,
                 new Noise(world)
             });
 
             brushManager.OnNewBrushSelected += brushDisplay.NewIndexSelected;
+            brushManager.OnNewBrushSelected += clonePreview.SetVisibilityWithBrushIndex;
 
-            Utils.IntroduceTool(world, ServiceLocator<IMessageService>.Locate());
+            // ===
+
+            world.Add(Vector3Int.zero);
+            world.Flush();
+            message.Send("[WASD] for movement and [MOUSE] for looking.\n" +
+                "Use [RMB] to place blocks, [LMB] to destroy.", Color.black, 4f);
+            // ==
 
             player.Setup(world); //                  YOU CAN ADD MORE STUFF HERE LATER.
             menu.Setup(new Level(new List<IBinarySerializable> { world }));

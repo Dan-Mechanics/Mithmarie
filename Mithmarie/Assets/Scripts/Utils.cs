@@ -10,14 +10,11 @@ namespace Mithmarie
         West = 3
     }
     
-    /// <summary>
-    ///  THIS MUST BE MADE UTILS REPO !!
-    /// </summary>
     public static class Utils
     {
-        
         public static Vector3Int GetBlockPos(Vector3 pos) => new Vector3Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), Mathf.RoundToInt(pos.z));
         public static bool IsStringValid(string str) => !string.IsNullOrEmpty(str) && !string.IsNullOrWhiteSpace(str);
+
         public static Vector3Int GetChunkPos(Vector3Int blockPos, int chunkSize)
         {
             return new Vector3Int(
@@ -27,15 +24,12 @@ namespace Mithmarie
             );
         }
 
-        public static bool IsInElipse(Vector3 direction, float width, float height)
+        public static bool IsInEllipse(Vector3 direction, float width, float height)
         {
-            float relativeHeight = height / width;
-
-            direction.z /= relativeHeight;
-            return direction.magnitude <= width;
+            return GetEllipseMagnitude(direction, width, height) <= width;
         }
 
-        public static float NormalizeElipse(Vector3 direction, float width, float height)
+        public static float GetEllipseMagnitude(Vector3 direction, float width, float height)
         {
             float relativeHeight = height / width;
 
@@ -43,16 +37,40 @@ namespace Mithmarie
             return direction.magnitude;
         }
 
-        public static void IntroduceTool(World world, IMessageService message)
+        public static int PosToIndex(int x, int z, int width)
         {
-            world.Add(Vector3Int.zero);
-            world.Flush();
-            message.Send("[WASD] for movement and [MOUSE] for looking.\n" +
-                "Use [RMB] to place blocks, [LMB] to destroy.", Color.black, 4f);
+            if (width < 1)
+                return 0;
+
+            return x + z * width;
         }
-        // possibly add things like:
-        // snap to grid or round to decimal or like string formatting for unity debug color
-        // or like array to 3D space with the width of the plane as index type beat
-        // or useful memes like that.
+
+        public static float RoundToDecimalPlaces(float value, int decimalPlaces)
+        {
+            if (decimalPlaces < 1)
+                return Mathf.Round(value);
+
+            float precision = 10f * decimalPlaces;
+            return Mathf.Round(value * precision) / precision;
+        }
+
+        public static Vector3 RoundVector(Vector3 vector)
+        {
+            return new Vector3(Mathf.Round(vector.x), Mathf.Round(vector.y), Mathf.Round(vector.z));
+        }
+
+        public static Vector3 RoundVector(Vector3 vector, int decimalPlaces)
+        {
+            return new Vector3(
+                RoundToDecimalPlaces(vector.x, decimalPlaces),
+                RoundToDecimalPlaces(vector.y, decimalPlaces),
+                RoundToDecimalPlaces(vector.z, decimalPlaces)
+            );
+        }
+
+        public static string SetRichTextColor(string str, string color) => $"<color={color}>{str}</color>";
+        public static string MakeGreen(string str) => SetRichTextColor(str, "green");
+        public static string MakeRed(string str) => SetRichTextColor(str, "red");
+        public static string MakeBlue(string str) => SetRichTextColor(str, "blue");
     }
 }

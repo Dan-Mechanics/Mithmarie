@@ -7,7 +7,7 @@ namespace Mithmarie
     public class BrushManager : StateBehaviour
     {
         public event Action<int> OnNewBrushSelected;
-        
+
         [SerializeField, Min(0f)] private float scrollDeadzone = default;
 
         private IBrushable[] brushables;

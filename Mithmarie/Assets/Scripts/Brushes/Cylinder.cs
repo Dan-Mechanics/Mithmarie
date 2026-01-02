@@ -84,7 +84,7 @@ namespace Mithmarie
             float xDist = Mathf.Abs(x - xCenter);
             float zDist = Mathf.Abs(z - zCenter);
 
-            float dist = Utils.NormalizeElipse(new Vector3(xDist, 0f, zDist), xRad, zRad);
+            float dist = Utils.GetEllipseMagnitude(new Vector3(xDist, 0f, zDist), xRad, zRad);
             return dist <= xRad && dist >= xRad - 1f;
         }
     }

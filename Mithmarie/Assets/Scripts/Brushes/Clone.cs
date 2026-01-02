@@ -6,6 +6,8 @@ namespace Mithmarie
 {
     public class Clone : IBrushable
     {
+        public event Action<HashSet<Vector3Int>> OnNewExample;
+        
         private readonly HashSet<Vector3Int> example = new HashSet<Vector3Int>();
         private readonly World world;
 
@@ -46,6 +48,8 @@ namespace Mithmarie
                     }
                 }
             }
+
+            OnNewExample?.Invoke(example);
         }
 
         private void Paste(Vector3Int a)
