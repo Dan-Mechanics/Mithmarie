@@ -18,25 +18,6 @@ namespace Mithmarie
         public void Add(Vector3Int a, Vector3Int b) => Apply(a, b, true);
         public void Remove(Vector3Int a, Vector3Int b) => Apply(a, b, false);
 
-        private CardinalDirection GetCardinal(float rot)
-        {
-            float angle = 22.5f;
-            CardinalDirection direction = CardinalDirection.North;
-            if (rot > angle)
-                direction = CardinalDirection.East;
-
-            if (rot > 90f + angle)
-                direction = CardinalDirection.South;
-
-            if (rot > 180f + angle)
-                direction = CardinalDirection.West;
-
-            if (rot > 270f + angle)
-                direction = CardinalDirection.North;
-
-            return direction;
-        }
-
         private void Apply(Vector3Int a, Vector3Int b, bool add)
         {
             if (a.x > b.x)
@@ -53,7 +34,7 @@ namespace Mithmarie
             int depth = Mathf.Abs(b.z - a.z) + 1;
 
             IsBlockWithinStairs isBlockWithinStairs = IsBlockWithinStairsNorth;
-            CardinalDirection cardinal = GetCardinal(player.rotation.eulerAngles.y);
+            CardinalDirection cardinal = Utils.GetCardinal(player.rotation.eulerAngles.y);
             switch (cardinal)
             {
                 case CardinalDirection.East:
