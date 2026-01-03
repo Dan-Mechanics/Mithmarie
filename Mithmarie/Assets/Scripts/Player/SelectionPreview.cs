@@ -19,7 +19,7 @@ namespace Mithmarie
             preview.gameObject.SetActive(false);
         }
 
-        public void UpdatePreview(SelectionInformation selection)
+        public void UpdatePreview(Selection selection)
         {
             if(selection == null)
             {
@@ -29,6 +29,7 @@ namespace Mithmarie
 
             preview.gameObject.SetActive(true);
             preview.transform.position = Vector3.Lerp(selection.a, selection.b, 0.5f);
+            //preview.transform.forward = selection.forward;
             preview.transform.localScale = new Vector3(
                 Mathf.Abs(selection.b.x - selection.a.x) + scale,
                 Mathf.Abs(selection.b.y - selection.a.y) + scale,

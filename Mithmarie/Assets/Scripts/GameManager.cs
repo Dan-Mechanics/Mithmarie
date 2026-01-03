@@ -14,6 +14,7 @@ namespace Mithmarie
         private OverlayManager overlayManager;
         private HoverHighlight hoverHighlight;
         private PlayerDisplay playerDisplay;
+        private StairsPreview stairsPreview;
         private OverlapSphere greenOverlap;
         private BrushDisplay brushDisplay;
         private BrushManager brushManager;
@@ -43,6 +44,7 @@ namespace Mithmarie
             overlayManager = FindAnyObjectByType<OverlayManager>();
             clonePreview = FindAnyObjectByType<ClonePreview>();
             popupManager = FindAnyObjectByType<PopupManager>();
+            stairsPreview = FindAnyObjectByType<StairsPreview>();
 
             eyes = GameObject.FindWithTag("MainCamera").transform;
             OverlapSphere[] overlapSpheres = eyes.GetComponents<OverlapSphere>();
@@ -73,6 +75,9 @@ namespace Mithmarie
             player.OnOpen += playerDisplay.Show;
             player.OnClose += playerDisplay.Hide;
             hoverHighlight.OnHover += playerDisplay.SetCenterText;
+
+            stairsPreview.Setup(player.transform);
+            stairsPreview.OnNewStairsMesh += brushManager.ReloadPreviewMesh;
 
             Clone clone = new Clone(world);
             clonePreview.SetVisibilityWithBrushIndex(-1);

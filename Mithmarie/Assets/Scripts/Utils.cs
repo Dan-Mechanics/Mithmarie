@@ -123,5 +123,22 @@ namespace Mithmarie
 
             return direction;
         }
+
+        public static Vector3 ConvertCardinalToDirection(CardinalDirection cardinal)
+        {
+            switch (cardinal)
+            {
+                case CardinalDirection.North:
+                    return Vector3.forward;
+                case CardinalDirection.East:
+                    return Vector3.right;
+                case CardinalDirection.South:
+                    return Vector3.back;
+                case CardinalDirection.West:
+                    return Vector3.left;
+                default:
+                    return Vector3.zero;
+            }
+        }
     }
 }

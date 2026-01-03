@@ -67,6 +67,11 @@ namespace Mithmarie
 
             current = brushes[index];
             OnNewBrushSelected?.Invoke(index);
+            ReloadPreviewMesh();
+        }
+
+        public void ReloadPreviewMesh()
+        {
             OnNewPreviewMesh?.Invoke(current.previewMesh);
         }
     }
