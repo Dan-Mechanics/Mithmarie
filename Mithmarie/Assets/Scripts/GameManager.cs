@@ -59,6 +59,7 @@ namespace Mithmarie
             brushDisplay.Setup(brushes);
 
             keyboardShortcuts.OnSave += fileScreen.Save;
+            keyboardShortcuts.OnExport += fileScreen.Export;
             keyboardShortcuts.OnUndo += history.Undo;
             keyboardShortcuts.OnRedo += history.Redo;
 
