@@ -6,7 +6,16 @@ namespace Mithmarie
     public class Brush : ScriptableObject
     {
         public Sprite icon;
+        public GameObject prefab;
         public Mesh previewMesh;
         public IBrushable brushable;
+
+        private void OnValidate()
+        {
+            if (prefab == null)
+                return;
+
+            previewMesh = prefab.transform.GetChild(0).GetComponent<MeshFilter>().sharedMesh;
+        }
     }
 }

@@ -5,13 +5,13 @@ namespace Mithmarie
 {
     public class Terraformer : StateBehaviour
     {
-        public event Action<SelectionInformation> OnPreview;
+        public event Action<Selection> OnPreview;
         public event Action<Vector3Int, Vector3Int> OnEditSelection;
 
         [SerializeField] private Transform eyes = default;
         [SerializeField] private TerraformRaycast raycast = default;
 
-        private readonly SelectionInformation selection = new SelectionInformation();
+        private readonly Selection selection = new Selection();
         private Vector3Int? firstPos;
         private Vector3Int secondPos;
         private RaycastHit hit;

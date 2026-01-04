@@ -16,7 +16,8 @@ namespace Mithmarie
         [SerializeField] private Button saveAsButton = default;
         [SerializeField] private Button loadButton = default;
         [SerializeField] private Button exportButton = default;
-        [SerializeField] private Button exportAsChunksButton = default;
+        [SerializeField] private Button exportAsButton = default;
+        [SerializeField] private PersistentBool exportAsChunks = default;
 
         private World world;
         private IBinarySerializable level;
@@ -24,6 +25,7 @@ namespace Mithmarie
         private IExportStrategy exportStrat;
         private IWorldMeshStrategy worldMeshStrat;
         private string savePath;
+        private string exportPath;
         private bool unsavedChanges;
 
         public void Setup(World world, IExportStrategy exportStrat, IWorldMeshStrategy worldMeshStrat, IBinarySerializable level)
@@ -43,6 +45,17 @@ namespace Mithmarie
         }
 
         private void OnNewChanges(HashSet<Vector3Int> added, HashSet<Vector3Int> removed) => unsavedChanges = true;
+
+        private bool CheckUnsavedChanges()
+        {
+            if (!unsavedChanges)
+                return false;
+
+            message.Send("You have unsaved changes!\nTry again to confirm.", Color.red, 3.0f);
+            unsavedChanges = false;
+
+            return true;
+        }
 
         public void Save()
         {
@@ -106,17 +119,6 @@ namespace Mithmarie
             LoadPath(paths[0]);
         }
 
-        private bool CheckUnsavedChanges()
-        {
-            if (!unsavedChanges)
-                return false;
-            
-            message.Send("You have unsaved changes!\nTry again to confirm.", Color.red, 3.0f);
-            unsavedChanges = false;
-
-            return true;
-        }
-
         private void LoadPath(string path)
         {
             if (!Utils.IsStringValid(path) || !File.Exists(path))
@@ -140,38 +142,41 @@ namespace Mithmarie
             CloseCompletely();
         }
 
-        private void Export()
+        public void Export()
         {
-            ExtensionFilter[] extensionList = new[] { new ExtensionFilter(exportStrat.GetWholeName(), exportStrat.GetShortName()) };
-
-            string path = StandaloneFileBrowser.SaveFilePanel("Save As", "", "level", extensionList);
-            if (!Utils.IsStringValid(path))
+            if (!Utils.IsStringValid(exportPath))
+            {
+                ExportAs();
                 return;
+            }
 
             message.Send("Exporting ...", Color.gray, MESSAGE_DURATION);
             world.Flush();
 
-            Mesh mesh = worldMeshStrat.GenerateMesh(world.GetWorldBlocks());
-            exportStrat.Export(path, mesh, message);
+            if (exportAsChunks.value)
+            {
+                List<Mesh> meshes = worldMeshStrat.GenerateAsChunks(world.GetChunks());
+                exportStrat.ExportAsChunks(exportPath, meshes, message);
+            }
+            else
+            {
+                Mesh mesh = worldMeshStrat.GenerateMesh(world.GetWorldBlocks());
+                exportStrat.Export(exportPath, mesh, message);
+            }
 
             CloseCompletely();
         }
 
-        private void ExportAsChunks()
+        private void ExportAs()
         {
             ExtensionFilter[] extensionList = new[] { new ExtensionFilter(exportStrat.GetWholeName(), exportStrat.GetShortName()) };
 
-            string path = StandaloneFileBrowser.SaveFilePanel("Save As", "", "level_chunks", extensionList);
+            string path = StandaloneFileBrowser.SaveFilePanel("Export As", "", "level", extensionList);
             if (!Utils.IsStringValid(path))
                 return;
 
-            message.Send("Exporting Chunks ...", Color.gray, MESSAGE_DURATION);
-            world.Flush();
-
-            List<Mesh> meshes = worldMeshStrat.GenerateAsChunks(world.GetChunks());
-            exportStrat.ExportAsChunks(path, meshes, message);
-
-            CloseCompletely();
+            exportPath = path;
+            Export();
         }
 
         public override void Enter()
@@ -179,11 +184,11 @@ namespace Mithmarie
             base.Enter();
             gameObject.SetActive(true);
 
-            saveAsButton.onClick.AddListener(SaveAs);
             saveButton.onClick.AddListener(Save);
+            saveAsButton.onClick.AddListener(SaveAs);
             loadButton.onClick.AddListener(Load);
             exportButton.onClick.AddListener(Export);
-            exportAsChunksButton.onClick.AddListener(ExportAsChunks);
+            exportAsButton.onClick.AddListener(ExportAs);
             newButton.onClick.AddListener(New);
         }
 
@@ -192,18 +197,20 @@ namespace Mithmarie
             base.Exit();
             gameObject.SetActive(false);
 
-            saveAsButton.onClick.RemoveListener(SaveAs);
             saveButton.onClick.RemoveListener(Save);
+            saveAsButton.onClick.RemoveListener(SaveAs);
             loadButton.onClick.RemoveListener(Load);
-            newButton.onClick.RemoveListener(New);
-            exportAsChunksButton.onClick.RemoveListener(ExportAsChunks);
             exportButton.onClick.RemoveListener(Export);
+            exportAsButton.onClick.RemoveListener(ExportAs);
+            newButton.onClick.RemoveListener(New);
         }
 
+#if NOT_UNITY_EDITOR
         private void OnApplicationQuit()
         {
             if (unsavedChanges)
                 Save();
         }
+#endif
     }
 }

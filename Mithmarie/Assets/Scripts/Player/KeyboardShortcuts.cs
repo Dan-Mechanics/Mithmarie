@@ -6,6 +6,7 @@ namespace Mithmarie
     public class KeyboardShortcuts : StateBehaviour
     {
         public event Action OnSave;
+        public event Action OnExport;
         public event Action OnUndo;
         public event Action OnRedo;
 
@@ -17,6 +18,9 @@ namespace Mithmarie
 
             if (Keyboard.current.sKey.wasPressedThisFrame)
                 OnSave?.Invoke();
+
+            if (Keyboard.current.eKey.wasPressedThisFrame)
+                OnExport?.Invoke();
 
             if (Keyboard.current.zKey.wasPressedThisFrame)
                 (Keyboard.current.leftAltKey.isPressed ? OnRedo : OnUndo)?.Invoke();

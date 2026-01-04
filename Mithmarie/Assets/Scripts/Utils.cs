@@ -100,9 +100,45 @@ namespace Mithmarie
             }
         }
 
-        public static string SetRichTextColor(string str, string color) => $"<color={color}>{str}</color>";
-        public static string MakeGreen(string str) => SetRichTextColor(str, "green");
         public static string MakeRed(string str) => SetRichTextColor(str, "red");
+        public static string MakeGreen(string str) => SetRichTextColor(str, "green");
         public static string MakeBlue(string str) => SetRichTextColor(str, "blue");
+        public static string SetRichTextColor(string str, string color) => $"<color={color}>{str}</color>";
+
+        public static CardinalDirection GetCardinal(float rot)
+        {
+            CardinalDirection direction = CardinalDirection.North;
+            float angle = 22.5f;
+            if (rot > angle)
+                direction = CardinalDirection.East;
+
+            if (rot > 90f + angle)
+                direction = CardinalDirection.South;
+
+            if (rot > 180f + angle)
+                direction = CardinalDirection.West;
+
+            if (rot > 270f + angle)
+                direction = CardinalDirection.North;
+
+            return direction;
+        }
+
+        public static Vector3 ConvertCardinalToDirection(CardinalDirection cardinal)
+        {
+            switch (cardinal)
+            {
+                case CardinalDirection.North:
+                    return Vector3.forward;
+                case CardinalDirection.East:
+                    return Vector3.right;
+                case CardinalDirection.South:
+                    return Vector3.back;
+                case CardinalDirection.West:
+                    return Vector3.left;
+                default:
+                    return Vector3.zero;
+            }
+        }
     }
 }

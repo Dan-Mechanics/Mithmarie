@@ -19,7 +19,7 @@ namespace Mithmarie
             preview.gameObject.SetActive(false);
         }
 
-        public void UpdatePreview(SelectionInformation selection)
+        public void UpdatePreview(Selection selection)
         {
             if(selection == null)
             {
