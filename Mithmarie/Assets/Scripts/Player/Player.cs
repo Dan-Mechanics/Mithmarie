@@ -10,8 +10,9 @@ namespace Mithmarie
     {
         public event Action OnOpen;
         public event Action OnClose;
-        
-        [SerializeField] private TerraformInput terraformInput = default;
+
+        [SerializeField] private InputActionAsset inputActions = default;
+        [SerializeField] private PlayerMovement playerMovement = default;
         [SerializeField] private Terraformer addTerraform = default;
         [SerializeField] private Terraformer removeTerraform = default;
         [SerializeField] private SelectionPreview addSelectionPreview = default;
@@ -19,7 +20,9 @@ namespace Mithmarie
         [SerializeField] private BrushManager brushManager = default;
         [SerializeField] private HoverHighlight hoverHighlight = default;
         [SerializeField] private HoverPreview hoverPreview = default;
+        [SerializeField] private string pauseName = default;
 
+        private InputAction pauseAction;
         private StateBehaviour[] behaviours;
 
         public void Setup(World world)
@@ -28,6 +31,8 @@ namespace Mithmarie
             list.Remove(this);
             behaviours = list.ToArray();
 
+            pauseAction = InputSystem.actions.FindAction(pauseName);
+
             addSelectionPreview.Setup();
             removeSelectionPreview.Setup();
 
@@ -35,6 +40,7 @@ namespace Mithmarie
             removeTerraform.Setup(world);
 
             hoverPreview.Setup();
+            playerMovement.Setup();
         }
 
         public SelectionPreview GetAddSelectionPreview() => addSelectionPreview;
@@ -54,12 +60,6 @@ namespace Mithmarie
 
             addTerraform.OnEditSelection += brushManager.AddSelection;
             removeTerraform.OnEditSelection += brushManager.RemoveSelection;
-
-            terraformInput.OnAddPressed += addTerraform.Press;
-            terraformInput.OnAddReleased += addTerraform.Release;
-            
-            terraformInput.OnRemovePressed += removeTerraform.Press;
-            terraformInput.OnRemoveReleased += removeTerraform.Release;
 
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
@@ -82,12 +82,6 @@ namespace Mithmarie
             addTerraform.OnEditSelection -= brushManager.AddSelection;
             removeTerraform.OnEditSelection -= brushManager.RemoveSelection;
 
-            terraformInput.OnAddPressed -= addTerraform.Press;
-            terraformInput.OnAddReleased -= addTerraform.Release;
-
-            terraformInput.OnRemovePressed -= removeTerraform.Press;
-            terraformInput.OnRemoveReleased -= removeTerraform.Release;
-
             OnClose?.Invoke();
         }
 
@@ -100,7 +94,7 @@ namespace Mithmarie
                 behaviours[i].OnFrame();
             }
 
-            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            if (pauseAction.WasPressedThisFrame())
                 Close();
         }
 
@@ -111,6 +105,16 @@ namespace Mithmarie
             {
                 behaviours[i].OnTick();
             }
+        }
+
+        private void OnEnable()
+        {
+            inputActions.FindActionMap("Player").Enable();
+        }
+
+        private void OnDisable()
+        {
+            inputActions.FindActionMap("Player").Disable();
         }
     }
 }

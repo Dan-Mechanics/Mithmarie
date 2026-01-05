@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Mithmarie
 {
@@ -10,8 +11,10 @@ namespace Mithmarie
 
         [SerializeField] private Transform eyes = default;
         [SerializeField] private TerraformRaycast raycast = default;
+        [SerializeField] private string buttonName = default;
 
         private readonly Selection selection = new Selection();
+        private InputAction button;
         private Vector3Int? firstPos;
         private Vector3Int secondPos;
         private RaycastHit hit;
@@ -20,10 +23,21 @@ namespace Mithmarie
         public void Setup(World world)
         {
             this.world = world;
+            button = InputSystem.actions.FindAction(buttonName);
             ResetToDefault();
         }
 
         private void ResetToDefault() => firstPos = null;
+
+        public override void OnFrame()
+        {
+            base.OnFrame();
+            if (button.WasPressedThisFrame())
+                Press();
+
+            if(button.WasReleasedThisFrame())
+                Release();
+        }
 
         public override void OnTick()
         {

@@ -14,6 +14,10 @@ namespace Mithmarie
         public void Setup()
         {
             keyHighlights = GetComponentsInChildren<KeyHighlight>();
+            for (int i = 0; i < keyHighlights.Length; i++)
+            {
+                keyHighlights[i].Setup();
+            }
         }
 
         private void Update()

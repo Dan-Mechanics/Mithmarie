@@ -20,7 +20,6 @@ GameObject:
   - component: {fileID: 6589870188708193214}
   - component: {fileID: 5298456910469795310}
   - component: {fileID: 8914491936666817760}
-  - component: {fileID: 1132098834400039603}
   m_Layer: 3
   m_Name: player
   m_TagString: Player
@@ -56,7 +55,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4e1db4ccb13d9a46bc001535e774b09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terraformInput: {fileID: 1132098834400039603}
+  inputActions: {fileID: -944628639613478452, guid: dca1fbb682234da419a58e175673d54b, type: 3}
+  playerMovement: {fileID: 3481532798549250696}
   addTerraform: {fileID: 4304039197132537368}
   removeTerraform: {fileID: 6277602641836883055}
   addSelectionPreview: {fileID: 1271512375170221928}
@@ -76,10 +76,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb68333a46c41e45ae1b66cb2fb09aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprintSpeedMult: 2.5
-  sprintKey: 55
-  downKey: 51
+  sprintMultiplyer: 2.5
   speed: {fileID: 11400000, guid: 5d089e7e052fa3c499c293d13a7b1227, type: 2}
+  moveName: Move
+  jumpName: Jump
+  crouchName: Crouch
+  sprintName: Sprint
 --- !u!114 &771546152580428926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,6 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
   raycast: {fileID: 11400000, guid: d647d0b8f418c2f42a32cccf53d2d0ea, type: 2}
+  buttonName: Destroy
 --- !u!114 &4304039197132537368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,6 +126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eyes: {fileID: 3062100453456221858}
   raycast: {fileID: 11400000, guid: 8534705af78bba34aaf8b46b71ad1974, type: 2}
+  buttonName: Place
 --- !u!114 &1271512375170221928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,19 +209,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollDeadzone: 0.1
---- !u!114 &1132098834400039603
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 293393832251157704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 171f8decd293ad04aa19e3bb586f6676, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  swapMouseButtons: {fileID: 11400000, guid: 728d7cc42f69d9845aa4cea8bf604f1b, type: 2}
 --- !u!1 &3889645060876896680
 GameObject:
   m_ObjectHideFlags: 0

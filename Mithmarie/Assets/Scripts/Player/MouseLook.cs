@@ -19,7 +19,7 @@ namespace Mithmarie
 
         /// <summary>
         /// We are using the old input system 
-        /// here because it just works better.
+        /// here because it feels better and more responsive.
         /// </summary>
         public override void OnFrame()
         {
