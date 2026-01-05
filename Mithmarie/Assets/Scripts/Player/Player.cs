@@ -77,11 +77,11 @@ namespace Mithmarie
 
             addTerraform.OnPreview -= addSelectionPreview.UpdatePreview;
             removeTerraform.OnPreview -= removeSelectionPreview.UpdatePreview;
-            hoverHighlight.OnHover -= hoverPreview.UpdatePreview;
 
             addTerraform.OnEditSelection -= brushManager.AddSelection;
             removeTerraform.OnEditSelection -= brushManager.RemoveSelection;
 
+            hoverHighlight.OnHover -= hoverPreview.UpdatePreview;
             OnClose?.Invoke();
         }
 
