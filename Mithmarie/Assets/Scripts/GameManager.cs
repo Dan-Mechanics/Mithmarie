@@ -6,8 +6,7 @@ namespace Mithmarie
     public class GameManager : MonoBehaviour
     {
         [SerializeField] private Brush[] brushes = default;
-        
-        private readonly FSM fsm = new FSM();
+        private readonly FSM fsm = new FSM();        
 
         private ChunkVisualManager chunkVisualManager;
         private KeyboardShortcuts keyboardShortcuts;
@@ -27,6 +26,7 @@ namespace Mithmarie
         private Player player;
         private World world;
         private Menu menu;
+
 
         private void Awake()
         {

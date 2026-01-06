@@ -273,11 +273,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6541160808978498079, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: m_Name
-      value: menu
+      value: escape
+      objectReference: {fileID: 0}
+    - target: {fileID: 6541160808978498079, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6603908903243256910, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: key
-      value: 60
+      value: Pause
       objectReference: {fileID: 0}
     - target: {fileID: 8255196616565296070, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: m_Pivot.x
@@ -387,11 +391,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6541160808978498079, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: m_Name
-      value: up
+      value: space
       objectReference: {fileID: 0}
     - target: {fileID: 6603908903243256910, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: key
-      value: 1
+      value: Jump
       objectReference: {fileID: 0}
     - target: {fileID: 8255196616565296070, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: m_Pivot.x
@@ -1096,6 +1100,7 @@ MonoBehaviour:
   settingsScreen: {fileID: 1126528187}
   closeButton: {fileID: 1084102325}
   quitButton: {fileID: 1244550824}
+  pauseName: Pause
 --- !u!1001 &554613770
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3986,11 +3991,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6541160808978498079, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: m_Name
-      value: down
+      value: shift
       objectReference: {fileID: 0}
     - target: {fileID: 6603908903243256910, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: key
-      value: 51
+      value: Crouch
+      objectReference: {fileID: 0}
+    - target: {fileID: 6603908903243256910, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
+      propertyPath: test.m_Id
+      value: b7963cf4-a65b-489d-9f1b-031f8eaf2034
+      objectReference: {fileID: 0}
+    - target: {fileID: 6603908903243256910, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
+      propertyPath: test.m_Name
+      value: Test
       objectReference: {fileID: 0}
     - target: {fileID: 6811851903293659961, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: m_SizeDelta.x
@@ -5211,11 +5224,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6541160808978498079, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: m_Name
-      value: sprint
+      value: ctrl
       objectReference: {fileID: 0}
     - target: {fileID: 6603908903243256910, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: key
-      value: 55
+      value: Sprint
       objectReference: {fileID: 0}
     - target: {fileID: 8255196616565296070, guid: e8c03aadefa7e234e9000dccba7d4f4e, type: 3}
       propertyPath: m_Pivot.x
@@ -5314,10 +5327,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: player
       objectReference: {fileID: 0}
-    - target: {fileID: 1271512375170221928, guid: 9393d9580c1a3224cbe38fcf4d284a62, type: 3}
-      propertyPath: test
-      value: 
-      objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 7707490481465344754, guid: 9393d9580c1a3224cbe38fcf4d284a62, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1

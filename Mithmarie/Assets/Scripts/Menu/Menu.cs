@@ -10,9 +10,11 @@ namespace Mithmarie
         [SerializeField] private SettingsScreen settingsScreen = default;
         [SerializeField] private Button closeButton = default;
         [SerializeField] private Button quitButton = default;
+        [SerializeField] private string pauseName = default;
 
         private Screen[] screens;
         private IMessageService message;
+        private InputAction pauseAction;
         private readonly FSM fsm = new FSM();
 
         /// <summary>
@@ -25,6 +27,7 @@ namespace Mithmarie
             fileScreen.Setup(FindAnyObjectByType<World>(), new OBJ(), new GreedyWorldMesh(), level);
             settingsScreen.Setup();
 
+            pauseAction = InputSystem.actions.FindAction(pauseName);
             screens = GetComponentsInChildren<Screen>(true);
 
             fsm.AddState(fileScreen);
@@ -38,7 +41,7 @@ namespace Mithmarie
             base.OnFrame();
             fsm.Update();
 
-            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            if (pauseAction.WasPressedThisFrame())
                 Close();
         }
 
