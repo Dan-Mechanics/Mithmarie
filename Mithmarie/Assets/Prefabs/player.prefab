@@ -64,6 +64,7 @@ MonoBehaviour:
   brushManager: {fileID: 8914491936666817760}
   hoverHighlight: {fileID: 6589870188708193214}
   hoverPreview: {fileID: 5298456910469795310}
+  pauseName: Pause
 --- !u!114 &3481532798549250696
 MonoBehaviour:
   m_ObjectHideFlags: 0
