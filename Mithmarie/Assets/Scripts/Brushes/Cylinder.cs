@@ -35,7 +35,7 @@ namespace Mithmarie
             {
                 for (int z = 0; z < depth; z++)
                 {
-                    if (!IsBlockWithinCircle(x, z, width, depth))
+                    if (!IsBlockWithin(x, z, width, depth, add))
                         continue;
 
                     // A CYLINDER IS A CIRCLE WITH HEIGHT HERE.
@@ -52,7 +52,7 @@ namespace Mithmarie
             }
         }
 
-        private bool IsBlockWithinCircle(int x, int z, int width, int depth)
+        private bool IsBlockWithin(int x, int z, int width, int depth, bool circle)
         {
             float xRad = width / 2f;
             float zRad = depth / 2f;
@@ -64,7 +64,15 @@ namespace Mithmarie
             float zDist = Mathf.Abs(z - zCenter);
 
             float dist = Utils.GetEllipseMagnitude(new Vector3(xDist, 0f, zDist), xRad, zRad);
-            return dist <= xRad && dist >= xRad - 1f;
+            if (circle)
+            {
+                return dist <= xRad && dist >= xRad - 1f;
+            }
+            else
+            {
+                // CYLINDER.
+                return dist <= xRad;
+            }
         }
     }
 }
