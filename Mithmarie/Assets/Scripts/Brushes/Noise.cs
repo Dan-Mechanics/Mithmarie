@@ -32,7 +32,7 @@ namespace Mithmarie
                 {
                     for (int z = 0; z < depth; z++)
                     {
-                        if (UnityEngine.Random.value < 0.85f)
+                        if (UnityEngine.Random.value < 0.7f)
                             continue;
 
                         temp.x = x * xDirection;

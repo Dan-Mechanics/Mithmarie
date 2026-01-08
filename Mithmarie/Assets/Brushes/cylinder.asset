@@ -15,3 +15,4 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: fdd9cecb229594647bc3f7a7aef2bd12, type: 3}
   prefab: {fileID: 919132149155446097, guid: 2c059ec7d04a4d348842c26309b64ae7, type: 3}
   previewMesh: {fileID: -2432090755550338912, guid: 2c059ec7d04a4d348842c26309b64ae7, type: 3}
+  tooltip: Makes a hollow cylinder / pipe.

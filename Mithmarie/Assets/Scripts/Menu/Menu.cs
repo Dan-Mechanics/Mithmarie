@@ -8,6 +8,7 @@ namespace Mithmarie
     {
         [SerializeField] private FileScreen fileScreen = default;
         [SerializeField] private SettingsScreen settingsScreen = default;
+        [SerializeField] private WikiScreen wikiScreen = default;
         [SerializeField] private Button closeButton = default;
         [SerializeField] private Button quitButton = default;
         [SerializeField] private string pauseName = default;
@@ -32,8 +33,16 @@ namespace Mithmarie
 
             fsm.AddState(fileScreen);
             fsm.AddState(settingsScreen);
+            fsm.AddState(wikiScreen);
+
             fsm.AddTransition(new Transition(fileScreen, settingsScreen));
+            fsm.AddTransition(new Transition(fileScreen, wikiScreen));
+
             fsm.AddTransition(new Transition(settingsScreen, fileScreen));
+            fsm.AddTransition(new Transition(settingsScreen, wikiScreen));
+
+            fsm.AddTransition(new Transition(wikiScreen, fileScreen));
+            fsm.AddTransition(new Transition(wikiScreen, settingsScreen));
         }
 
         public override void OnFrame()

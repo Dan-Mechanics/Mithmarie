@@ -14,12 +14,14 @@ namespace Mithmarie
         public override void Enter()
         {
             base.Enter();
+            gameObject.SetActive(true);
             button.interactable = false;
         }
 
         public override void Exit()
         {
             base.Enter();
+            gameObject.SetActive(false);
             button.interactable = true;
         }
 

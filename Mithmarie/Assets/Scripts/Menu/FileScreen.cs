@@ -182,7 +182,6 @@ namespace Mithmarie
         public override void Enter()
         {
             base.Enter();
-            gameObject.SetActive(true);
 
             saveButton.onClick.AddListener(Save);
             saveAsButton.onClick.AddListener(SaveAs);
@@ -195,7 +194,6 @@ namespace Mithmarie
         public override void Exit()
         {
             base.Exit();
-            gameObject.SetActive(false);
 
             saveButton.onClick.RemoveListener(Save);
             saveAsButton.onClick.RemoveListener(SaveAs);

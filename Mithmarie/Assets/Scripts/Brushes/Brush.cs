@@ -8,6 +8,7 @@ namespace Mithmarie
         public Sprite icon;
         public GameObject prefab;
         public Mesh previewMesh;
+        public string tooltip;
         public IBrushable brushable;
 
         private void OnValidate()

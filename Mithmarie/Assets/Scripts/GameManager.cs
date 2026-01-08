@@ -21,6 +21,7 @@ namespace Mithmarie
         private PopupManager popupManager;
         private OverlapSphere redOverlap;
         private FileScreen fileScreen;
+        private WikiScreen wikiScreen;
         private WorldHistory history;
         private Transform eyes;
         private Player player;
@@ -34,6 +35,7 @@ namespace Mithmarie
             history = FindAnyObjectByType<WorldHistory>();
             keyboardShortcuts = FindAnyObjectByType<KeyboardShortcuts>();
             fileScreen = FindAnyObjectByType<FileScreen>();
+            wikiScreen = FindAnyObjectByType<WikiScreen>();
             chunkVisualManager = FindAnyObjectByType<ChunkVisualManager>();
             player = FindAnyObjectByType<Player>();
             playerDisplay = FindAnyObjectByType<PlayerDisplay>();
@@ -96,6 +98,7 @@ namespace Mithmarie
             };
 
             brushManager.Setup(brushes, brushables);
+            wikiScreen.Setup(brushes);
             clonePreview.Setup(brushes.Length - 1);
 
             brushManager.OnNewBrushSelected += brushDisplay.NewIndexSelected;
@@ -122,7 +125,7 @@ namespace Mithmarie
             fsm.AddTransition(new Transition(player, menu));
             fsm.AddTransition(new Transition(menu, player));
 
-            fsm.Open(player);
+            fsm.Open(menu);
         }
 
         private void Update() => fsm.Update();
