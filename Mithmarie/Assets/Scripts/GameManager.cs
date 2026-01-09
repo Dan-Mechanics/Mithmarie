@@ -110,7 +110,7 @@ namespace Mithmarie
             world.Add(Vector3Int.zero);
             world.Flush();
             message.Send("[WASD] for movement and [MOUSE] for looking.\n" +
-                "Use [RMB] to place blocks, [LMB] to destroy.", Color.black, 4f);
+                "Use [RMB] to place blocks, [LMB] to destroy.\nUse [ESCAPE] to find the page with more details.", Color.black, 4f);
 
             // ===
 
@@ -125,7 +125,7 @@ namespace Mithmarie
             fsm.AddTransition(new Transition(player, menu));
             fsm.AddTransition(new Transition(menu, player));
 
-            fsm.Open(menu);
+            fsm.Open(player);
         }
 
         private void Update() => fsm.Update();
