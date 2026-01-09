@@ -13,11 +13,12 @@ namespace Mithmarie
         [SerializeField] private Button quitButton = default;
         [SerializeField] private string pauseName = default;
 
-        private Screen[] screens;
-        private IMessageService message;
-        private InputAction pauseAction;
         private readonly FSM fsm = new FSM();
-
+        private InputAction pauseAction;
+        private IMessageService message;
+        private Screen[] screens;
+        private bool hasOpened;
+        
         /// <summary>
         /// You could possiblely make it so GameManager injects the dependencies to the other states here.
         /// This might make it too unreadable though.
@@ -71,7 +72,8 @@ namespace Mithmarie
             quitButton.onClick.AddListener(Application.Quit);
             closeButton.onClick.AddListener(Close);
 
-            fsm.Open(fileScreen);
+            fsm.Open(hasOpened ? fileScreen : wikiScreen);
+            hasOpened = true;
 
             foreach (Screen screen in screens)
             {

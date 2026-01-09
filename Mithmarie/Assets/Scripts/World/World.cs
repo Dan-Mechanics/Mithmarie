@@ -21,6 +21,12 @@ namespace Mithmarie
 
         private bool rememberTheFollowing;
 
+        public void Setup()
+        {
+            Clear();
+            Add(Vector3Int.zero);
+        }
+
         public void Add(Vector3Int blockPos)
         {
             Vector3Int chunkPos = Utils.GetChunkPos(blockPos, CHUNK_SIZE);

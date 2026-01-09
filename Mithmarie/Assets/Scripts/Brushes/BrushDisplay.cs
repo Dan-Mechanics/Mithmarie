@@ -7,7 +7,7 @@ namespace Mithmarie
     public class BrushDisplay : MonoBehaviour
     {
         [SerializeField] private GameObject slotPrefab = default;
-        [SerializeField] private TMP_Text brushNameText = default;
+        [SerializeField] private TMP_Text brushText = default;
         [SerializeField] private TMP_Text tooltipText = default;
         [SerializeField] private Fade tooltipFade = default;
         [SerializeField] private float perSlotOffset = default;
@@ -43,7 +43,7 @@ namespace Mithmarie
 
         public void NewIndexSelected(int index)
         {
-            brushNameText.text = brushes[index].name;
+            brushText.text = brushes[index].name;
             tooltipText.text = brushes[index].tooltip;
             tooltipFade.Flash();
 

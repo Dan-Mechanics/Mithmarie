@@ -106,11 +106,8 @@ namespace Mithmarie
 
             // ===
 
-            IMessageService message = ServiceLocator<IMessageService>.Locate();
-            world.Add(Vector3Int.zero);
+            world.Setup();
             world.Flush();
-            message.Send("[WASD] for movement and [MOUSE] for looking.\n" +
-                "Use [RMB] to place blocks, [LMB] to destroy.\nUse [ESCAPE] to find the page with more details.", Color.black, 4f);
 
             // ===
 
@@ -125,7 +122,7 @@ namespace Mithmarie
             fsm.AddTransition(new Transition(player, menu));
             fsm.AddTransition(new Transition(menu, player));
 
-            fsm.Open(player);
+            fsm.Open(menu);
         }
 
         private void Update() => fsm.Update();

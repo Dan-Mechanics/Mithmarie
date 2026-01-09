@@ -10,10 +10,12 @@ namespace Mithmarie
         public event Action<Mesh> OnNewPreviewMesh;
 
         [SerializeField, Min(0f)] private float scrollDeadzone = default;
+        [SerializeField] private string scrollName = default;
 
         private Brush[] brushes;
         private Brush current;
         private int index;
+        private InputAction scroll;
 
         public void Setup(Brush[] brushes, IBrushable[] brushables)
         {
@@ -23,6 +25,8 @@ namespace Mithmarie
             }
 
             this.brushes = brushes;
+            scroll = InputSystem.actions.FindAction(scrollName);
+            
             index = -1;
             ChangeBrush(1);
         }
@@ -46,8 +50,7 @@ namespace Mithmarie
         public override void OnFrame()
         {
             base.OnFrame();
-            float value = Mouse.current.scroll.value.y;
-
+            float value = scroll.ReadValue<Vector2>().y;
             if (value > scrollDeadzone)
             {
                 ChangeBrush(1);
