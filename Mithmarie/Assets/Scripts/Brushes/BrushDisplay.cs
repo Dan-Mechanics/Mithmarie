@@ -9,6 +9,7 @@ namespace Mithmarie
         [SerializeField] private GameObject slotPrefab = default;
         [SerializeField] private TMP_Text brushNameText = default;
         [SerializeField] private TMP_Text tooltipText = default;
+        [SerializeField] private Fade tooltipFade = default;
         [SerializeField] private float perSlotOffset = default;
         [SerializeField] private Vector2 globalOffset = default;
         [SerializeField] private Color colorA = Color.white;
@@ -44,6 +45,8 @@ namespace Mithmarie
         {
             brushNameText.text = brushes[index].name;
             tooltipText.text = brushes[index].tooltip;
+            tooltipFade.Flash();
+
             for (int i = 0; i < slots.Length; i++)
             {
                 slots[i].arrow.SetActive(i == index);

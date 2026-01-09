@@ -2034,6 +2034,7 @@ MonoBehaviour:
   slotPrefab: {fileID: 1629591524865239822, guid: 0e7ce6560ddb705459422740d369d751, type: 3}
   brushNameText: {fileID: 1128295880}
   tooltipText: {fileID: 1399626843}
+  tooltipFade: {fileID: 1399626846}
   perSlotOffset: 115
   globalOffset: {x: -15, y: 15}
   colorA: {r: 0.77254903, g: 0.90588236, b: 0.98039216, a: 1}
@@ -3272,6 +3273,8 @@ GameObject:
   - component: {fileID: 1399626842}
   - component: {fileID: 1399626844}
   - component: {fileID: 1399626843}
+  - component: {fileID: 1399626846}
+  - component: {fileID: 1399626845}
   m_Layer: 5
   m_Name: tooltip
   m_TagString: Untagged
@@ -3295,8 +3298,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 347, y: -444}
-  m_SizeDelta: {x: -1421.2682, y: -909.5294}
+  m_AnchoredPosition: {x: 304, y: -440.6301}
+  m_SizeDelta: {x: -1339.2504, y: -902.7896}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1399626843
 MonoBehaviour:
@@ -3318,7 +3321,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Make a solid cube by selecting an area.
+  m_text: Make a red selection around the build you want to clone. Tap the green
+    selection to place.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1d6798cf2942af448999f8a86ccb0f4e, type: 2}
   m_sharedMaterial: {fileID: -1156642742739601956, guid: 1d6798cf2942af448999f8a86ccb0f4e, type: 2}
@@ -3351,7 +3355,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 2
+  m_fontStyle: 3
   m_HorizontalAlignment: 4
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
@@ -3397,6 +3401,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1399626841}
   m_CullTransparentMesh: 1
+--- !u!225 &1399626845
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399626841}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &1399626846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399626841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bb1ecfef45a1da4bb979302a1cab983, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  group: {fileID: 1399626845}
+  speed: 1
 --- !u!1001 &1411757448
 PrefabInstance:
   m_ObjectHideFlags: 0
