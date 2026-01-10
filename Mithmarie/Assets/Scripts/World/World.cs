@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using DanUtils;
 
 namespace Mithmarie
 {
@@ -20,6 +21,12 @@ namespace Mithmarie
         private readonly HashSet<Vector3Int> removedBlocksCache = new HashSet<Vector3Int>();
 
         private bool rememberTheFollowing;
+
+        public void Setup()
+        {
+            Clear();
+            Add(Vector3Int.zero);
+        }
 
         public void Add(Vector3Int blockPos)
         {

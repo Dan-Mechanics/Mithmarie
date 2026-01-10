@@ -1,6 +1,8 @@
+using DanUtils;
 using SFB;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -142,7 +144,7 @@ namespace Mithmarie
             CloseCompletely();
         }
 
-        public void Export()
+        public async void Export()
         {
             if (!Utils.IsStringValid(exportPath))
             {
@@ -153,18 +155,34 @@ namespace Mithmarie
             message.Send("Exporting ...", Color.gray, MESSAGE_DURATION);
             world.Flush();
 
+            CloseCompletely();
+
             if (exportAsChunks.value)
             {
-                List<Mesh> meshes = worldMeshStrat.GenerateAsChunks(world.GetChunks());
-                exportStrat.ExportAsChunks(exportPath, meshes, message);
+                await Task.Run(ExportChunksAsync);
             }
             else
             {
-                Mesh mesh = worldMeshStrat.GenerateMesh(world.GetWorldBlocks());
-                exportStrat.Export(exportPath, mesh, message);
+                await Task.Run(ExportWholeAsync);
             }
+        }
 
-            CloseCompletely();
+        private async Task ExportWholeAsync()
+        {
+            MeshData mesh = worldMeshStrat.GenerateMesh(world.GetWorldBlocks());
+            exportStrat.Export(exportPath, mesh, message);
+
+            print("ExportWholeAsync() done.");
+            await Task.CompletedTask;
+        }
+
+        private async Task ExportChunksAsync()
+        {
+            List<MeshData> meshes = worldMeshStrat.GenerateAsChunks(world.GetChunks());
+            exportStrat.ExportAsChunks(exportPath, meshes, message);
+
+            print("ExportChunksAsync() done.");
+            await Task.CompletedTask;
         }
 
         private void ExportAs()
@@ -182,7 +200,6 @@ namespace Mithmarie
         public override void Enter()
         {
             base.Enter();
-            gameObject.SetActive(true);
 
             saveButton.onClick.AddListener(Save);
             saveAsButton.onClick.AddListener(SaveAs);
@@ -195,7 +212,6 @@ namespace Mithmarie
         public override void Exit()
         {
             base.Exit();
-            gameObject.SetActive(false);
 
             saveButton.onClick.RemoveListener(Save);
             saveAsButton.onClick.RemoveListener(SaveAs);

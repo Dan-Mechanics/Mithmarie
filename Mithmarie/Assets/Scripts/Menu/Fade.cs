@@ -16,6 +16,12 @@ namespace Mithmarie
             group.alpha = alpha;
         }
 
-        public void Enable(bool active) => direction = active ? 1f : -1f;
+        public void SetDirection(bool becomeVisible) => direction = becomeVisible ? 1f : -1f;
+
+        public void Flash()
+        {
+            group.alpha = 1f;
+            SetDirection(false);
+        }
     }
 }

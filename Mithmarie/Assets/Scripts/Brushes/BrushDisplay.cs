@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,14 +7,20 @@ namespace Mithmarie
     public class BrushDisplay : MonoBehaviour
     {
         [SerializeField] private GameObject slotPrefab = default;
+        [SerializeField] private TMP_Text brushText = default;
+        [SerializeField] private TMP_Text tooltipText = default;
+        [SerializeField] private Fade tooltipFade = default;
         [SerializeField] private float perSlotOffset = default;
         [SerializeField] private Vector2 globalOffset = default;
         [SerializeField] private Color colorA = Color.white;
         [SerializeField] private Color colorB = Color.white;
+
+        private Brush[] brushes;
         private Slot[] slots;
 
         public void Setup(Brush[] brushes)
         {
+            this.brushes = brushes;
             slots = new Slot[brushes.Length];
             for (int i = 0; i < slots.Length; i++)
             {
@@ -36,6 +43,10 @@ namespace Mithmarie
 
         public void NewIndexSelected(int index)
         {
+            brushText.text = brushes[index].name;
+            tooltipText.text = brushes[index].tooltip;
+            tooltipFade.Flash();
+
             for (int i = 0; i < slots.Length; i++)
             {
                 slots[i].arrow.SetActive(i == index);

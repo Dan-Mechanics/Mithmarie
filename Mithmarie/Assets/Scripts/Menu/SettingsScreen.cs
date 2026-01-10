@@ -31,7 +31,6 @@ namespace Mithmarie
         public override void Enter()
         {
             base.Enter();
-            gameObject.SetActive(true);
             doneButton.onClick.AddListener(CloseCompletely);
 
             defaultAllButton.onClick.AddListener(ReturnToDefault);
@@ -44,7 +43,6 @@ namespace Mithmarie
         public override void Exit()
         {
             base.Exit();
-            gameObject.SetActive(false);
             doneButton.onClick.RemoveListener(CloseCompletely);
 
             defaultAllButton.onClick.RemoveListener(ReturnToDefault);

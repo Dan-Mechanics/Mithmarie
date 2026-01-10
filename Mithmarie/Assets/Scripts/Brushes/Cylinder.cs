@@ -1,4 +1,4 @@
-using System;
+using DanUtils;
 using UnityEngine;
 
 namespace Mithmarie
@@ -66,7 +66,7 @@ namespace Mithmarie
             float dist = Utils.GetEllipseMagnitude(new Vector3(xDist, 0f, zDist), xRad, zRad);
             if (circle)
             {
-                return dist <= xRad && dist >= xRad - 1f;
+                return dist <= xRad && dist >= xRad - 1.125f;
             }
             else
             {

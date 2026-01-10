@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a3be57ede084e4587efa7b1f0cd118, type: 3}
   m_Name: remove_raycast
   m_EditorClassIdentifier: 
-  maxRange: 7.5
+  maxRange: 8.5
   mask:
     serializedVersion: 2
     m_Bits: 1

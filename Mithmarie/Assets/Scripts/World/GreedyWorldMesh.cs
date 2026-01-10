@@ -1,3 +1,4 @@
+using DanUtils;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ namespace Mithmarie
     public class GreedyWorldMesh : IWorldMeshStrategy
     {
         private Dictionary<Vector3Int, HashSet<Vector3Int>> chunks;
+
         private bool Has(Vector3Int blockPos)
         {
             Vector3Int chunkPos = Utils.GetChunkPos(blockPos, World.CHUNK_SIZE);
@@ -15,10 +17,10 @@ namespace Mithmarie
             return chunks[chunkPos].Contains(blockPos);
         }
 
-        public List<Mesh> GenerateAsChunks(Dictionary<Vector3Int, HashSet<Vector3Int>> chunks)
+        public List<MeshData> GenerateAsChunks(Dictionary<Vector3Int, HashSet<Vector3Int>> chunks)
         {
             this.chunks = chunks;
-            List<Mesh> meshes = new List<Mesh>();
+            List<MeshData> meshes = new List<MeshData>();
 
             int counter = 1;
             foreach (HashSet<Vector3Int> blocks in chunks.Values)
@@ -26,39 +28,29 @@ namespace Mithmarie
                 List<Vector3> verts = new List<Vector3>();
                 List<int> tris = new List<int>();
                 List<Vector2> uvs = new List<Vector2>();
-                Mesh mesh = new Mesh();
-                mesh.name = $"chunk_{counter}_greedy";
-                counter++;
 
                 MeshingUtils.GenerateGreedyMesh(blocks, Has, verts, tris, uvs);
 
-                mesh.vertices = verts.ToArray();
-                mesh.triangles = tris.ToArray();
-                mesh.uv = uvs.ToArray();
-                mesh.RecalculateNormals();
+                // DON'T ADD THE MESH IF IT DOESN'T EXIST.
+                if (verts.Count <= 0)
+                    continue;
 
-                meshes.Add(mesh);
+                meshes.Add(new MeshData() { name = $"chunk_{counter}_greedy", verts = verts, tris = tris, uvs = uvs });
+                counter++;
             }
 
             return meshes;
         }
 
-        public Mesh GenerateMesh(HashSet<Vector3Int> blocks)
+        public MeshData GenerateMesh(HashSet<Vector3Int> blocks)
         {
             List<Vector3> verts = new List<Vector3>();
             List<int> tris = new List<int>();
             List<Vector2> uvs = new List<Vector2>();
-            Mesh mesh = new Mesh();
-            mesh.name = "greedy_level";
 
             MeshingUtils.GenerateGreedyMesh(blocks, blocks.Contains, verts, tris, uvs);
 
-            mesh.vertices = verts.ToArray();
-            mesh.triangles = tris.ToArray();
-            mesh.uv = uvs.ToArray();
-            mesh.RecalculateNormals();
-
-            return mesh;
+            return new MeshData() { name = "greedy_level", verts = verts, tris = tris, uvs = uvs };
         }
     }
 }

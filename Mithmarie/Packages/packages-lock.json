@@ -7,6 +7,13 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.dan-mechanics.dan-utils": {
+      "version": "https://github.com/Dan-Mechanics/DanUtils.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "9b8b8dc19b70f23b7a78608e377f8508d698d437"
+    },
     "com.unity.editorcoroutines": {
       "version": "1.0.0",
       "depth": 1,
@@ -106,7 +113,7 @@
     },
     "com.unity.timeline": {
       "version": "1.8.9",
-      "depth": 0,
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.audio": "1.0.0",

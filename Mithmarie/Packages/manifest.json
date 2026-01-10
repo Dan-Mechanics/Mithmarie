@@ -1,9 +1,9 @@
 {
   "dependencies": {
+    "com.dan-mechanics.dan-utils": "https://github.com/Dan-Mechanics/DanUtils.git",
     "com.unity.feature.development": "1.0.2",
     "com.unity.formats.fbx": "5.1.5",
     "com.unity.inputsystem": "1.14.2",
-    "com.unity.timeline": "1.8.9",
     "com.unity.ugui": "2.0.0",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
