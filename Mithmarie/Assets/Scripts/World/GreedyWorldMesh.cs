@@ -30,6 +30,7 @@ namespace Mithmarie
 
                 MeshingUtils.GenerateGreedyMesh(blocks, Has, verts, tris, uvs);
 
+                // DON'T ADD THE MESH IF IT DOESN'T EXIST.
                 if (verts.Count <= 0)
                     continue;
 
