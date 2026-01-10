@@ -1,6 +1,8 @@
 using SFB;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -142,7 +144,7 @@ namespace Mithmarie
             CloseCompletely();
         }
 
-        public void Export()
+        public async void Export()
         {
             if (!Utils.IsStringValid(exportPath))
             {
@@ -152,19 +154,41 @@ namespace Mithmarie
 
             message.Send("Exporting ...", Color.gray, MESSAGE_DURATION);
             world.Flush();
+            CloseCompletely();
 
             if (exportAsChunks.value)
             {
-                List<Mesh> meshes = worldMeshStrat.GenerateAsChunks(world.GetChunks());
-                exportStrat.ExportAsChunks(exportPath, meshes, message);
+                await ExportChunksAsync();
             }
             else
             {
-                Mesh mesh = worldMeshStrat.GenerateMesh(world.GetWorldBlocks());
-                exportStrat.Export(exportPath, mesh, message);
+                //await ExportWholeAsync();
+                await Task.Run(ExportWholeAsync);
             }
+   
+        }
 
-            CloseCompletely();
+        private async Task ExportWholeAsync()
+        {
+            //Mesh mesh = worldMeshStrat.GenerateMesh(world.GetWorldBlocks());
+            MeshData data = GreedyWorldMesh._GenerateMesh(world.GetWorldBlocks());
+            // exportStrat.Export(exportPath, mesh, message);
+            OBJ._Export(exportPath, data, message);
+
+            Debug.LogWarning("ExportWholeAsync() done.");
+            await Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// TODO: FIX.
+        /// </summary>
+        private async Task ExportChunksAsync()
+        {
+            List<Mesh> meshes = worldMeshStrat.GenerateAsChunks(world.GetChunks());
+            exportStrat.ExportAsChunks(exportPath, meshes, message);
+
+            Debug.LogWarning("ExportChunksAsync() done.");
+            await Task.CompletedTask;
         }
 
         private void ExportAs()

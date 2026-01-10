@@ -60,5 +60,23 @@ namespace Mithmarie
 
             return mesh;
         }
+
+        public static MeshData _GenerateMesh(HashSet<Vector3Int> blocks)
+        {
+            List<Vector3> verts = new List<Vector3>();
+            List<int> tris = new List<int>();
+            List<Vector2> uvs = new List<Vector2>();
+            //Mesh mesh = new Mesh();
+            //mesh.name = "greedy_level";
+
+            MeshingUtils.GenerateGreedyMesh(blocks, blocks.Contains, verts, tris, uvs);
+
+            //mesh.vertices = verts.ToArray();
+            //mesh.triangles = tris.ToArray();
+            //mesh.uv = uvs.ToArray();
+            //mesh.RecalculateNormals();
+
+            return new MeshData() { name = "greedy_level", verts = verts, tris = tris, uvs = uvs };
+        }
     }
 }

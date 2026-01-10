@@ -27,6 +27,19 @@ namespace Mithmarie
             }
         }
 
+        public static void _Export(string path, MeshData mesh, IMessageService message)
+        {
+            try
+            {
+                using StreamWriter writer = new StreamWriter(path);
+                writer.Write(_GetMeshOBJ(mesh));
+            }
+            catch (Exception exception)
+            {
+                message.Send(exception.Message, Color.red);
+            }
+        }
+
         public void ExportAsChunks(string path, List<Mesh> meshes, IMessageService message)
         {
             try
@@ -70,6 +83,39 @@ namespace Mithmarie
                     mesh.triangles[j] + 1,
                     mesh.triangles[j + 1] + 1,
                     mesh.triangles[j + 2] + 1)
+                );
+            }
+
+            return builder.ToString();
+        }
+
+        private static string _GetMeshOBJ(MeshData mesh)
+        {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            StringBuilder builder = new StringBuilder();
+
+            builder.AppendLine($"o {mesh.name}");
+
+            foreach (Vector3 vert in mesh.verts)
+            {
+                builder.AppendLine(string.Format("v {0} {1} {2}", vert.x, vert.y, vert.z));
+            }
+
+            // I DON'T INCLUDE NORMALS ON PURPOSE HERE 
+            // BECAUSE BLENDER AND UNITY CALCULATE THEM AUTOMATICALLY.
+
+            foreach (Vector2 uv in mesh.uvs)
+            {
+                builder.AppendLine(string.Format("vt {0} {1}", uv.x, uv.y));
+            }
+
+            for (int j = 0; j < mesh.tris.Count; j += 3)
+            {
+                builder.AppendLine(
+                    string.Format("f {0}/{0} {1}/{1} {2}/{2}",
+                    mesh.tris[j] + 1,
+                    mesh.tris[j + 1] + 1,
+                    mesh.tris[j + 2] + 1)
                 );
             }
 
