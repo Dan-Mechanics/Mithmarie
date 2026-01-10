@@ -19,7 +19,7 @@ namespace Mithmarie
         public void Show(HashSet<Vector3Int> blocks)
         {
             IWorldMeshStrategy worldMeshStrat = new CulledWorldMesh();
-            SetMesh(worldMeshStrat.GenerateMesh(blocks));
+            SetMesh(worldMeshStrat.GenerateMesh(blocks).GetMesh());
             gameObject.SetActive(true);
         }
 

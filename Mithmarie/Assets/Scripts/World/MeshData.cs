@@ -13,5 +13,17 @@ namespace Mithmarie
         public List<Vector3> verts;
         public List<int> tris;
         public List<Vector2> uvs;
+
+        public Mesh GetMesh()
+        {
+            Mesh mesh = new Mesh();
+            mesh.name = name;
+            mesh.vertices = verts.ToArray();
+            mesh.triangles = tris.ToArray();
+            mesh.uv = uvs.ToArray();
+            mesh.RecalculateNormals();
+
+            return mesh;
+        }
     }
 }

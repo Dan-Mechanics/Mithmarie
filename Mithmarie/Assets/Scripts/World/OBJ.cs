@@ -14,12 +14,12 @@ namespace Mithmarie
     /// </summary>
     public class OBJ : IExportStrategy
     {
-        public void Export(string path, Mesh mesh, IMessageService message)
+        public void Export(string path, MeshData mesh, IMessageService message)
         {
             try
             {
                 using StreamWriter writer = new StreamWriter(path);
-                writer.Write(GetMeshOBJ(mesh));
+                writer.Write(FormatObj(mesh));
             }
             catch (Exception exception)
             {
@@ -27,25 +27,12 @@ namespace Mithmarie
             }
         }
 
-        public static void _Export(string path, MeshData mesh, IMessageService message)
+        public void ExportAsChunks(string path, List<MeshData> meshes, IMessageService message)
         {
             try
             {
                 using StreamWriter writer = new StreamWriter(path);
-                writer.Write(_GetMeshOBJ(mesh));
-            }
-            catch (Exception exception)
-            {
-                message.Send(exception.Message, Color.red);
-            }
-        }
-
-        public void ExportAsChunks(string path, List<Mesh> meshes, IMessageService message)
-        {
-            try
-            {
-                using StreamWriter writer = new StreamWriter(path);
-                writer.Write(GetMeshesOBJ(meshes));
+                writer.Write(FormatMultipleObjs(meshes));
             }
             catch (Exception exception)
             {
@@ -56,40 +43,7 @@ namespace Mithmarie
         public string GetShortName() => "obj";
         public string GetWholeName() => "Wavefront";
 
-        private string GetMeshOBJ(Mesh mesh)
-        {
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            StringBuilder builder = new StringBuilder();
-
-            builder.AppendLine($"o {mesh.name}");
-
-            foreach (Vector3 vert in mesh.vertices)
-            {
-                builder.AppendLine(string.Format("v {0} {1} {2}", vert.x, vert.y, vert.z));
-            }
-
-            // I DON'T INCLUDE NORMALS ON PURPOSE HERE 
-            // BECAUSE BLENDER AND UNITY CALCULATE THEM AUTOMATICALLY.
-
-            foreach (Vector2 uv in mesh.uv)
-            {
-                builder.AppendLine(string.Format("vt {0} {1}", uv.x, uv.y));
-            }
-
-            for (int j = 0; j < mesh.triangles.Length; j += 3)
-            {
-                builder.AppendLine (
-                    string.Format("f {0}/{0} {1}/{1} {2}/{2}",
-                    mesh.triangles[j] + 1,
-                    mesh.triangles[j + 1] + 1,
-                    mesh.triangles[j + 2] + 1)
-                );
-            }
-
-            return builder.ToString();
-        }
-
-        private static string _GetMeshOBJ(MeshData mesh)
+        private string FormatObj(MeshData mesh)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             StringBuilder builder = new StringBuilder();
@@ -122,35 +76,36 @@ namespace Mithmarie
             return builder.ToString();
         }
 
-        private string GetMeshesOBJ(List<Mesh> meshes)
+        private string FormatMultipleObjs(List<MeshData> meshes)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             StringBuilder builder = new StringBuilder();
 
             int vertOffset = 0;
             List<int> triangles = new List<int>();
-            Dictionary<int, Mesh> subMeshStarts = new Dictionary<int, Mesh>();
+            Dictionary<int, MeshData> subMeshStarts = new Dictionary<int, MeshData>();
             builder.AppendLine($"o obj_level");
 
-            foreach (Mesh mesh in meshes)
+            foreach (MeshData mesh in meshes)
             {
-                foreach (Vector3 vert in mesh.vertices)
+                foreach (Vector3 vert in mesh.verts)
                 {
                     builder.AppendLine(string.Format("v {0} {1} {2}", vert.x, vert.y, vert.z));
                 }
-
+                Debug.Log(mesh.verts.Count);
+                Debug.Log(mesh.tris.Count);
                 subMeshStarts.Add(triangles.Count, mesh);
-                foreach (int tri in mesh.triangles)
+                foreach (int tri in mesh.tris)
                 {
                     triangles.Add(vertOffset + tri);
                 }
 
-                vertOffset += mesh.vertices.Length;
+                vertOffset += mesh.verts.Count;
             }
 
-            foreach (Mesh mesh in meshes)
+            foreach (MeshData mesh in meshes)
             {
-                foreach (Vector2 uv in mesh.uv)
+                foreach (Vector2 uv in mesh.uvs)
                 {
                     builder.AppendLine(string.Format("vt {0} {1}", uv.x, uv.y));
                 }

@@ -154,40 +154,34 @@ namespace Mithmarie
 
             message.Send("Exporting ...", Color.gray, MESSAGE_DURATION);
             world.Flush();
+
             CloseCompletely();
 
             if (exportAsChunks.value)
             {
-                await ExportChunksAsync();
+                await Task.Run(ExportChunksAsync);
             }
             else
             {
-                //await ExportWholeAsync();
                 await Task.Run(ExportWholeAsync);
             }
-   
         }
 
         private async Task ExportWholeAsync()
         {
-            //Mesh mesh = worldMeshStrat.GenerateMesh(world.GetWorldBlocks());
-            MeshData data = GreedyWorldMesh._GenerateMesh(world.GetWorldBlocks());
-            // exportStrat.Export(exportPath, mesh, message);
-            OBJ._Export(exportPath, data, message);
+            MeshData mesh = worldMeshStrat.GenerateMesh(world.GetWorldBlocks());
+            exportStrat.Export(exportPath, mesh, message);
 
-            Debug.LogWarning("ExportWholeAsync() done.");
+            print("ExportWholeAsync() done.");
             await Task.CompletedTask;
         }
 
-        /// <summary>
-        /// TODO: FIX.
-        /// </summary>
         private async Task ExportChunksAsync()
         {
-            List<Mesh> meshes = worldMeshStrat.GenerateAsChunks(world.GetChunks());
+            List<MeshData> meshes = worldMeshStrat.GenerateAsChunks(world.GetChunks());
             exportStrat.ExportAsChunks(exportPath, meshes, message);
 
-            Debug.LogWarning("ExportChunksAsync() done.");
+            print("ExportChunksAsync() done.");
             await Task.CompletedTask;
         }
 

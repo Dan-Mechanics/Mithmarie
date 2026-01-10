@@ -12,7 +12,7 @@ namespace Mithmarie
     /// </summary>
     public class FBX : IExportStrategy
     {
-        public void Export(string path, Mesh mesh, IMessageService message)
+        public void Export(string path, MeshData mesh, IMessageService message)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Mithmarie
             }
         }
 
-        public void ExportAsChunks(string path, List<Mesh> meshes, IMessageService message)
+        public void ExportAsChunks(string path, List<MeshData> meshes, IMessageService message)
         {
             try
             {
