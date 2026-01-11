@@ -28,7 +28,6 @@ namespace Mithmarie
         private World world;
         private Menu menu;
 
-
         private void Awake()
         {
             world = FindAnyObjectByType<World>();
