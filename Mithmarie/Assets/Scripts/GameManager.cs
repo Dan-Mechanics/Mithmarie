@@ -104,12 +104,8 @@ namespace Mithmarie
             brushManager.OnNewBrushSelected += brushDisplay.NewIndexSelected;
             brushManager.OnNewBrushSelected += clonePreview.SetVisibilityWithBrushIndex;
 
-            // ===
-
             world.Setup();
             world.Flush();
-
-            // ===
 
             player.Setup(world);
             brushManager.OnNewPreviewMesh += player.GetAddSelectionPreview().UpdateMesh;

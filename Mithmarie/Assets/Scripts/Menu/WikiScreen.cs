@@ -15,7 +15,7 @@ namespace Mithmarie
             {
                 Brush brush = brushes[i];
                 builder.Append(brush.name.ToUpperInvariant()).Append(": ").
-                    Append(brush.tooltip).AppendLine().AppendLine();
+                    AppendLine(brush.tooltip).AppendLine().AppendLine();
             }
 
             brushesText.text = builder.ToString();
