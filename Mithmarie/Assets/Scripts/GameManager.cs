@@ -28,7 +28,6 @@ namespace Mithmarie
         private World world;
         private Menu menu;
 
-
         private void Awake()
         {
             world = FindAnyObjectByType<World>();
@@ -104,12 +103,8 @@ namespace Mithmarie
             brushManager.OnNewBrushSelected += brushDisplay.NewIndexSelected;
             brushManager.OnNewBrushSelected += clonePreview.SetVisibilityWithBrushIndex;
 
-            // ===
-
             world.Setup();
             world.Flush();
-
-            // ===
 
             player.Setup(world);
             brushManager.OnNewPreviewMesh += player.GetAddSelectionPreview().UpdateMesh;
