@@ -8,6 +8,7 @@ namespace Mithmarie
     {
         public event Action<int> OnNewBrushSelected;
         public event Action<Mesh> OnNewPreviewMesh;
+        public event Action OnNewBrush;
 
         [SerializeField, Min(0f)] private float scrollDeadzone = default;
         [SerializeField] private string scrollName = default;
@@ -70,9 +71,14 @@ namespace Mithmarie
 
             current = brushes[index];
             OnNewBrushSelected?.Invoke(index);
+            OnNewBrush?.Invoke();
             ReloadPreviewMesh();
         }
 
+        /// <summary>
+        /// This is public so that the mesh can change
+        /// within a selected brush.
+        /// </summary>
         public void ReloadPreviewMesh()
         {
             OnNewPreviewMesh?.Invoke(current.previewMesh);

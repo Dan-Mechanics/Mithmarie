@@ -86,8 +86,9 @@ namespace Mithmarie
             clone.OnNewExample += clonePreview.Show;
             hoverHighlight.OnHover += clonePreview.UpdatePreview;
 
-            IBrushable[] brushables = new IBrushable[] 
-            {
+            brushManager.OnNewBrush += clone.ClearExample;
+
+            IBrushable[] brushables = new IBrushable[] {
                 new Fill(world),
                 new Walls(world),
                 new Cylinder(world),
@@ -107,8 +108,8 @@ namespace Mithmarie
             world.Flush();
 
             player.Setup(world);
-            brushManager.OnNewPreviewMesh += player.GetAddSelectionPreview().UpdateMesh;
-            brushManager.OnNewPreviewMesh += player.GetRemoveSelectionPreview().UpdateMesh;
+            brushManager.OnNewPreviewMesh += player.AddSelectionPreview.UpdateMesh;
+            brushManager.OnNewPreviewMesh += player.RemoveSelectionPreview.UpdateMesh;
 
             menu.Setup(new Level(new List<IBinarySerializable> { world }));
 
