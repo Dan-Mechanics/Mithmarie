@@ -8,6 +8,9 @@ namespace Mithmarie
 {
     public class Player : StateBehaviour
     {
+        public SelectionPreview AddSelectionPreview => addSelectionPreview;
+        public SelectionPreview RemoveSelectionPreview => removeSelectionPreview;
+        
         public event Action OnOpen;
         public event Action OnClose;
 
@@ -42,9 +45,6 @@ namespace Mithmarie
             hoverPreview.Setup();
             playerMovement.Setup();
         }
-
-        public SelectionPreview GetAddSelectionPreview() => addSelectionPreview;
-        public SelectionPreview GetRemoveSelectionPreview() => removeSelectionPreview;
 
         public override void Enter()
         {

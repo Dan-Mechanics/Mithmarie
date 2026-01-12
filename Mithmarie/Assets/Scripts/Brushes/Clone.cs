@@ -52,6 +52,12 @@ namespace Mithmarie
             OnNewExample?.Invoke(example);
         }
 
+        public void ClearExample()
+        {
+            example.Clear();
+            OnNewExample?.Invoke(example);
+        }
+
         private void Paste(Vector3Int a)
         {
             foreach (Vector3Int blockPos in example)
