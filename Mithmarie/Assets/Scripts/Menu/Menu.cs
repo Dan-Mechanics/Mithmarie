@@ -23,10 +23,9 @@ namespace Mithmarie
         /// You could possiblely make it so GameManager injects the dependencies to the other states here.
         /// This might make it too unreadable though.
         /// </summary>
-        public void Setup(IBinarySerializable level)
+        public void Setup()
         {
             message = ServiceLocator<IMessageService>.Locate();
-            fileScreen.Setup(FindAnyObjectByType<World>(), new OBJ(), new GreedyWorldMesh(), level);
             settingsScreen.Setup();
 
             pauseAction = InputSystem.actions.FindAction(pauseName);

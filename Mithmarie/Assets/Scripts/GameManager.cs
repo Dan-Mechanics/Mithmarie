@@ -103,15 +103,14 @@ namespace Mithmarie
 
             brushManager.OnNewBrushSelected += brushDisplay.NewIndexSelected;
             brushManager.OnNewBrushSelected += clonePreview.SetVisibilityWithBrushIndex;
+            brushManager.OnNewPreviewMesh += player.AddSelectionPreview.UpdateMesh;
+            brushManager.OnNewPreviewMesh += player.RemoveSelectionPreview.UpdateMesh;
 
             world.Setup();
             world.Flush();
 
+            menu.Setup();
             player.Setup(world);
-            brushManager.OnNewPreviewMesh += player.AddSelectionPreview.UpdateMesh;
-            brushManager.OnNewPreviewMesh += player.RemoveSelectionPreview.UpdateMesh;
-
-            menu.Setup(new Level(new List<IBinarySerializable> { world }));
 
             fsm.AddState(player);
             fsm.AddState(menu);
@@ -119,6 +118,8 @@ namespace Mithmarie
             fsm.AddTransition(new Transition(menu, player));
 
             fsm.Open(menu);
+            fileScreen.Setup(world, new OBJ(), new GreedyWorldMesh(), 
+                new Level(new List<IBinarySerializable> { world }));
         }
 
         private void Update() => fsm.Update();

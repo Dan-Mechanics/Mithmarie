@@ -43,6 +43,9 @@ namespace Mithmarie
 
         private Vector3 GetMovementInput() 
         {
+            if (Keyboard.current.leftAltKey.isPressed)
+                return Vector3.zero;
+            
             Vector2 wasd = moveAction.ReadValue<Vector2>();
             wasd.Normalize();
 
