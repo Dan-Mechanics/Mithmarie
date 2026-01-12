@@ -73,15 +73,15 @@ namespace Mithmarie
         private bool IsBlockWithinStairsNorth(int width, int height, int depth, int x, int y, int z)
         {
             float slope = (float)height / depth;
-            int max = Mathf.CeilToInt(z * slope);
-            return y < max;
+            int max = Mathf.RoundToInt(z * slope);
+            return y <= max;
         }
 
         private bool IsBlockWithinStairsEast(int width, int height, int depth, int x, int y, int z)
         {
             float slope = (float)height / width;
-            int max = Mathf.CeilToInt(x * slope);
-            return y < max;
+            int max = Mathf.RoundToInt(x * slope);
+            return y <= max;
         }
 
         private bool IsBlockWithinStairsSouth(int width, int height, int depth, int x, int y, int z)
